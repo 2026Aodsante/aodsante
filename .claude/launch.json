@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "aod-sante",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "3000"],
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "$listener = New-Object System.Net.HttpListener; $listener.Prefixes.Add('http://localhost:3000/'); $listener.Start(); while ($listener.IsListening) { $ctx = $listener.GetContext(); $req = $ctx.Request; $res = $ctx.Response; $path = $req.Url.LocalPath; if ($path -eq '/') { $path = '/index.html' }; $file = Join-Path 'C:\\Users\\mathi\\Desktop\\CLAUDE IA\\Site' $path.TrimStart('/'); if (Test-Path $file) { $bytes = [System.IO.File]::ReadAllBytes($file); $ext = [System.IO.Path]::GetExtension($file); $mime = if ($ext -eq '.html') { 'text/html' } elseif ($ext -eq '.css') { 'text/css' } elseif ($ext -eq '.js') { 'application/javascript' } elseif ($ext -eq '.png') { 'image/png' } elseif ($ext -eq '.jpg') { 'image/jpeg' } elseif ($ext -eq '.svg') { 'image/svg+xml' } else { 'application/octet-stream' }; $res.ContentType = $mime; $res.ContentLength64 = $bytes.Length; $res.OutputStream.Write($bytes, 0, $bytes.Length) } else { $res.StatusCode = 404 }; $res.Close() }"],
       "port": 3000
     }
   ]
