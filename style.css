@@ -76,7 +76,7 @@ h3 { font-size: 1.3rem; font-weight: 700; }
 }
 .nav__logo {
   font-family: var(--ff-serif);
-  font-size: 1.35rem; font-weight: 900;
+  font-size: 1.7rem; font-weight: 900;
   color: var(--navy);
   letter-spacing: -0.01em;
 }
@@ -597,14 +597,42 @@ h3 { font-size: 1.3rem; font-weight: 700; }
   display: inline-block;
   font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--blue-mid);
   background: var(--blue-light);
   padding: 3px 10px;
   border-radius: 20px;
   margin-bottom: 10px;
 }
+
+.rcard__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 4px 0 12px;
+}
+.rcard__list li {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.5;
+}
+.rcard__list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 0.75rem;
+}
+
+.rcard--full {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+}
+.rcard--full .rcard__img { height: 100%; min-height: 180px; }
 .rcard__body h3 { color: var(--navy); margin-bottom: 8px; font-size: 1.1rem; }
 .rcard__body p { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 14px; line-height: 1.65; }
 .rcard__lieu { font-size: 0.75rem; color: var(--gold); font-weight: 600; letter-spacing: 0.06em; }
@@ -733,6 +761,7 @@ h3 { font-size: 1.3rem; font-weight: 700; }
   .realisations { padding: 72px 40px; }
   .realisations__grid { grid-template-columns: 1fr 1fr; }
   .rcard--large { grid-row: auto; }
+  .rcard--full { grid-column: auto; grid-template-columns: 1fr; }
 
   .cta-final { grid-template-columns: 1fr; }
   .cta-final__left, .cta-final__right { padding: 56px 40px; }
@@ -765,6 +794,7 @@ h3 { font-size: 1.3rem; font-weight: 700; }
 
   .realisations { padding: 56px 24px; }
   .realisations__grid { grid-template-columns: 1fr; }
+  .rcard--full { grid-template-columns: 1fr; }
 
   .profil { padding: 56px 24px; }
   .profil__photo-deco { display: none; }

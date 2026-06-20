@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mentions légales — AOD Santé</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .ml-page {
+      max-width: 800px;
+      margin: 120px auto 80px;
+      padding: 0 2rem;
+      font-family: var(--ff-sans);
+      color: var(--navy);
+      line-height: 1.8;
+    }
+    .ml-page h1 {
+      font-family: var(--ff-serif);
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: var(--navy);
+    }
+    .ml-page h2 {
+      font-family: var(--ff-serif);
+      font-size: 1.2rem;
+      margin: 2rem 0 0.5rem;
+      color: var(--blue-mid);
+    }
+    .ml-page p, .ml-page address {
+      font-style: normal;
+      margin-bottom: 0.5rem;
+      color: #444;
+    }
+    .ml-back {
+      display: inline-block;
+      margin-bottom: 2rem;
+      color: var(--blue-mid);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .ml-back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo"><span>AOD</span>Santé</a>
+    </div>
+  </nav>
+
+  <div class="ml-page">
+    <a href="index.html" class="ml-back">← Retour au site</a>
+    <h1>Mentions légales</h1>
+
+    <h2>Éditeur du site</h2>
+    <address>
+      <strong>SAS AOD Santé</strong><br/>
+      SIRET : 104 752 472 00019<br/>
+      Capital social : 1 000 €<br/>
+      Franchise en base de TVA (art. 293 B du CGI)<br/>
+      Directrice de la publication : Mathilde Moysan<br/>
+      Email : <a href="mailto:mathildemoysan@outlook.fr">mathildemoysan@outlook.fr</a><br/>
+      Téléphone : 07 81 44 09 59
+    </address>
+
+    <h2>Hébergement</h2>
+    <address>
+      <strong>GitHub, Inc.</strong><br/>
+      88 Colin P. Kelly Jr. Street<br/>
+      San Francisco, CA 94107 — États-Unis<br/>
+      <a href="https://github.com" target="_blank" rel="noopener">github.com</a>
+    </address>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>L'ensemble du contenu de ce site (textes, visuels, structure) est la propriété exclusive de SAS AOD Santé. Toute reproduction, même partielle, est interdite sans autorisation préalable écrite.</p>
+
+    <h2>Données personnelles</h2>
+    <p>Les informations transmises via le formulaire de contact sont utilisées uniquement pour répondre à votre demande. Elles ne sont ni cédées, ni revendues à des tiers. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données en contactant : <a href="mailto:mathildemoysan@outlook.fr">mathildemoysan@outlook.fr</a>.</p>
+
+    <h2>Cookies</h2>
+    <p>Ce site n'utilise pas de cookies de traçage ou de publicité. Aucune donnée de navigation n'est collectée à des fins commerciales.</p>
+
+    <h2>Responsabilité</h2>
+    <p>SAS AOD Santé s'efforce de maintenir les informations de ce site à jour mais ne saurait être tenue responsable d'éventuelles erreurs ou omissions. Les liens vers des sites tiers sont fournis à titre indicatif.</p>
+  </div>
+
+  <script>
+    const nav = document.querySelector('.nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+  </script>
+</body>
+</html>
