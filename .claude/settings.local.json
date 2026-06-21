@@ -9,7 +9,10 @@
       "mcp__visualize__read_me",
       "mcp__visualize__show_widget",
       "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"User\"\\); git --version)",
-      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\Git\\\\cmd;\" + $env:PATH; cd \"C:\\\\Users\\\\mathi\\\\Desktop\\\\CLAUDE IA\\\\Site\"; git init; git config user.name \"2026Aodsante\"; git config user.email \"mathildemoysan@outlook.fr\"; Write-Host \"Git configuré\")"
+      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\Git\\\\cmd;\" + $env:PATH; cd \"C:\\\\Users\\\\mathi\\\\Desktop\\\\CLAUDE IA\\\\Site\"; git init; git config user.name \"2026Aodsante\"; git config user.email \"mathildemoysan@outlook.fr\"; Write-Host \"Git configuré\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "mcp__Claude_in_Chrome__computer"
     ]
   }
 }

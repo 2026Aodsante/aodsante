@@ -2,6 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "prevention",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "$listener = New-Object System.Net.HttpListener; $listener.Prefixes.Add('http://localhost:3456/'); $listener.Start(); while ($listener.IsListening) { $ctx = $listener.GetContext(); $req = $ctx.Request; $res = $ctx.Response; $path = $req.Url.LocalPath; if ($path -eq '/' -or $path -eq '/prevention/' -or $path -eq '/prevention') { $path = '/prevention/index.html' }; $file = Join-Path 'C:\\Users\\mathi\\Desktop\\CLAUDE IA\\Site' $path.TrimStart('/'); if (Test-Path $file) { $bytes = [System.IO.File]::ReadAllBytes($file); $ext = [System.IO.Path]::GetExtension($file); $mime = if ($ext -eq '.html') { 'text/html' } elseif ($ext -eq '.css') { 'text/css' } elseif ($ext -eq '.js') { 'application/javascript' } elseif ($ext -eq '.png') { 'image/png' } elseif ($ext -eq '.jpg') { 'image/jpeg' } elseif ($ext -eq '.svg') { 'image/svg+xml' } else { 'application/octet-stream' }; $res.ContentType = $mime; $res.ContentLength64 = $bytes.Length; $res.OutputStream.Write($bytes, 0, $bytes.Length) } else { $res.StatusCode = 404 }; $res.Close() }"],
+      "port": 3456
+    },
+    {
       "name": "aod-sante",
       "runtimeExecutable": "powershell",
       "runtimeArgs": ["-NoProfile", "-Command", "$listener = New-Object System.Net.HttpListener; $listener.Prefixes.Add('http://localhost:3000/'); $listener.Start(); while ($listener.IsListening) { $ctx = $listener.GetContext(); $req = $ctx.Request; $res = $ctx.Response; $path = $req.Url.LocalPath; if ($path -eq '/') { $path = '/index.html' }; $file = Join-Path 'C:\\Users\\mathi\\Desktop\\CLAUDE IA\\Site' $path.TrimStart('/'); if (Test-Path $file) { $bytes = [System.IO.File]::ReadAllBytes($file); $ext = [System.IO.Path]::GetExtension($file); $mime = if ($ext -eq '.html') { 'text/html' } elseif ($ext -eq '.css') { 'text/css' } elseif ($ext -eq '.js') { 'application/javascript' } elseif ($ext -eq '.png') { 'image/png' } elseif ($ext -eq '.jpg') { 'image/jpeg' } elseif ($ext -eq '.svg') { 'image/svg+xml' } else { 'application/octet-stream' }; $res.ContentType = $mime; $res.ContentLength64 = $bytes.Length; $res.OutputStream.Write($bytes, 0, $bytes.Length) } else { $res.StatusCode = 404 }; $res.Close() }"],

@@ -1,0 +1,2303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AOD Prévention — Bilan Santé Personnalisé</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/prevention/style.css">
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     SIDEBAR NAVIGATION (Desktop)
+═════════════════════════════════════════════════ -->
+<nav class="sidebar" role="navigation" aria-label="Navigation principale">
+  <div class="sidebar-brand">
+    <div>
+      <div class="sidebar-brand-name">AOD Prévention</div>
+      <div class="sidebar-brand-sub">Bilan Santé</div>
+    </div>
+  </div>
+
+  <ul class="sidebar-nav" role="list">
+    <li><button class="nav-item active" data-section="accueil" aria-label="Accueil">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 9.5L10 3l7 6.5V17a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+      <span class="nav-label">Accueil</span>
+    </button></li>
+
+    <li class="nav-group-header" aria-hidden="true">Prévention officielle</li>
+    <li><button class="nav-item" data-section="bilan" aria-label="Mon Bilan Prévention">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="2" width="14" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <span class="nav-label">Mon Bilan Prévention</span>
+      <span class="nav-badge" id="badge-bilan" aria-hidden="true"></span>
+    </button></li>
+    <li><button class="nav-item" data-section="cancers" aria-label="Dépistages Cancers">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2z" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="14" r="1" fill="currentColor"/></svg></span>
+      <span class="nav-label">Dépistages cancers</span>
+      <span class="nav-badge" id="badge-cancers" aria-hidden="true"></span>
+    </button></li>
+
+    <li class="nav-group-header" aria-hidden="true">Risques métaboliques &amp; cardio</li>
+    <li><button class="nav-item" data-section="biobilan" aria-label="Mon Bilan Biologique">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 3v3a1 1 0 001 1h2a1 1 0 001-1V3" stroke="currentColor" stroke-width="1.5"/><rect x="4" y="5" width="12" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <span class="nav-label">Mon Bilan Biologique</span>
+      <span class="nav-badge" id="badge-biobilan" aria-hidden="true"></span>
+    </button></li>
+    <li><button class="nav-item" data-section="findrisk" aria-label="Score FINDRISK Diabète">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <span class="nav-label">FINDRISK — Diabète</span>
+      <span class="nav-badge" id="badge-findrisk" aria-hidden="true"></span>
+    </button></li>
+    <li><button class="nav-item" data-section="cardio" aria-label="Risque Cardiovasculaire">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 17s-7-5-7-9a4 4 0 018 0 4 4 0 018 0c0 4-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+      <span class="nav-label">SCORE2 — Cardio</span>
+      <span class="nav-badge" id="badge-cardio" aria-hidden="true"></span>
+    </button></li>
+
+    <li class="nav-group-header" aria-hidden="true">Santé mentale &amp; addictions</li>
+    <li><button class="nav-item" data-section="audit" aria-label="AUDIT Alcool">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7 2h6l1 6H6L7 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 8c0 0-2 3-2 6h12c0-3-2-6-2-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+      <span class="nav-label">AUDIT — Alcool</span>
+      <span class="nav-badge" id="badge-audit" aria-hidden="true"></span>
+    </button></li>
+    <li><button class="nav-item" data-section="fagerstrom" aria-label="Test de Fagerström Tabac">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 14h8M14 14h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 10c1 0 3 1 3 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M12 7c1-1 4-1 4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <span class="nav-label">Fagerström — Tabac</span>
+      <span class="nav-badge" id="badge-fagerstrom" aria-hidden="true"></span>
+    </button></li>
+
+    <li class="nav-group-header" aria-hidden="true">Respiratoire &amp; sommeil</li>
+    <li><button class="nav-item" data-section="act" aria-label="ACT Asthme">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 5C8 5 5 6.5 4.5 9c-.4 2-.1 4 1 5.5 1 1.4 2.5 1.8 3.5 1L10 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 5c2 0 5 1.5 5.5 4 .4 2 .1 4-1 5.5-1 1.4-2.5 1.8-3.5 1L10 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="nav-label">ACT — Asthme</span>
+      <span class="nav-badge" id="badge-act" aria-hidden="true"></span>
+    </button></li>
+    <li><button class="nav-item" data-section="stopbang" aria-label="STOP-BANG Apnée du sommeil">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="9" width="16" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2 12h16M2 15v2M18 15v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><rect x="2.5" y="9.5" width="4" height="3" rx="1" stroke="currentColor" stroke-width="1"/><path d="M12 6h2.5L12 8.5h2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="nav-label">STOP-BANG — Apnée du sommeil</span>
+      <span class="nav-badge" id="badge-stopbang" aria-hidden="true"></span>
+    </button></li>
+
+    <li class="nav-group-header" aria-hidden="true">Santé féminine</li>
+    <li><button class="nav-item" data-section="mrs" aria-label="MRS Ménopause" id="nav-mrs">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M10 12v6M7 15h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <span class="nav-label">MRS — Ménopause</span>
+      <span class="nav-badge" id="badge-mrs" aria-hidden="true"></span>
+    </button></li>
+
+    <li class="nav-separator" aria-hidden="true"></li>
+    <li><button class="nav-item" data-section="recap" aria-label="Mon Récapitulatif">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="15" r="3" fill="currentColor" opacity="0.6"/></svg></span>
+      <span class="nav-label">Mon Récapitulatif</span>
+      </button>
+    </li>
+  </ul>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-progress-label">Progression</div>
+    <div class="sidebar-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+      <div class="sidebar-progress-fill" id="global-progress"></div>
+    </div>
+    <div class="sidebar-progress-count" id="global-progress-text">0 / 4 modules</div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════
+     MAIN CONTENT
+═════════════════════════════════════════════════ -->
+<main class="main-content" id="main-content" role="main">
+
+  <!-- ─────────────────────────────────────────
+       SECTION 0 — ACCUEIL
+  ───────────────────────────────────────── -->
+  <section id="section-accueil" class="section active" aria-labelledby="accueil-title">
+
+    <div class="hero">
+      <!-- Décoration géométrique SVG légère -->
+      <div class="hero-decoration" aria-hidden="true">
+        <svg viewBox="0 0 500 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="250,20 460,140 460,340 250,440 40,340 40,140" fill="#1F3864" opacity="0.04"/>
+          <polygon points="250,55 420,155 420,315 250,415 80,315 80,155" fill="none" stroke="#C9972B" stroke-width="1" opacity="0.18"/>
+          <circle cx="420" cy="90" r="55" fill="none" stroke="#C9972B" stroke-width="1" opacity="0.12"/>
+          <circle cx="70" cy="370" r="28" fill="none" stroke="#1F3864" stroke-width="1" opacity="0.1"/>
+          <circle cx="440" cy="390" r="5" fill="#C9972B" opacity="0.2"/>
+        </svg>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-eyebrow">Programme de prévention personnalisé</div>
+        <h1 class="hero-title" id="accueil-title">
+          Votre bilan<br>
+          <em>prévention</em><br>
+          personnalisé
+        </h1>
+        <p class="hero-subtitle">
+          Identifiez vos priorités de santé et préparez votre prochaine consultation. Cet outil d'orientation ne remplace pas l'avis de votre médecin.
+        </p>
+        <div class="hero-cta-group">
+          <button class="btn-primary btn-large" onclick="navigateTo('bilan')" aria-label="Commencer mon bilan prévention">
+            Commencer mon bilan
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <span class="hero-duration">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M7 4v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            15 à 20 min
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Séparateur -->
+    <div class="separator-gold" aria-hidden="true"></div>
+
+
+    <!-- Séparateur catégorie -->
+    <div class="modules-category-label">Pris en charge par l'Assurance Maladie</div>
+    <div class="modules-grid" role="list">
+      <div class="module-card module-card--bilan" role="listitem" tabindex="0" onclick="navigateTo('bilan')" onkeydown="if(event.key==='Enter')navigateTo('bilan')" aria-label="Mon Bilan Prévention HAS">
+        <div class="module-card-accent"></div>
+        <div class="module-card-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="2" width="22" height="24" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h12M8 14h12M8 19h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="module-card-number" aria-hidden="true">01</div>
+        <h3 class="module-card-title">Mon Bilan Prévention</h3>
+        <p class="module-card-desc">Questionnaire officiel HAS — alimentation, addictions, santé mentale, sommeil, antécédents. Adapté à votre tranche d'âge.</p>
+        <div class="module-card-tag">Programme national</div>
+      </div>
+      <div class="module-card module-card--cancers" role="listitem" tabindex="0" onclick="navigateTo('cancers')" onkeydown="if(event.key==='Enter')navigateTo('cancers')" aria-label="Dépistages des cancers INCa">
+        <div class="module-card-accent"></div>
+        <div class="module-card-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3l2.2 7h7.3l-5.9 4.3 2.3 7L14 17 8.1 21.3l2.3-7L4.5 10h7.3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <div class="module-card-number" aria-hidden="true">02</div>
+        <h3 class="module-card-title">Dépistages des Cancers</h3>
+        <p class="module-card-desc">Programmes INCa — sein, colorectal, col de l'utérus. Éligibilité et dates de prochain dépistage.</p>
+        <div class="module-card-tag">3 programmes INCa</div>
+      </div>
+    </div>
+
+    <div class="modules-category-label">Risques métaboliques &amp; cardiovasculaire</div>
+    <div class="modules-grid" role="list">
+      <div class="module-card module-card--biobilan" role="listitem" tabindex="0" onclick="navigateTo('biobilan')" onkeydown="if(event.key==='Enter')navigateTo('biobilan')" aria-label="Mon Bilan Biologique">
+        <div class="module-card-accent"></div>
+        <div class="module-card-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M11 3v4a1 1 0 001 1h4a1 1 0 001-1V3" stroke="currentColor" stroke-width="1.8"/><rect x="5" y="5" width="18" height="20" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M9 14h10M9 18h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="module-card-number" aria-hidden="true">★</div>
+        <h3 class="module-card-title">Mon Bilan Biologique</h3>
+        <p class="module-card-desc">Saisissez vos valeurs biologiques (cholestérol, glycémie, tension) pour débloquer SCORE2 et enrichir votre profil de risque. Normes de référence intégrées.</p>
+        <div class="module-card-tag">Débloque SCORE2</div>
+      </div>
+      <div class="module-card module-card--findrisk" role="listitem" tabindex="0" onclick="navigateTo('findrisk')" onkeydown="if(event.key==='Enter')navigateTo('findrisk')" aria-label="Score FINDRISK Diabète">
+        <div class="module-card-accent"></div>
+        <div class="module-card-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.8"/><path d="M14 8v7l4 2.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="module-card-number" aria-hidden="true">03</div>
+        <h3 class="module-card-title">FINDRISK — Diabète</h3>
+        <p class="module-card-desc">Score finlandais validé. Estime le risque de diabète de type 2 à 10 ans. 8 questions, pas de biologie requise.</p>
+        <div class="module-card-tag">Score 0–26</div>
+      </div>
+      <div class="module-card module-card--cardio" role="listitem" tabindex="0" onclick="navigateTo('cardio')" onkeydown="if(event.key==='Enter')navigateTo('cardio')" aria-label="Risque cardiovasculaire SCORE2">
+        <div class="module-card-accent"></div>
+        <div class="module-card-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 24s-10-6-10-13a6 6 0 0110-4.6A6 6 0 0124 11c0 7-10 13-10 13z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 14h3l2-4 3 8 2-4h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="module-card-number" aria-hidden="true">04</div>
+        <h3 class="module-card-title">SCORE2 — Cardiovasculaire</h3>
+        <p class="module-card-desc">Algorithme ESC 2021. Nécessite votre bilan lipidique récent (≤ 6 mois) pour un calcul fiable.</p>
+        <div class="module-card-tag bio-required-tag">Bilan lipidique requis</div>
+      </div>
+    </div>
+
+    <div class="modules-category-label">Addictions</div>
+    <div class="modules-grid" role="list">
+      <div class="module-card module-card--audit" role="listitem" tabindex="0" onclick="navigateTo('audit')" onkeydown="if(event.key==='Enter')navigateTo('audit')" aria-label="AUDIT Alcool OMS">
+        <div class="module-card-accent"></div>
+        <div class="module-card-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M10 3h8l1.5 8H8.5L10 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 11c0 0-3 4-3 9h17c0-5-3-9-3-9" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <div class="module-card-number" aria-hidden="true">05</div>
+        <h3 class="module-card-title">AUDIT — Alcool</h3>
+        <p class="module-card-desc">Test OMS en 10 questions. Repère les consommations à risque, nocives ou une dépendance probable.</p>
+        <div class="module-card-tag">Score 0–40</div>
+      </div>
+      <div class="module-card module-card--fagerstrom" role="listitem" tabindex="0" onclick="navigateTo('fagerstrom')" onkeydown="if(event.key==='Enter')navigateTo('fagerstrom')" aria-label="Test de Fagerström Tabac">
+        <div class="module-card-accent"></div>
+        <div class="module-card-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M5 20h12M20 20h3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M20 15c2 0 5 2 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M17 10c2-2 7-1 7 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="module-card-number" aria-hidden="true">06</div>
+        <h3 class="module-card-title">Fagerström — Tabac</h3>
+        <p class="module-card-desc">Test de dépendance nicotinique en 6 questions. Pour les fumeurs actuels. Guide le plan de sevrage.</p>
+        <div class="module-card-tag">Fumeurs uniquement</div>
+      </div>
+    </div>
+
+    <div class="modules-category-label">Respiratoire &amp; Sommeil</div>
+    <div class="modules-grid" role="list">
+      <div class="module-card module-card--act" role="listitem" tabindex="0" onclick="navigateTo('act')" onkeydown="if(event.key==='Enter')navigateTo('act')" aria-label="ACT Contrôle de l'asthme">
+        <div class="module-card-accent"></div>
+        <div class="module-card-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M14 6C11 6 7 8 6.5 12c-.5 2.5 0 5 1.5 7 1 1.5 2.5 2 4 1.2L14 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 6c3 0 7 2 7.5 6 .5 2.5 0 5-1.5 7-1 1.5-2.5 2-4 1.2L14 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="module-card-number" aria-hidden="true">07</div>
+        <h3 class="module-card-title">ACT — Asthme</h3>
+        <p class="module-card-desc">Asthma Control Test en 5 questions. Évalue le niveau de contrôle de votre asthme sur les 4 dernières semaines.</p>
+        <div class="module-card-tag">Asthmatiques</div>
+      </div>
+      <div class="module-card module-card--stopbang" role="listitem" tabindex="0" onclick="navigateTo('stopbang')" onkeydown="if(event.key==='Enter')navigateTo('stopbang')" aria-label="STOP-BANG Apnée du sommeil">
+        <div class="module-card-accent"></div>
+        <div class="module-card-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="13" width="22" height="8" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 17h22M3 21v3M25 21v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="3.5" y="13.5" width="6" height="4" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M17 8h3.5L17 12h3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="module-card-number" aria-hidden="true">08</div>
+        <h3 class="module-card-title">STOP-BANG — Apnée du sommeil</h3>
+        <p class="module-card-desc">8 critères cliniques pour dépister le risque d'apnée obstructive du sommeil. Résultat immédiat.</p>
+        <div class="module-card-tag">Score 0–8</div>
+      </div>
+    </div>
+
+    <div class="modules-category-label">Santé féminine</div>
+    <div class="modules-grid modules-grid--single" role="list">
+      <div class="module-card module-card--mrs" role="listitem" tabindex="0" onclick="navigateTo('mrs')" onkeydown="if(event.key==='Enter')navigateTo('mrs')" aria-label="MRS Ménopause">
+        <div class="module-card-accent"></div>
+        <div class="module-card-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="10" r="5" stroke="currentColor" stroke-width="1.8"/><path d="M14 15v10M10 21h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="module-card-number" aria-hidden="true">09</div>
+        <h3 class="module-card-title">MRS — Ménopause</h3>
+        <p class="module-card-desc">Menopause Rating Scale — 11 items évaluant les symptômes somatovégétatifs, psychologiques et urogénitaux liés à la ménopause. Femmes 40 ans et plus.</p>
+        <div class="module-card-tag">Femmes ≥ 40 ans</div>
+      </div>
+    </div>
+
+    <!-- Bandeau positionnement doux -->
+    <div class="positioning-banner-soft" role="note">
+      Ces scores vous aident à identifier vos priorités de santé et à préparer votre prochaine consultation. Ils ne remplacent pas l'examen clinique ni l'avis de votre médecin.
+    </div>
+
+    <!-- Photo terrain en bas d'accueil -->
+    <div class="accueil-photo-wrap">
+      <div class="accueil-photo-frame">
+        <span class="frame-corner frame-corner--tl" aria-hidden="true"></span>
+        <span class="frame-corner frame-corner--tr" aria-hidden="true"></span>
+        <span class="frame-corner frame-corner--bl" aria-hidden="true"></span>
+        <span class="frame-corner frame-corner--br" aria-hidden="true"></span>
+        <img
+          id="hero-photo"
+          src="hero-photo.jpg"
+          alt="Équipe AOD Santé en action terrain"
+          class="accueil-photo-img"
+          onerror="this.style.display='none';document.getElementById('accueil-photo-placeholder').style.display='flex';"
+        >
+        <div id="accueil-photo-placeholder" class="hero-photo-placeholder">
+          <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+            <rect x="4" y="8" width="40" height="32" rx="4" stroke="#C9972B" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <circle cx="18" cy="20" r="5" stroke="#C9972B" stroke-width="1.5"/>
+            <path d="M4 34l12-10 8 7 7-6 13 9" stroke="#C9972B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Déposez votre photo ici<br><small>hero-photo.jpg</small></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bandeau info RGPD -->
+    <div class="rgpd-banner" role="note">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M9 8v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="6" r="0.75" fill="currentColor"/></svg>
+      <span>Vos données restent sur votre appareil. Aucune donnée personnelle n'est transmise ou stockée sur un serveur. Conformité RGPD.</span>
+    </div>
+
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 1 — MON BILAN PRÉVENTION
+  ───────────────────────────────────────── -->
+  <section id="section-bilan" class="section" aria-labelledby="bilan-title">
+    <div class="section-header section-header--bilan">
+      <div class="section-header-eyebrow">Programme national HAS 2023</div>
+      <h2 class="section-header-title" id="bilan-title">Mon Bilan Prévention</h2>
+      <p class="section-header-desc">Un bilan personnalisé selon votre tranche d'âge, conforme au programme officiel de la Haute Autorité de Santé.</p>
+    </div>
+
+    <!-- Étape 1 : sélection tranche d'âge -->
+    <div id="bilan-step-age" class="bilan-step">
+      <div class="step-indicator">
+        <span class="step-dot active" aria-hidden="true"></span>
+        <span class="step-dot" aria-hidden="true"></span>
+        <span class="step-dot" aria-hidden="true"></span>
+      </div>
+      <h3 class="step-title">Sélectionnez votre tranche d'âge</h3>
+      <p class="step-desc">Le programme Mon Bilan Prévention cible quatre tranches d'âge prioritaires.</p>
+
+      <!-- Saisie d'âge pour détection hors-tranche -->
+      <div class="age-real-input">
+        <label for="bilan-real-age" class="form-label">Votre âge exact <span style="font-weight:400;color:var(--gray)">(facultatif — pour orientation personnalisée)</span></label>
+        <div class="input-with-unit" style="max-width:180px;">
+          <input type="number" id="bilan-real-age" class="form-input" placeholder="ex. 38" min="16" max="100" oninput="checkBilanRealAge(this.value)" aria-describedby="bilan-age-hint">
+          <span class="input-unit">ans</span>
+        </div>
+        <div id="bilan-age-hint" style="font-size:0.78rem;color:var(--gray);margin-top:6px;">Entrez votre âge pour voir si votre bilan officiel est programmé.</div>
+      </div>
+
+      <!-- Message hors tranche -->
+      <div id="bilan-hors-tranche" class="hors-tranche-card hidden" role="status" aria-live="polite"></div>
+
+      <div class="age-grid" role="group" aria-label="Sélection de la tranche d'âge">
+        <button class="age-card" data-age="18-25" onclick="selectAgeRange('18-25')" aria-pressed="false">
+          <div class="age-card-number">18–25</div>
+          <div class="age-card-label">ans</div>
+          <div class="age-card-focus">Addictions · Santé mentale · IST</div>
+        </button>
+        <button class="age-card" data-age="45-50" onclick="selectAgeRange('45-50')" aria-pressed="false">
+          <div class="age-card-number">45–50</div>
+          <div class="age-card-label">ans</div>
+          <div class="age-card-focus">Risques cardiovasculaires · Cancers</div>
+        </button>
+        <button class="age-card" data-age="60-65" onclick="selectAgeRange('60-65')" aria-pressed="false">
+          <div class="age-card-number">60–65</div>
+          <div class="age-card-label">ans</div>
+          <div class="age-card-focus">Chutes · Cognition · Médicaments</div>
+        </button>
+        <button class="age-card" data-age="70-75" onclick="selectAgeRange('70-75')" aria-pressed="false">
+          <div class="age-card-number">70–75</div>
+          <div class="age-card-label">ans</div>
+          <div class="age-card-focus">Autonomie · Fragilité · Nutrition</div>
+        </button>
+      </div>
+
+      <div id="bilan-age-message" class="info-box info-box--warn hidden" role="alert" aria-live="polite"></div>
+
+      <div class="step-actions">
+        <button class="btn-primary" id="btn-bilan-start" onclick="startBilanQuestionnaire()" disabled aria-disabled="true">
+          Commencer le questionnaire
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Étape 2 : Questionnaire -->
+    <div id="bilan-step-questions" class="bilan-step hidden">
+      <div class="step-indicator">
+        <span class="step-dot done" aria-hidden="true"></span>
+        <span class="step-dot active" aria-hidden="true"></span>
+        <span class="step-dot" aria-hidden="true"></span>
+      </div>
+      <div id="bilan-question-header" class="question-header"></div>
+      <div id="bilan-theme-nav" class="theme-nav" role="tablist" aria-label="Thématiques"></div>
+      <div id="bilan-questions-container" class="questions-container" aria-live="polite"></div>
+      <div class="step-actions">
+        <button class="btn-secondary" onclick="goBackBilanAge()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H3M7.5 3.5L3 8l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Retour
+        </button>
+        <button class="btn-primary" id="btn-bilan-next-theme" onclick="bilanNextTheme()">
+          Thème suivant
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Étape 3 : Résultats -->
+    <div id="bilan-step-results" class="bilan-step hidden">
+      <div class="step-indicator">
+        <span class="step-dot done" aria-hidden="true"></span>
+        <span class="step-dot done" aria-hidden="true"></span>
+        <span class="step-dot active" aria-hidden="true"></span>
+      </div>
+      <h3 class="step-title">Votre synthèse personnalisée</h3>
+      <div id="bilan-results-container" aria-live="polite"></div>
+      <div class="step-actions">
+        <button class="btn-secondary" onclick="restartBilan()">Recommencer</button>
+        <button class="btn-primary" onclick="navigateTo('findrisk')">
+          Continuer vers FINDRISK
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 2 — FINDRISK
+  ───────────────────────────────────────── -->
+  <section id="section-findrisk" class="section" aria-labelledby="findrisk-title">
+    <div class="section-header section-header--findrisk">
+      <div class="section-header-eyebrow">Lindström &amp; Tuomilehto, 2003</div>
+      <h2 class="section-header-title" id="findrisk-title">Score FINDRISK</h2>
+      <p class="section-header-desc">Évaluez votre risque de développer un diabète de type 2 dans les 10 prochaines années grâce au score finlandais validé internationalement.</p>
+    </div>
+
+    <div id="findrisk-form" class="questionnaire-form">
+
+      <!-- Q1: Âge -->
+      <div class="question-card" id="fq1">
+        <div class="question-watermark" aria-hidden="true">01</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-findrisk">FINDRISK</div>
+          <h3 class="question-text">Quel est votre âge ?</h3>
+          <div class="options-grid" role="radiogroup" aria-labelledby="fq1-label" aria-required="true">
+            <label class="option-btn" aria-label="Moins de 45 ans">
+              <input type="radio" name="f_age" value="0"> <span>Moins de 45 ans</span>
+            </label>
+            <label class="option-btn" aria-label="45 à 54 ans">
+              <input type="radio" name="f_age" value="2"> <span>45 – 54 ans</span>
+            </label>
+            <label class="option-btn" aria-label="55 à 64 ans">
+              <input type="radio" name="f_age" value="3"> <span>55 – 64 ans</span>
+            </label>
+            <label class="option-btn" aria-label="Plus de 64 ans">
+              <input type="radio" name="f_age" value="4"> <span>Plus de 64 ans</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2: IMC avec calculateur -->
+      <div class="question-card" id="fq2">
+        <div class="question-watermark" aria-hidden="true">02</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-findrisk">FINDRISK</div>
+          <h3 class="question-text">Votre Indice de Masse Corporelle (IMC)</h3>
+          <p class="question-hint">Entrez votre poids et votre taille pour calculer votre IMC automatiquement.</p>
+          <div class="imc-calculator">
+            <div class="imc-inputs">
+              <div class="form-group">
+                <label for="f-poids" class="form-label">Poids (kg)</label>
+                <input type="number" id="f-poids" class="form-input" placeholder="70" min="30" max="250" oninput="calculateIMC()" aria-describedby="imc-result">
+              </div>
+              <div class="form-group">
+                <label for="f-taille" class="form-label">Taille (cm)</label>
+                <input type="number" id="f-taille" class="form-input" placeholder="170" min="100" max="230" oninput="calculateIMC()" aria-describedby="imc-result">
+              </div>
+            </div>
+            <div class="imc-result" id="imc-result" aria-live="polite">
+              <div class="imc-value" id="imc-display">— kg/m²</div>
+              <div class="imc-bar-wrap" aria-hidden="true">
+                <div class="imc-bar">
+                  <div class="imc-bar-fill" id="imc-bar-fill"></div>
+                  <div class="imc-bar-cursor" id="imc-bar-cursor"></div>
+                </div>
+                <div class="imc-bar-labels">
+                  <span>&lt;18.5<br>Maigre</span>
+                  <span>18.5–25<br>Normal</span>
+                  <span>25–30<br>Surpoids</span>
+                  <span>&gt;30<br>Obèse</span>
+                </div>
+              </div>
+              <div class="imc-category" id="imc-category"></div>
+            </div>
+          </div>
+          <div class="options-grid mt-16" role="radiogroup" aria-labelledby="fq2-label" aria-required="true">
+            <label class="option-btn" aria-label="IMC inférieur à 25">
+              <input type="radio" name="f_imc" value="0"> <span>IMC &lt; 25</span>
+            </label>
+            <label class="option-btn" aria-label="IMC entre 25 et 30">
+              <input type="radio" name="f_imc" value="1"> <span>IMC 25 – 30</span>
+            </label>
+            <label class="option-btn" aria-label="IMC supérieur à 30">
+              <input type="radio" name="f_imc" value="3"> <span>IMC &gt; 30</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3: Tour de taille -->
+      <div class="question-card" id="fq3">
+        <div class="question-watermark" aria-hidden="true">03</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-findrisk">FINDRISK</div>
+          <h3 class="question-text">Votre tour de taille</h3>
+          <p class="question-hint">Mesurez au niveau du nombril, à jeun, en expiration normale.</p>
+
+          <!-- Guide visuel SVG tour de taille -->
+          <div class="waist-guide" aria-hidden="true">
+            <svg viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="100" cy="70" rx="55" ry="45" fill="#D6DCF0" opacity="0.5"/>
+              <ellipse cx="100" cy="70" rx="55" ry="45" stroke="#1F3864" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <line x1="30" y1="70" x2="170" y2="70" stroke="#C9972B" stroke-width="2" stroke-dasharray="6 3"/>
+              <circle cx="100" cy="70" r="4" fill="#C9972B"/>
+              <text x="100" y="130" text-anchor="middle" font-family="Inter" font-size="10" fill="#5A6A82">Au niveau du nombril</text>
+              <text x="175" y="73" font-family="Inter" font-size="9" fill="#C9972B">⬅ mesure</text>
+            </svg>
+          </div>
+
+          <div class="sex-waist-selector">
+            <div class="form-group">
+              <label class="form-label">Sexe</label>
+              <div class="toggle-group" role="radiogroup" aria-label="Sélection du sexe">
+                <label class="toggle-btn"><input type="radio" name="f_sex" value="H" onchange="updateWaistOptions()"> Homme</label>
+                <label class="toggle-btn"><input type="radio" name="f_sex" value="F" onchange="updateWaistOptions()"> Femme</label>
+              </div>
+            </div>
+          </div>
+
+          <div id="waist-options-H" class="waist-options hidden" role="radiogroup" aria-label="Tour de taille Homme">
+            <label class="option-btn" aria-label="Tour de taille inférieur à 94 cm">
+              <input type="radio" name="f_waist" value="0"> <span>Moins de 94 cm</span>
+            </label>
+            <label class="option-btn" aria-label="Tour de taille entre 94 et 102 cm">
+              <input type="radio" name="f_waist" value="3"> <span>94 – 102 cm</span>
+            </label>
+            <label class="option-btn" aria-label="Tour de taille supérieur à 102 cm">
+              <input type="radio" name="f_waist" value="4"> <span>Plus de 102 cm</span>
+            </label>
+          </div>
+
+          <div id="waist-options-F" class="waist-options hidden" role="radiogroup" aria-label="Tour de taille Femme">
+            <label class="option-btn" aria-label="Tour de taille inférieur à 80 cm">
+              <input type="radio" name="f_waist" value="0"> <span>Moins de 80 cm</span>
+            </label>
+            <label class="option-btn" aria-label="Tour de taille entre 80 et 88 cm">
+              <input type="radio" name="f_waist" value="3"> <span>80 – 88 cm</span>
+            </label>
+            <label class="option-btn" aria-label="Tour de taille supérieur à 88 cm">
+              <input type="radio" name="f_waist" value="4"> <span>Plus de 88 cm</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4: Activité physique -->
+      <div class="question-card" id="fq4">
+        <div class="question-watermark" aria-hidden="true">04</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-findrisk">FINDRISK</div>
+          <h3 class="question-text">Pratiquez-vous une activité physique d'au moins 30 minutes par jour, au moins 4 jours par semaine ?</h3>
+          <p class="question-hint">Au travail ET pendant vos loisirs (marche, vélo, jardinage…)</p>
+          <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+            <label class="option-btn option-btn--positive" aria-label="Oui, je pratique une activité physique suffisante">
+              <input type="radio" name="f_activity" value="0"> <span>Oui</span>
+            </label>
+            <label class="option-btn option-btn--negative" aria-label="Non, je ne pratique pas suffisamment">
+              <input type="radio" name="f_activity" value="2"> <span>Non</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q5: Légumes/fruits -->
+      <div class="question-card" id="fq5">
+        <div class="question-watermark" aria-hidden="true">05</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-findrisk">FINDRISK</div>
+          <h3 class="question-text">Consommez-vous des légumes, des fruits ou des baies tous les jours ?</h3>
+          <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+            <label class="option-btn option-btn--positive" aria-label="Oui, tous les jours">
+              <input type="radio" name="f_vegetables" value="0"> <span>Oui, tous les jours</span>
+            </label>
+            <label class="option-btn option-btn--negative" aria-label="Non, pas tous les jours">
+              <input type="radio" name="f_vegetables" value="1"> <span>Non, pas tous les jours</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q6: Antihypertenseur -->
+      <div class="question-card" id="fq6">
+        <div class="question-watermark" aria-hidden="true">06</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-findrisk">FINDRISK</div>
+          <h3 class="question-text">Prenez-vous régulièrement un traitement contre l'hypertension artérielle ?</h3>
+          <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+            <label class="option-btn option-btn--positive" aria-label="Non, pas de traitement antihypertenseur">
+              <input type="radio" name="f_hypertension" value="0"> <span>Non</span>
+            </label>
+            <label class="option-btn option-btn--negative" aria-label="Oui, je prends un traitement antihypertenseur">
+              <input type="radio" name="f_hypertension" value="2"> <span>Oui</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q7: Glycémie élevée -->
+      <div class="question-card" id="fq7">
+        <div class="question-watermark" aria-hidden="true">07</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-findrisk">FINDRISK</div>
+          <h3 class="question-text">A-t-on déjà découvert que votre glycémie était élevée ?</h3>
+          <p class="question-hint">Lors d'un examen de santé, pendant une grossesse, ou à l'occasion d'une maladie.</p>
+          <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+            <label class="option-btn option-btn--positive" aria-label="Non, jamais">
+              <input type="radio" name="f_hyperglycemia" value="0"> <span>Non</span>
+            </label>
+            <label class="option-btn option-btn--negative" aria-label="Oui, glycémie déjà élevée">
+              <input type="radio" name="f_hyperglycemia" value="5"> <span>Oui</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q8: Antécédents familiaux -->
+      <div class="question-card" id="fq8">
+        <div class="question-watermark" aria-hidden="true">08</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-findrisk">FINDRISK</div>
+          <h3 class="question-text">Des membres de votre famille ont-ils ou ont-ils eu un diabète ?</h3>
+          <div class="options-grid" role="radiogroup" aria-required="true">
+            <label class="option-btn option-btn--positive" aria-label="Non, aucun antécédent familial">
+              <input type="radio" name="f_family" value="0"> <span>Non</span>
+            </label>
+            <label class="option-btn" aria-label="Oui, grands-parents, oncles, tantes, cousins">
+              <input type="radio" name="f_family" value="3"> <span>Oui — grands-parents, oncles, tantes, cousins</span>
+            </label>
+            <label class="option-btn option-btn--negative" aria-label="Oui, père, mère, frère, sœur ou enfant">
+              <input type="radio" name="f_family" value="5"> <span>Oui — père, mère, frère, sœur ou enfant</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <div id="findrisk-missing-msg" class="info-box info-box--warn hidden" role="alert" aria-live="polite">
+          Veuillez répondre à toutes les questions avant de calculer votre score.
+        </div>
+        <button class="btn-primary btn-large" onclick="calculateFINDRISK()" aria-label="Calculer mon score FINDRISK">
+          Calculer mon score
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Résultats FINDRISK -->
+    <div id="findrisk-results" class="results-panel hidden" aria-live="polite">
+      <div class="results-header">
+        <h3 class="results-title">Votre score FINDRISK</h3>
+      </div>
+      <div class="gauge-container">
+        <div class="gauge-wrap">
+          <svg class="gauge-svg" viewBox="0 0 200 130" aria-hidden="true">
+            <path d="M20,110 A90,90 0 0,1 180,110" fill="none" stroke="#E8E8E8" stroke-width="16" stroke-linecap="round"/>
+            <path id="findrisk-gauge-arc" d="M20,110 A90,90 0 0,1 180,110" fill="none" stroke="#2A7B6F" stroke-width="16" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" style="transition:stroke-dashoffset 1s ease,stroke 0.5s"/>
+            <text id="findrisk-score-text" x="100" y="95" text-anchor="middle" font-family="'Playfair Display',serif" font-size="38" fill="#1F3864" font-weight="700">—</text>
+            <text x="100" y="115" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5A6A82">/ 26 points</text>
+          </svg>
+        </div>
+        <div class="gauge-legend" id="findrisk-gauge-legend"></div>
+      </div>
+      <div class="risk-level-badge" id="findrisk-risk-badge"></div>
+      <div class="risk-detail" id="findrisk-risk-detail"></div>
+      <div class="recommendations-panel" id="findrisk-recommendations"></div>
+      <div class="conduite-panel" id="findrisk-conduite"></div>
+      <div class="disclaimer-box">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5.5" r="0.75" fill="currentColor"/></svg>
+        Ce score est un outil de dépistage indicatif. Consultez votre médecin pour un bilan glycémique (glycémie à jeun ou HbA1c) afin d'établir un diagnostic.
+      </div>
+      <div class="form-actions mt-32">
+        <button class="btn-secondary" onclick="restartFINDRISK()">Recommencer</button>
+        <button class="btn-primary" onclick="navigateTo('cardio')">
+          Continuer vers le risque cardio
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION BILAN BIOLOGIQUE (refonte)
+  ───────────────────────────────────────── -->
+  <section id="section-biobilan" class="section" aria-labelledby="bio-title">
+    <div class="section-header section-header--biobilan">
+      <div class="section-header-eyebrow">Outil d'orientation — Hors dispositif médical</div>
+      <h2 class="section-header-title" id="bio-title">Mon Bilan Biologique</h2>
+      <p class="section-header-desc">Saisissez vos résultats pour débloquer SCORE2 et enrichir FINDRISK — ou consultez le référentiel des valeurs de référence en prévention primaire.</p>
+    </div>
+
+    <!-- Onglets -->
+    <div class="bio-tabs" role="tablist" aria-label="Sections du bilan biologique">
+      <button class="bio-tab active" id="tab-saisie" role="tab" aria-selected="true" aria-controls="bio-tab-saisie" onclick="switchBioTab('saisie')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 8h6M5 11h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5 5h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Saisir mes valeurs
+      </button>
+      <button class="bio-tab" id="tab-normes" role="tab" aria-selected="false" aria-controls="bio-tab-normes" onclick="switchBioTab('normes')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 12l4-4 3 3 5-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Référentiel des normes
+      </button>
+    </div>
+
+    <!-- ── TAB 1 : SAISIE ─────────────────────── -->
+    <div id="bio-tab-saisie" class="bio-tab-content" role="tabpanel" aria-labelledby="tab-saisie">
+    <div class="questionnaire-form" id="bio-form">
+
+      <!-- Groupes de saisie -->
+      <div class="bio-group-header bio-group-header--score2">
+        <div class="bio-group-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 17s-7-5-7-9a4 4 0 018 0 4 4 0 018 0c0 4-7 9-7 9z" stroke="#C25B3F" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 10h2l1-2 2 5 1.5-3H14" stroke="#C25B3F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="bio-group-label">Requis pour SCORE2</div>
+          <div class="bio-group-sublabel">Cholestérol total, HDL et tension artérielle systolique — Ces 3 valeurs débloquent automatiquement le calcul SCORE2</div>
+        </div>
+        <div class="bio-group-badge">Débloque SCORE2</div>
+      </div>
+
+      <!-- Date du bilan -->
+      <div class="bio-section-title" style="margin-top:0">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v2M11 1v2M2 6h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Date du bilan
+      </div>
+      <div class="bio-date-row">
+        <div class="form-group" style="max-width:220px">
+          <label for="bio-date" class="form-label">Date de prélèvement</label>
+          <input type="date" id="bio-date" class="form-input" onchange="checkBioAge()" aria-label="Date du bilan biologique">
+        </div>
+        <div id="bio-date-warn" class="info-box info-box--warn hidden" style="flex:1" aria-live="polite">
+          Ce bilan date de plus de 6 mois — les valeurs peuvent ne plus refléter votre état actuel. SCORE2 sera calculé mais à reconfirmer avec un bilan récent.
+        </div>
+      </div>
+
+      <!-- LIPIDES — requis pour SCORE2 -->
+      <div class="bio-section-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Bilan lipidique
+        <span class="bio-required-label">Requis pour SCORE2</span>
+      </div>
+      <div class="bio-grid">
+        <div class="bio-value-row">
+          <div class="bio-value-label">Cholestérol total</div>
+          <div class="bio-value-inputs">
+            <div class="input-with-unit"><input type="number" id="bio-chol-total" class="form-input" placeholder="5.0" step="0.1" min="1" max="20" oninput="updateBioValues()" aria-label="Cholestérol total en mmol/L"><span class="input-unit">mmol/L</span></div>
+            <div class="bio-or">ou</div>
+            <div class="input-with-unit"><input type="number" id="bio-chol-total-mg" class="form-input" placeholder="190" min="30" max="800" oninput="convertBio('chol-total')" aria-label="Cholestérol total en mg/dL"><span class="input-unit">mg/dL</span></div>
+          </div>
+          <div class="bio-norm" id="bio-norm-chol-total">
+            <span class="bio-norm-label">Norme</span> &lt; 5,0 mmol/L (&lt; 190 mg/dL)
+          </div>
+          <div class="bio-status" id="bio-status-chol-total" aria-live="polite"></div>
+        </div>
+
+        <div class="bio-value-row">
+          <div class="bio-value-label">HDL-cholestérol</div>
+          <div class="bio-value-inputs">
+            <div class="input-with-unit"><input type="number" id="bio-hdl" class="form-input" placeholder="1.3" step="0.05" min="0.1" max="5" oninput="updateBioValues()" aria-label="HDL-cholestérol en mmol/L"><span class="input-unit">mmol/L</span></div>
+            <div class="bio-or">ou</div>
+            <div class="input-with-unit"><input type="number" id="bio-hdl-mg" class="form-input" placeholder="50" min="5" max="200" oninput="convertBio('hdl')" aria-label="HDL en mg/dL"><span class="input-unit">mg/dL</span></div>
+          </div>
+          <div class="bio-norm">
+            <span class="bio-norm-label">Norme</span> Homme &gt; 1,0 · Femme &gt; 1,2 mmol/L
+          </div>
+          <div class="bio-status" id="bio-status-hdl" aria-live="polite"></div>
+        </div>
+
+        <div class="bio-value-row">
+          <div class="bio-value-label">LDL-cholestérol <span class="bio-optional">(optionnel — calculé si absent)</span></div>
+          <div class="bio-value-inputs">
+            <div class="input-with-unit"><input type="number" id="bio-ldl" class="form-input" placeholder="3.0" step="0.1" min="0.5" max="15" oninput="updateBioValues()" aria-label="LDL en mmol/L"><span class="input-unit">mmol/L</span></div>
+            <div class="bio-or">ou</div>
+            <div class="input-with-unit"><input type="number" id="bio-ldl-mg" class="form-input" placeholder="115" min="20" max="600" oninput="convertBio('ldl')" aria-label="LDL en mg/dL"><span class="input-unit">mg/dL</span></div>
+          </div>
+          <div class="bio-norm">
+            <span class="bio-norm-label">Norme</span> &lt; 3,0 mmol/L (risque faible) · &lt; 1,8 (risque élevé)
+          </div>
+          <div class="bio-status" id="bio-status-ldl" aria-live="polite"></div>
+        </div>
+
+        <div class="bio-value-row">
+          <div class="bio-value-label">Triglycérides <span class="bio-optional">(optionnel)</span></div>
+          <div class="bio-value-inputs">
+            <div class="input-with-unit"><input type="number" id="bio-tg" class="form-input" placeholder="1.2" step="0.1" min="0.2" max="30" oninput="updateBioValues()" aria-label="Triglycérides en mmol/L"><span class="input-unit">mmol/L</span></div>
+            <div class="bio-or">ou</div>
+            <div class="input-with-unit"><input type="number" id="bio-tg-mg" class="form-input" placeholder="106" min="10" max="2000" oninput="convertBio('tg')" aria-label="Triglycérides en mg/dL"><span class="input-unit">mg/dL</span></div>
+          </div>
+          <div class="bio-norm">
+            <span class="bio-norm-label">Norme</span> &lt; 1,7 mmol/L (&lt; 150 mg/dL)
+          </div>
+          <div class="bio-status" id="bio-status-tg" aria-live="polite"></div>
+        </div>
+
+        <div class="bio-value-row bio-computed">
+          <div class="bio-value-label">Non-HDL cholestérol <span class="bio-optional">(calculé automatiquement)</span></div>
+          <div class="bio-computed-display" id="bio-nonhdl-display">—</div>
+          <div class="bio-norm"><span class="bio-norm-label">Norme</span> &lt; 3,8 mmol/L (risque faible)</div>
+          <div class="bio-status" id="bio-status-nonhdl" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- Séparateur groupe FINDRISK -->
+      <div class="bio-group-header bio-group-header--findrisk" style="margin-top:32px">
+        <div class="bio-group-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#2A7B6F" stroke-width="1.5"/><path d="M10 7v4l3 2" stroke="#2A7B6F" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="bio-group-label">Enrichit FINDRISK</div>
+          <div class="bio-group-sublabel">Glycémie à jeun — pré-remplit la question Q7 du score FINDRISK si une hyperglycémie a été détectée</div>
+        </div>
+        <div class="bio-group-badge bio-group-badge--teal">Enrichit FINDRISK</div>
+      </div>
+
+      <!-- GLYCÉMIE -->
+      <div class="bio-section-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2C5 2 2 5 2 8s3 6 6 6 6-3 6-6-3-6-6-6zm0 3v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Glycémie
+        <span class="bio-score-tag">Enrichit FINDRISK</span>
+      </div>
+      <div class="bio-grid">
+        <div class="bio-value-row">
+          <div class="bio-value-label">Glycémie à jeun</div>
+          <div class="bio-value-inputs">
+            <div class="input-with-unit"><input type="number" id="bio-glyc" class="form-input" placeholder="0.95" step="0.01" min="0.3" max="5" oninput="updateBioValues()" aria-label="Glycémie à jeun en g/L"><span class="input-unit">g/L</span></div>
+            <div class="bio-or">ou</div>
+            <div class="input-with-unit"><input type="number" id="bio-glyc-mmol" class="form-input" placeholder="5.3" step="0.1" min="1" max="30" oninput="convertBio('glyc')" aria-label="Glycémie en mmol/L"><span class="input-unit">mmol/L</span></div>
+          </div>
+          <div class="bio-norm">
+            <span class="bio-norm-label">Norme</span> 0,70–1,10 g/L (3,9–6,1 mmol/L) · Prédiabète : 1,10–1,26 g/L
+          </div>
+          <div class="bio-status" id="bio-status-glyc" aria-live="polite"></div>
+        </div>
+
+        <div class="bio-value-row">
+          <div class="bio-value-label">HbA1c <span class="bio-optional">(optionnel)</span></div>
+          <div class="bio-value-inputs">
+            <div class="input-with-unit"><input type="number" id="bio-hba1c" class="form-input" placeholder="5.4" step="0.1" min="3" max="20" oninput="updateBioValues()" aria-label="HbA1c en %"><span class="input-unit">%</span></div>
+          </div>
+          <div class="bio-norm">
+            <span class="bio-norm-label">Norme</span> &lt; 5,7% (normal) · 5,7–6,4% (prédiabète) · ≥ 6,5% (diabète)
+          </div>
+          <div class="bio-status" id="bio-status-hba1c" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- Séparateur groupe optionnel -->
+      <div class="bio-group-header bio-group-header--optional" style="margin-top:32px">
+        <div class="bio-group-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#5A6A82" stroke-width="1.5" stroke-dasharray="3 2"/><path d="M10 7v3M10 13h.01" stroke="#5A6A82" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="bio-group-label" style="color:var(--gray)">Valeurs complémentaires</div>
+          <div class="bio-group-sublabel">Optionnel — enrichissent votre profil biologique mais ne sont pas requis pour les scores</div>
+        </div>
+      </div>
+
+      <!-- TENSION ARTÉRIELLE -->
+      <div class="bio-section-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 14s-5-3-5-7a5 5 0 0110 0c0 4-5 7-5 7z" stroke="currentColor" stroke-width="1.5"/><path d="M6 7h2l1-2 1 4 1-2h1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tension artérielle
+        <span class="bio-required-label">Requis pour SCORE2</span>
+      </div>
+      <div class="bio-grid">
+        <div class="bio-value-row">
+          <div class="bio-value-label">Pression systolique (PAS)</div>
+          <div class="bio-value-inputs">
+            <div class="input-with-unit"><input type="number" id="bio-pas" class="form-input" placeholder="125" min="70" max="250" oninput="updateBioValues()" aria-label="PAS en mmHg"><span class="input-unit">mmHg</span></div>
+          </div>
+          <div class="bio-norm">
+            <span class="bio-norm-label">Norme</span> Optimale &lt; 120 · Normale &lt; 130 · HTA ≥ 140 mmHg
+          </div>
+          <div class="bio-status" id="bio-status-pas" aria-live="polite"></div>
+        </div>
+
+        <div class="bio-value-row">
+          <div class="bio-value-label">Pression diastolique (PAD) <span class="bio-optional">(optionnel)</span></div>
+          <div class="bio-value-inputs">
+            <div class="input-with-unit"><input type="number" id="bio-pad" class="form-input" placeholder="80" min="40" max="150" oninput="updateBioValues()" aria-label="PAD en mmHg"><span class="input-unit">mmHg</span></div>
+          </div>
+          <div class="bio-norm">
+            <span class="bio-norm-label">Norme</span> Optimale &lt; 80 · Normale &lt; 85 · HTA ≥ 90 mmHg
+          </div>
+          <div class="bio-status" id="bio-status-pad" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- BILAN RÉNAL -->
+      <div class="bio-section-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 2c-2 1-3 4-3 6 0 3 2 5 4 5 1 0 2-1 2-2 0-1 1-2 2-2 2 0 4-2 4-4 0-3-2-4-3-4-2 0-2 2-3 2-1 0-2-2-3-1z" stroke="currentColor" stroke-width="1.5"/></svg>
+        Bilan rénal <span class="bio-optional">(optionnel)</span>
+      </div>
+      <div class="bio-grid">
+        <div class="bio-value-row">
+          <div class="bio-value-label">Créatinine</div>
+          <div class="bio-value-inputs">
+            <div class="input-with-unit"><input type="number" id="bio-creat" class="form-input" placeholder="80" min="10" max="2000" oninput="updateBioValues()" aria-label="Créatinine en µmol/L"><span class="input-unit">µmol/L</span></div>
+          </div>
+          <div class="bio-norm">
+            <span class="bio-norm-label">Norme</span> Homme 59–104 · Femme 45–84 µmol/L
+          </div>
+          <div class="bio-status" id="bio-status-creat" aria-live="polite"></div>
+        </div>
+
+        <div class="bio-value-row bio-computed">
+          <div class="bio-value-label">DFG estimé CKD-EPI <span class="bio-optional">(calculé si créatinine + âge + sexe disponibles)</span></div>
+          <div class="bio-computed-display" id="bio-dfg-display">—</div>
+          <div class="bio-norm"><span class="bio-norm-label">Norme</span> ≥ 60 mL/min/1,73 m² · &lt; 60 : insuffisance rénale</div>
+          <div class="bio-status" id="bio-status-dfg" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- BILAN HÉPATIQUE -->
+      <div class="bio-section-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 4c0-1 2-2 5-2s6 1 6 3c0 3-2 8-6 8-4 0-5-5-5-9z" stroke="currentColor" stroke-width="1.5"/></svg>
+        Bilan hépatique <span class="bio-optional">(optionnel)</span>
+      </div>
+      <div class="bio-grid">
+        <div class="bio-value-row">
+          <div class="bio-value-label">ASAT (GOT)</div>
+          <div class="bio-value-inputs">
+            <div class="input-with-unit"><input type="number" id="bio-asat" class="form-input" placeholder="25" min="1" max="2000" oninput="updateBioValues()" aria-label="ASAT en U/L"><span class="input-unit">U/L</span></div>
+          </div>
+          <div class="bio-norm"><span class="bio-norm-label">Norme</span> &lt; 35 U/L (femme) · &lt; 40 U/L (homme)</div>
+          <div class="bio-status" id="bio-status-asat" aria-live="polite"></div>
+        </div>
+        <div class="bio-value-row">
+          <div class="bio-value-label">ALAT (GPT)</div>
+          <div class="bio-value-inputs">
+            <div class="input-with-unit"><input type="number" id="bio-alat" class="form-input" placeholder="22" min="1" max="2000" oninput="updateBioValues()" aria-label="ALAT en U/L"><span class="input-unit">U/L</span></div>
+          </div>
+          <div class="bio-norm"><span class="bio-norm-label">Norme</span> &lt; 35 U/L (femme) · &lt; 45 U/L (homme)</div>
+          <div class="bio-status" id="bio-status-alat" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- AUTRES -->
+      <div class="bio-section-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3M8 10h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Autres marqueurs <span class="bio-optional">(optionnel)</span>
+      </div>
+      <div class="bio-grid bio-grid--3col">
+        <div class="bio-value-row">
+          <div class="bio-value-label">TSH</div>
+          <div class="input-with-unit"><input type="number" id="bio-tsh" class="form-input" placeholder="2.0" step="0.1" min="0.01" max="100" oninput="updateBioValues()"><span class="input-unit">mUI/L</span></div>
+          <div class="bio-norm"><span class="bio-norm-label">Norme</span> 0,27–4,2 mUI/L</div>
+          <div class="bio-status" id="bio-status-tsh" aria-live="polite"></div>
+        </div>
+        <div class="bio-value-row">
+          <div class="bio-value-label">CRP ultrasensible</div>
+          <div class="input-with-unit"><input type="number" id="bio-crp" class="form-input" placeholder="1.5" step="0.1" min="0.1" max="500" oninput="updateBioValues()"><span class="input-unit">mg/L</span></div>
+          <div class="bio-norm"><span class="bio-norm-label">Norme</span> &lt; 3 mg/L (risque CV faible)</div>
+          <div class="bio-status" id="bio-status-crp" aria-live="polite"></div>
+        </div>
+        <div class="bio-value-row">
+          <div class="bio-value-label">Ferritine</div>
+          <div class="input-with-unit"><input type="number" id="bio-ferritine" class="form-input" placeholder="80" min="1" max="5000" oninput="updateBioValues()"><span class="input-unit">µg/L</span></div>
+          <div class="bio-norm"><span class="bio-norm-label">Norme</span> H 30–400 · F 10–200 µg/L</div>
+          <div class="bio-status" id="bio-status-ferritine" aria-live="polite"></div>
+        </div>
+        <div class="bio-value-row">
+          <div class="bio-value-label">Vitamine D (25-OH)</div>
+          <div class="input-with-unit"><input type="number" id="bio-vitd" class="form-input" placeholder="35" min="1" max="500" oninput="updateBioValues()"><span class="input-unit">ng/mL</span></div>
+          <div class="bio-norm"><span class="bio-norm-label">Norme</span> &gt; 30 ng/mL · Déficit &lt; 20</div>
+          <div class="bio-status" id="bio-status-vitd" aria-live="polite"></div>
+        </div>
+        <div class="bio-value-row">
+          <div class="bio-value-label">Acide urique</div>
+          <div class="input-with-unit"><input type="number" id="bio-urate" class="form-input" placeholder="320" min="50" max="1500" oninput="updateBioValues()"><span class="input-unit">µmol/L</span></div>
+          <div class="bio-norm"><span class="bio-norm-label">Norme</span> H &lt; 420 · F &lt; 360 µmol/L</div>
+          <div class="bio-status" id="bio-status-urate" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- IST / Dépistages infectieux -->
+      <div class="bio-section-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2a6 6 0 100 12A6 6 0 008 2z" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v4l2.5 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Dépistage des IST <span class="bio-optional">(infections sexuellement transmissibles)</span>
+      </div>
+      <p style="font-size:0.8rem;color:var(--gray);margin-bottom:16px;font-style:italic;">Pour chaque agent, indiquez si vous avez été dépisté(e) et, si oui, le résultat. Ces données restent sur votre appareil.</p>
+      <div class="ist-grid">
+        <div class="ist-row">
+          <div class="ist-label">VIH (HIV)</div>
+          <select id="ist-vih" class="form-input ist-select" onchange="saveBioIST()">
+            <option value="">— Sélectionner</option>
+            <option value="negatif">✓ Dépisté — Négatif</option>
+            <option value="positif">⚠ Dépisté — Positif</option>
+            <option value="non_depistate">Non dépisté(e)</option>
+            <option value="na">Non concerné(e)</option>
+          </select>
+          <div class="ist-note">Recommandé au moins 1 fois pour tout adulte. Annuel si expositions à risque.</div>
+        </div>
+        <div class="ist-row">
+          <div class="ist-label">Hépatite B (Ag HBs)</div>
+          <select id="ist-hepb" class="form-input ist-select" onchange="saveBioIST()">
+            <option value="">— Sélectionner</option>
+            <option value="negatif">✓ Négatif (non porteur)</option>
+            <option value="positif">⚠ Positif (porteur)</option>
+            <option value="vaccine">✓ Vacciné(e) (Ac anti-HBs +)</option>
+            <option value="non_depistate">Non dépisté(e)</option>
+          </select>
+          <div class="ist-note">Vaccination recommandée si non immunisé(e).</div>
+        </div>
+        <div class="ist-row">
+          <div class="ist-label">Hépatite C (Ac anti-VHC)</div>
+          <select id="ist-hepc" class="form-input ist-select" onchange="saveBioIST()">
+            <option value="">— Sélectionner</option>
+            <option value="negatif">✓ Négatif</option>
+            <option value="positif">⚠ Positif</option>
+            <option value="non_depistate">Non dépisté(e)</option>
+            <option value="na">Non concerné(e)</option>
+          </select>
+          <div class="ist-note">Dépistage universel recommandé au moins une fois après 18 ans.</div>
+        </div>
+        <div class="ist-row">
+          <div class="ist-label">Chlamydia / Gonocoque (PCR)</div>
+          <select id="ist-chlamydia" class="form-input ist-select" onchange="saveBioIST()">
+            <option value="">— Sélectionner</option>
+            <option value="negatif">✓ Négatif</option>
+            <option value="positif">⚠ Positif (traitement en cours / effectué)</option>
+            <option value="non_depistate">Non dépisté(e)</option>
+            <option value="na">Non concerné(e)</option>
+          </select>
+          <div class="ist-note">Recommandé annuellement chez les moins de 26 ans sexuellement actifs.</div>
+        </div>
+        <div class="ist-row">
+          <div class="ist-label">Syphilis (TPHA/VDRL)</div>
+          <select id="ist-syphilis" class="form-input ist-select" onchange="saveBioIST()">
+            <option value="">— Sélectionner</option>
+            <option value="negatif">✓ Négatif</option>
+            <option value="positif">⚠ Positif (traitement en cours / effectué)</option>
+            <option value="non_depistate">Non dépisté(e)</option>
+            <option value="na">Non concerné(e)</option>
+          </select>
+          <div class="ist-note">Recommandé si partenaires multiples ou rapports non protégés.</div>
+        </div>
+        <div class="ist-row">
+          <div class="ist-label">HPV (Papillomavirus) — Vaccination</div>
+          <select id="ist-hpv" class="form-input ist-select" onchange="saveBioIST()">
+            <option value="">— Sélectionner</option>
+            <option value="vaccine_complet">✓ Vacciné(e) — schéma complet</option>
+            <option value="vaccine_partiel">~ Vacciné(e) partiellement</option>
+            <option value="non_vaccine">Non vacciné(e)</option>
+            <option value="na">Non concerné(e) / hors âge</option>
+          </select>
+          <div class="ist-note">Vaccin recommandé jusqu'à 26 ans (garçons et filles). Gratuit 11–14 ans.</div>
+        </div>
+      </div>
+
+      <!-- Résumé et actions -->
+      <div id="bio-summary-panel" class="bio-summary-panel hidden" aria-live="polite"></div>
+
+      <div class="form-actions bio-cta-row">
+        <button class="btn-primary btn-large" onclick="saveBioBilan()">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Enregistrer et voir le résumé
+        </button>
+        <button class="btn-secondary" onclick="navigateTo('cardio')" id="btn-goto-score2">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 14s-5-3-5-7a4 4 0 018 0c0 4-5 7-5 7z" stroke="currentColor" stroke-width="1.5"/><path d="M6 8h2l.7-1.5L10 10l1-2h1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Aller vers SCORE2
+        </button>
+        <button class="btn-secondary" onclick="navigateTo('findrisk')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5.5v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Aller vers FINDRISK
+        </button>
+        <button class="btn-secondary" onclick="clearBioBilan()" style="margin-left:auto">Effacer</button>
+      </div>
+
+    </div><!-- /.questionnaire-form -->
+    </div><!-- /#bio-tab-saisie -->
+
+    <!-- ── TAB 2 : RÉFÉRENTIEL DES NORMES ───── -->
+    <div id="bio-tab-normes" class="bio-tab-content hidden" role="tabpanel" aria-labelledby="tab-normes">
+
+      <!-- Bandeau légal prévention primaire -->
+      <div class="bio-prevention-banner" role="note">
+        <div class="bio-prevention-banner-title">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 2L16.5 15H1.5L9 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 7v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="13" r=".75" fill="currentColor"/></svg>
+          Valeurs de référence en prévention primaire uniquement
+        </div>
+        <p>Ces normes s'appliquent aux <strong>adultes sans maladie cardiovasculaire, diabète, insuffisance rénale, ou autre pathologie chronique connue</strong>. En présence d'une telle pathologie, vos objectifs biologiques peuvent être <strong>très différents</strong> et doivent être définis par votre médecin traitant ou spécialiste.</p>
+        <p class="bio-prevention-example">Exemple : la cible LDL-cholestérol est &lt; 3,0 mmol/L en prévention primaire — mais peut descendre à &lt; 1,4 mmol/L après un infarctus du myocarde ou un AVC. Les normes affichées ici ne s'appliquent pas dans ce cas.</p>
+        <p style="font-size:0.78rem;margin-top:8px;opacity:0.8;">Cet outil ne constitue pas un dispositif médical (DM). Il ne délivre aucun diagnostic ni conseil médical personnalisé.</p>
+      </div>
+
+      <!-- Cartes de normes — rendu JS -->
+      <div id="bio-norms-container" class="bio-norms-container"></div>
+
+    </div><!-- /#bio-tab-normes -->
+
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 3 — RISQUE CARDIOVASCULAIRE
+  ───────────────────────────────────────── -->
+  <section id="section-cardio" class="section" aria-labelledby="cardio-title">
+    <div class="section-header section-header--cardio">
+      <div class="section-header-eyebrow">ESC 2021 — Pays à risque modéré</div>
+      <h2 class="section-header-title" id="cardio-title">Risque Cardiovasculaire</h2>
+      <p class="section-header-desc">L'algorithme SCORE2 de la Société Européenne de Cardiologie calcule votre risque d'événement cardiovasculaire fatal ou non fatal à 10 ans.</p>
+    </div>
+
+    <!-- Gate : bilan biologique requis -->
+    <div id="cardio-bio-gate" class="questionnaire-form">
+      <div class="bio-gate">
+        <div class="bio-gate-title">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M11 7v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="11" cy="15.5" r="1" fill="currentColor"/></svg>
+          Ce module nécessite votre bilan biologique
+        </div>
+        <div class="bio-gate-body">
+          <p>SCORE2 a été conçu pour être utilisé avec des résultats biologiques réels. <strong>Sans ces valeurs, le calcul ne peut pas être fiable</strong> et pourrait donner un faux sentiment de sécurité.</p>
+          <p style="margin-top:10px;">Pour utiliser ce module, vous devez disposer des valeurs suivantes datant de <strong>moins de 6 mois</strong> :</p>
+          <ul>
+            <li>Cholestérol total (en mmol/L ou mg/dL)</li>
+            <li>HDL-cholestérol (en mmol/L ou mg/dL)</li>
+            <li>Pression artérielle systolique mesurée (en mmHg)</li>
+          </ul>
+          <p style="margin-top:10px;">Si vous ne disposez pas de ces valeurs, consultez votre médecin pour un bilan lipidique avant d'utiliser ce module.</p>
+        </div>
+        <div class="options-grid options-grid--2col" role="radiogroup" aria-label="Disponibilité du bilan lipidique">
+          <label class="option-btn option-btn--positive">
+            <input type="radio" name="cardio_bio_gate" value="oui" onchange="openCardioForm()">
+            <span>Oui, j'ai mon bilan biologique récent</span>
+          </label>
+          <label class="option-btn option-btn--negative">
+            <input type="radio" name="cardio_bio_gate" value="non" onchange="showCardioBioBlocked()">
+            <span>Non, je n'ai pas ces valeurs</span>
+          </label>
+        </div>
+        <div id="cardio-bio-blocked" class="bio-gate-blocked hidden" role="alert" aria-live="polite">
+          Ce module n'est pas disponible sans bilan lipidique. Consultez votre médecin pour un dosage du cholestérol et une mesure de la tension artérielle, puis revenez utiliser ce module.
+        </div>
+      </div>
+    </div>
+
+    <div id="cardio-form" class="questionnaire-form hidden">
+      <!-- Sexe & Âge -->
+      <div class="question-card" id="cq-base">
+        <div class="question-watermark" aria-hidden="true">01</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-cardio">Cardio</div>
+          <h3 class="question-text">Informations de base</h3>
+          <div class="cardio-base-grid">
+            <div class="form-group">
+              <label class="form-label">Sexe</label>
+              <div class="toggle-group" role="radiogroup" aria-label="Sexe">
+                <label class="toggle-btn"><input type="radio" name="c_sex" value="H" onchange="updateCardioAge()"> Homme</label>
+                <label class="toggle-btn"><input type="radio" name="c_sex" value="F" onchange="updateCardioAge()"> Femme</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="c-age" class="form-label">Âge (40–79 ans)</label>
+              <input type="number" id="c-age" class="form-input" placeholder="55" min="40" max="79" oninput="checkCardioAge()" aria-describedby="age-cardio-note">
+              <div class="form-note" id="age-cardio-note">SCORE2 standard : 40–69 ans · SCORE2-OP : 70–79 ans</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabagisme -->
+      <div class="question-card" id="cq-smoking">
+        <div class="question-watermark" aria-hidden="true">02</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-cardio">Cardio</div>
+          <h3 class="question-text">Êtes-vous fumeur(euse) actuel(le) ?</h3>
+          <p class="question-hint">Inclut cigarettes, cigares, pipe, e-cigarette à nicotine.</p>
+          <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+            <label class="option-btn option-btn--positive" aria-label="Non fumeur">
+              <input type="radio" name="c_smoking" value="0"> <span>Non</span>
+            </label>
+            <label class="option-btn option-btn--negative" aria-label="Fumeur actuel">
+              <input type="radio" name="c_smoking" value="1"> <span>Oui</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pression artérielle -->
+      <div class="question-card" id="cq-sbp">
+        <div class="question-watermark" aria-hidden="true">03</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-cardio">Cardio</div>
+          <h3 class="question-text">Pression artérielle systolique (PAS)</h3>
+          <p class="question-hint">Le chiffre du haut sur votre tensiomètre, exprimé en mmHg.</p>
+          <div class="bp-guide" aria-hidden="true">
+            <svg viewBox="0 0 240 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="15" width="100" height="50" rx="8" fill="#D6DCF0"/>
+              <text x="60" y="37" text-anchor="middle" font-family="'Playfair Display',serif" font-size="18" fill="#1F3864" font-weight="700">120</text>
+              <line x1="25" y1="44" x2="95" y2="44" stroke="#C9972B" stroke-width="1" stroke-dasharray="3 2"/>
+              <text x="60" y="57" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" fill="#5A6A82">80</text>
+              <text x="120" y="45" font-family="Inter,sans-serif" font-size="10" fill="#C9972B">← PAS (systolique)</text>
+              <text x="120" y="60" font-family="Inter,sans-serif" font-size="10" fill="#5A6A82">← PAD (diastolique)</text>
+            </svg>
+          </div>
+          <div class="form-group mt-16">
+            <label for="c-sbp" class="form-label">Pression artérielle systolique (mmHg)</label>
+            <div class="input-with-unit">
+              <input type="number" id="c-sbp" class="form-input" placeholder="130" min="80" max="220" aria-describedby="sbp-guide-text">
+              <span class="input-unit">mmHg</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cholestérol -->
+      <div class="question-card" id="cq-chol">
+        <div class="question-watermark" aria-hidden="true">04</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-cardio">Cardio</div>
+          <h3 class="question-text">Résultats de bilan lipidique</h3>
+          <p class="question-hint">Valeurs de votre dernier bilan sanguin. Si en mg/dL, utilisez le convertisseur ci-dessous.</p>
+
+          <div class="unit-converter">
+            <label class="form-label">Unité de mesure</label>
+            <div class="toggle-group" role="radiogroup" aria-label="Unité de cholestérol">
+              <label class="toggle-btn"><input type="radio" name="c_unit" value="mmol" checked onchange="toggleCholUnit()"> mmol/L</label>
+              <label class="toggle-btn"><input type="radio" name="c_unit" value="mgdl" onchange="toggleCholUnit()"> mg/dL</label>
+            </div>
+            <div class="unit-note" id="unit-convert-note" aria-live="polite"></div>
+          </div>
+
+          <div class="chol-grid">
+            <div class="form-group">
+              <label for="c-total-chol" class="form-label">Cholestérol total <span id="unit-label-total">(mmol/L)</span></label>
+              <div class="input-with-unit">
+                <input type="number" id="c-total-chol" class="form-input" placeholder="5.0" step="0.1" oninput="calculateNonHDL()" aria-required="true">
+                <span class="input-unit" id="unit-display-1">mmol/L</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="c-hdl" class="form-label">HDL-cholestérol <span id="unit-label-hdl">(mmol/L)</span></label>
+              <div class="input-with-unit">
+                <input type="number" id="c-hdl" class="form-input" placeholder="1.3" step="0.1" oninput="calculateNonHDL()" aria-required="true">
+                <span class="input-unit" id="unit-display-2">mmol/L</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Non-HDL cholestérol (calculé)</label>
+              <div class="input-with-unit">
+                <div class="form-input form-input--readonly" id="c-non-hdl" aria-live="polite">—</div>
+                <span class="input-unit">mmol/L</span>
+              </div>
+              <div class="form-note">= Cholestérol total − HDL</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <div id="cardio-missing-msg" class="info-box info-box--warn hidden" role="alert" aria-live="polite"></div>
+        <button class="btn-primary btn-large" onclick="calculateSCORE2()" aria-label="Calculer mon risque cardiovasculaire">
+          Calculer mon risque
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Résultats Cardio -->
+    <div id="cardio-results" class="results-panel hidden" aria-live="polite">
+      <div class="results-header">
+        <h3 class="results-title">Votre risque cardiovasculaire à 10 ans</h3>
+      </div>
+      <div class="cardio-results-grid">
+        <div class="gauge-container">
+          <div class="gauge-wrap">
+            <svg class="gauge-svg" viewBox="0 0 200 130" aria-hidden="true">
+              <path d="M20,110 A90,90 0 0,1 180,110" fill="none" stroke="#E8E8E8" stroke-width="16" stroke-linecap="round"/>
+              <path id="cardio-gauge-arc" d="M20,110 A90,90 0 0,1 180,110" fill="none" stroke="#C25B3F" stroke-width="16" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" style="transition:stroke-dashoffset 1s ease,stroke 0.5s"/>
+              <text id="cardio-score-text" x="100" y="90" text-anchor="middle" font-family="'Playfair Display',serif" font-size="34" fill="#1F3864" font-weight="700">—</text>
+              <text x="100" y="110" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5A6A82">risque à 10 ans</text>
+            </svg>
+          </div>
+          <div class="risk-level-badge" id="cardio-risk-badge"></div>
+        </div>
+        <div class="cardio-chart-wrap">
+          <canvas id="cardio-chart" aria-label="Graphique des facteurs de risque cardiovasculaire"></canvas>
+        </div>
+      </div>
+      <div class="risk-detail" id="cardio-risk-detail"></div>
+      <div class="recommendations-panel" id="cardio-recommendations"></div>
+      <div class="conduite-panel" id="cardio-conduite"></div>
+      <div class="disclaimer-box">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5.5" r="0.75" fill="currentColor"/></svg>
+        Résultat indicatif basé sur l'algorithme SCORE2 (ESC 2021, pays à risque modéré). Une validation médicale avec bilan complet est indispensable avant toute décision thérapeutique.
+      </div>
+      <div class="form-actions mt-32">
+        <button class="btn-secondary" onclick="restartCardio()">Recommencer</button>
+        <button class="btn-primary" onclick="navigateTo('cancers')">
+          Continuer vers les dépistages
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 4 — DÉPISTAGES CANCERS
+  ───────────────────────────────────────── -->
+  <section id="section-cancers" class="section" aria-labelledby="cancers-title">
+    <div class="section-header section-header--cancers">
+      <div class="section-header-eyebrow">Programmes nationaux INCa</div>
+      <h2 class="section-header-title" id="cancers-title">Dépistages des Cancers</h2>
+      <p class="section-header-desc">Vérifiez votre éligibilité aux programmes de dépistage organisé et calculez votre prochaine date d'examen.</p>
+    </div>
+
+    <!-- Profil dépistage -->
+    <div id="cancers-profile" class="cancer-profile-form questionnaire-form">
+      <div class="question-card">
+        <div class="question-content">
+          <h3 class="question-text">Votre profil</h3>
+          <div class="profile-grid">
+            <div class="form-group">
+              <label class="form-label">Sexe biologique</label>
+              <div class="toggle-group" role="radiogroup" aria-label="Sexe biologique">
+                <label class="toggle-btn"><input type="radio" name="ca_sex" value="F" onchange="updateCancersEligibility()"> Femme</label>
+                <label class="toggle-btn"><input type="radio" name="ca_sex" value="H" onchange="updateCancersEligibility()"> Homme</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ca-age" class="form-label">Âge</label>
+              <input type="number" id="ca-age" class="form-input" placeholder="55" min="18" max="100" oninput="updateCancersEligibility()" aria-required="true">
+            </div>
+          </div>
+          <div id="cancers-eligibility-panel" class="eligibility-panel" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Programmes de dépistage -->
+    <div id="cancers-programs" class="cancer-programs">
+
+      <!-- Programme sein -->
+      <div class="cancer-program" id="program-sein" data-program="sein">
+        <div class="program-header">
+          <div class="program-ribbon ribbon-sein" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" stroke="currentColor" stroke-width="2"/><path d="M9 14c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="14" cy="14" r="2" fill="currentColor"/></svg>
+          </div>
+          <div class="program-info">
+            <h3 class="program-title">Cancer du sein</h3>
+            <div class="program-eligibility-badge" id="sein-eligibility-badge">Vérification en cours…</div>
+          </div>
+        </div>
+        <div class="program-body">
+          <div class="program-details">
+            <div class="program-detail-item">
+              <span class="detail-label">Éligibilité</span>
+              <span class="detail-value">Femme · 50–74 ans · sans symptôme ni facteur de risque élevé</span>
+            </div>
+            <div class="program-detail-item">
+              <span class="detail-label">Examen</span>
+              <span class="detail-value">Mammographie bilatérale tous les 2 ans</span>
+            </div>
+            <div class="program-detail-item">
+              <span class="detail-label">Organisateur</span>
+              <span class="detail-value">Centre de coordination départemental du dépistage des cancers</span>
+            </div>
+          </div>
+          <div id="sein-date-form" class="date-form hidden">
+            <div class="form-group">
+              <label for="sein-last-date" class="form-label">Date de votre dernière mammographie</label>
+              <input type="date" id="sein-last-date" class="form-input" onchange="calculateSeinNext()" aria-label="Date dernière mammographie">
+            </div>
+            <div id="sein-next-date" class="next-date-result" aria-live="polite"></div>
+          </div>
+          <div class="program-action">
+            <a href="https://www.e-cancer.fr/Comprendre-prevenir-depister/Se-faire-depister/Depistage-du-cancer-du-sein" target="_blank" rel="noopener noreferrer" class="btn-link" aria-label="En savoir plus sur le dépistage du cancer du sein (ouvre un nouvel onglet)">
+              En savoir plus
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Programme colorectal -->
+      <div class="cancer-program" id="program-colorectal" data-program="colorectal">
+        <div class="program-header">
+          <div class="program-ribbon ribbon-colorectal" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M7 14c0-3.9 3.1-7 7-7s7 3.1 7 7-3.1 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 14v-4M11.5 12.5l2.5-2.5 2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="program-info">
+            <h3 class="program-title">Cancer colorectal</h3>
+            <div class="program-eligibility-badge" id="colorectal-eligibility-badge">Vérification en cours…</div>
+          </div>
+        </div>
+        <div class="program-body">
+          <div class="program-details">
+            <div class="program-detail-item">
+              <span class="detail-label">Éligibilité</span>
+              <span class="detail-value">Homme ou femme · 50–74 ans · risque moyen</span>
+            </div>
+            <div class="program-detail-item">
+              <span class="detail-label">Examen</span>
+              <span class="detail-value">Test immunologique fécal (FIT) tous les 2 ans</span>
+            </div>
+          </div>
+
+          <!-- Questions risque élevé -->
+          <div id="colorectal-risk-questions" class="sub-questionnaire hidden">
+            <h4 class="sub-question-title">Qualification du niveau de risque</h4>
+            <div class="sub-question">
+              <p>Avez-vous des antécédents personnels de polype ou de cancer colorectal ?</p>
+              <div class="toggle-group" role="radiogroup" aria-label="Antécédents personnels CCR">
+                <label class="toggle-btn"><input type="radio" name="ca_ccr_perso" value="non" onchange="updateCCRRisk()"> Non</label>
+                <label class="toggle-btn"><input type="radio" name="ca_ccr_perso" value="oui" onchange="updateCCRRisk()"> Oui</label>
+              </div>
+            </div>
+            <div class="sub-question">
+              <p>Avez-vous un parent du 1er degré (père, mère, frère, sœur, enfant) atteint de cancer colorectal ?</p>
+              <div class="toggle-group" role="radiogroup" aria-label="Antécédents familiaux CCR">
+                <label class="toggle-btn"><input type="radio" name="ca_ccr_famille" value="non" onchange="updateCCRRisk()"> Non</label>
+                <label class="toggle-btn"><input type="radio" name="ca_ccr_famille" value="oui" onchange="updateCCRRisk()"> Oui</label>
+              </div>
+            </div>
+            <div class="sub-question">
+              <p>Souffrez-vous d'une maladie inflammatoire chronique de l'intestin (MICI) ?</p>
+              <div class="toggle-group" role="radiogroup" aria-label="MICI">
+                <label class="toggle-btn"><input type="radio" name="ca_ccr_mici" value="non" onchange="updateCCRRisk()"> Non</label>
+                <label class="toggle-btn"><input type="radio" name="ca_ccr_mici" value="oui" onchange="updateCCRRisk()"> Oui</label>
+              </div>
+            </div>
+            <div id="ccr-risk-alert" class="info-box hidden" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div id="colorectal-date-form" class="date-form hidden">
+            <div class="form-group">
+              <label for="ccr-last-date" class="form-label">Date de votre dernier test FIT (Hemoccult)</label>
+              <input type="date" id="ccr-last-date" class="form-input" onchange="calculateCCRNext()" aria-label="Date dernier test FIT">
+            </div>
+            <div id="ccr-next-date" class="next-date-result" aria-live="polite"></div>
+          </div>
+          <div class="program-action program-action--multi">
+            <div class="kit-order-box">
+              <div class="kit-order-title">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 7h6M5 10h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Commander ou récupérer votre test FIT
+              </div>
+              <p class="kit-order-desc">Le test immunologique fécal (FIT) est gratuit. Vous pouvez le commander en ligne ou le retirer auprès d'un professionnel de santé.</p>
+              <div class="kit-order-links">
+                <a href="https://www.e-cancer.fr/Comprendre-prevenir-depister/Se-faire-depister/Depistage-du-cancer-colorectal/Participer-au-depistage" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size:0.82rem;padding:9px 16px;">
+                  Commander en ligne
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5h9M7.5 3L11 6.5 7.5 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+                <span class="kit-or">ou</span>
+                <span class="kit-ps-note">Retirer chez votre médecin traitant, gastroentérologue, infirmier(ère) ou pharmacien partenaire</span>
+              </div>
+            </div>
+            <a href="https://www.e-cancer.fr/Comprendre-prevenir-depister/Se-faire-depister/Depistage-du-cancer-colorectal" target="_blank" rel="noopener noreferrer" class="btn-link" style="margin-top:12px">
+              En savoir plus sur le dépistage colorectal
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Programme col utérus -->
+      <div class="cancer-program" id="program-col" data-program="col">
+        <div class="program-header">
+          <div class="program-ribbon ribbon-col" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><ellipse cx="14" cy="16" rx="7" ry="9" stroke="currentColor" stroke-width="2"/><path d="M14 7V4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 5h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="program-info">
+            <h3 class="program-title">Cancer du col de l'utérus</h3>
+            <div class="program-eligibility-badge" id="col-eligibility-badge">Vérification en cours…</div>
+          </div>
+        </div>
+        <div class="program-body">
+          <div class="program-details">
+            <div class="program-detail-item">
+              <span class="detail-label">Éligibilité</span>
+              <span class="detail-value">Femme · 25–65 ans</span>
+            </div>
+            <div class="program-detail-item">
+              <span class="detail-label">Examen selon l'âge</span>
+              <span class="detail-value">
+                <strong>25–29 ans :</strong> Frottis cervico-utérin (FCU) à J0, M6, puis tous les 3 ans<br>
+                <strong>30–65 ans :</strong> Test HPV-HR tous les 5 ans
+              </span>
+            </div>
+          </div>
+          <div id="col-date-form" class="date-form hidden">
+            <div id="col-exam-type" class="info-box info-box--info mb-16" aria-live="polite"></div>
+            <div class="form-group">
+              <label for="col-last-date" class="form-label">Date de votre dernier examen cervical</label>
+              <input type="date" id="col-last-date" class="form-input" onchange="calculateColNext()" aria-label="Date dernier examen cervical">
+            </div>
+            <div id="col-next-date" class="next-date-result" aria-live="polite"></div>
+          </div>
+          <div class="program-action">
+            <a href="https://www.e-cancer.fr/Comprendre-prevenir-depister/Se-faire-depister/Depistage-du-cancer-du-col-de-l-uterus" target="_blank" rel="noopener noreferrer" class="btn-link">
+              En savoir plus
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tableau récapitulatif dépistages -->
+    <div id="cancers-summary-table" class="screening-summary hidden" aria-live="polite">
+      <h3 class="summary-table-title">Tableau récapitulatif</h3>
+      <div class="table-wrap" role="region" aria-label="Tableau des dépistages">
+        <table class="screening-table">
+          <thead>
+            <tr>
+              <th scope="col">Programme</th>
+              <th scope="col">Statut</th>
+              <th scope="col">Prochaine échéance</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody id="screening-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="form-actions mt-32">
+      <button class="btn-primary" onclick="navigateTo('recap')">
+        Voir mon récapitulatif complet
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 5 — AUDIT (Alcool)
+  ───────────────────────────────────────── -->
+  <section id="section-audit" class="section" aria-labelledby="audit-title">
+    <div class="section-header section-header--audit">
+      <div class="section-header-eyebrow">Babor TF et al. — OMS 2001</div>
+      <h2 class="section-header-title" id="audit-title">AUDIT — Alcool</h2>
+      <p class="section-header-desc">L'Alcohol Use Disorders Identification Test de l'OMS évalue votre consommation d'alcool et repère les usages à risque.</p>
+    </div>
+
+    <div id="audit-form" class="questionnaire-form">
+      <div class="question-card" id="aq1">
+        <div class="question-watermark" aria-hidden="true">01</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-audit">AUDIT</div>
+          <h3 class="question-text">À quelle fréquence consommez-vous des boissons contenant de l'alcool ?</h3>
+          <div class="options-grid" role="radiogroup" aria-required="true">
+            <label class="option-btn"><input type="radio" name="a_q1" value="0"> <span>Jamais</span></label>
+            <label class="option-btn"><input type="radio" name="a_q1" value="1"> <span>1 fois par mois ou moins</span></label>
+            <label class="option-btn"><input type="radio" name="a_q1" value="2"> <span>2 à 4 fois par mois</span></label>
+            <label class="option-btn"><input type="radio" name="a_q1" value="3"> <span>2 à 3 fois par semaine</span></label>
+            <label class="option-btn"><input type="radio" name="a_q1" value="4"> <span>4 fois ou plus par semaine</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question-card" id="aq2">
+        <div class="question-watermark" aria-hidden="true">02</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-audit">AUDIT</div>
+          <h3 class="question-text">Combien de verres standard buvez-vous au cours d'une journée ordinaire où vous buvez de l'alcool ?</h3>
+          <p class="question-hint">Un verre standard = 10g d'alcool pur (25cl de bière 5°, 10cl de vin 12°, 3cl de spiritueux 40°).</p>
+          <div class="options-grid" role="radiogroup" aria-required="true">
+            <label class="option-btn"><input type="radio" name="a_q2" value="0"> <span>1 ou 2</span></label>
+            <label class="option-btn"><input type="radio" name="a_q2" value="1"> <span>3 ou 4</span></label>
+            <label class="option-btn"><input type="radio" name="a_q2" value="2"> <span>5 ou 6</span></label>
+            <label class="option-btn"><input type="radio" name="a_q2" value="3"> <span>7, 8 ou 9</span></label>
+            <label class="option-btn"><input type="radio" name="a_q2" value="4"> <span>10 ou plus</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="question-card" id="aq3">
+        <div class="question-watermark" aria-hidden="true">03</div>
+        <div class="question-content">
+          <div class="question-theme-badge theme-audit">AUDIT</div>
+          <h3 class="question-text">Au cours d'une même occasion, combien de fois vous arrive-t-il de boire 6 verres ou plus ?</h3>
+          <div class="options-grid" role="radiogroup" aria-required="true">
+            <label class="option-btn"><input type="radio" name="a_q3" value="0"> <span>Jamais</span></label>
+            <label class="option-btn"><input type="radio" name="a_q3" value="1"> <span>Moins d'1 fois par mois</span></label>
+            <label class="option-btn"><input type="radio" name="a_q3" value="2"> <span>Chaque mois</span></label>
+            <label class="option-btn"><input type="radio" name="a_q3" value="3"> <span>Chaque semaine</span></label>
+            <label class="option-btn"><input type="radio" name="a_q3" value="4"> <span>Chaque jour ou presque</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4-Q8 : même échelle de fréquence -->
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">04</div><div class="question-content">
+        <div class="question-theme-badge theme-audit">AUDIT</div>
+        <h3 class="question-text">Au cours des 12 derniers mois, combien de fois avez-vous constaté que vous n'étiez plus capable de vous arrêter de boire après avoir commencé ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="a_q4" value="0"> <span>Jamais</span></label>
+          <label class="option-btn"><input type="radio" name="a_q4" value="1"> <span>Moins d'1 fois par mois</span></label>
+          <label class="option-btn"><input type="radio" name="a_q4" value="2"> <span>Chaque mois</span></label>
+          <label class="option-btn"><input type="radio" name="a_q4" value="3"> <span>Chaque semaine</span></label>
+          <label class="option-btn"><input type="radio" name="a_q4" value="4"> <span>Chaque jour ou presque</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">05</div><div class="question-content">
+        <div class="question-theme-badge theme-audit">AUDIT</div>
+        <h3 class="question-text">Au cours des 12 derniers mois, combien de fois le fait d'avoir bu de l'alcool vous a-t-il empêché de faire ce qu'on attendait normalement de vous ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="a_q5" value="0"> <span>Jamais</span></label>
+          <label class="option-btn"><input type="radio" name="a_q5" value="1"> <span>Moins d'1 fois par mois</span></label>
+          <label class="option-btn"><input type="radio" name="a_q5" value="2"> <span>Chaque mois</span></label>
+          <label class="option-btn"><input type="radio" name="a_q5" value="3"> <span>Chaque semaine</span></label>
+          <label class="option-btn"><input type="radio" name="a_q5" value="4"> <span>Chaque jour ou presque</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">06</div><div class="question-content">
+        <div class="question-theme-badge theme-audit">AUDIT</div>
+        <h3 class="question-text">Au cours des 12 derniers mois, combien de fois avez-vous eu besoin d'une première consommation d'alcool le matin pour vous remettre d'une forte consommation de la veille ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="a_q6" value="0"> <span>Jamais</span></label>
+          <label class="option-btn"><input type="radio" name="a_q6" value="1"> <span>Moins d'1 fois par mois</span></label>
+          <label class="option-btn"><input type="radio" name="a_q6" value="2"> <span>Chaque mois</span></label>
+          <label class="option-btn"><input type="radio" name="a_q6" value="3"> <span>Chaque semaine</span></label>
+          <label class="option-btn"><input type="radio" name="a_q6" value="4"> <span>Chaque jour ou presque</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">07</div><div class="question-content">
+        <div class="question-theme-badge theme-audit">AUDIT</div>
+        <h3 class="question-text">Au cours des 12 derniers mois, combien de fois avez-vous eu un sentiment de culpabilité ou des remords après avoir bu ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="a_q7" value="0"> <span>Jamais</span></label>
+          <label class="option-btn"><input type="radio" name="a_q7" value="1"> <span>Moins d'1 fois par mois</span></label>
+          <label class="option-btn"><input type="radio" name="a_q7" value="2"> <span>Chaque mois</span></label>
+          <label class="option-btn"><input type="radio" name="a_q7" value="3"> <span>Chaque semaine</span></label>
+          <label class="option-btn"><input type="radio" name="a_q7" value="4"> <span>Chaque jour ou presque</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">08</div><div class="question-content">
+        <div class="question-theme-badge theme-audit">AUDIT</div>
+        <h3 class="question-text">Au cours des 12 derniers mois, avez-vous été incapable de vous souvenir de ce qui s'était passé la nuit précédente parce que vous aviez bu ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="a_q8" value="0"> <span>Jamais</span></label>
+          <label class="option-btn"><input type="radio" name="a_q8" value="1"> <span>Moins d'1 fois par mois</span></label>
+          <label class="option-btn"><input type="radio" name="a_q8" value="2"> <span>Chaque mois</span></label>
+          <label class="option-btn"><input type="radio" name="a_q8" value="3"> <span>Chaque semaine</span></label>
+          <label class="option-btn"><input type="radio" name="a_q8" value="4"> <span>Chaque jour ou presque</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">09</div><div class="question-content">
+        <div class="question-theme-badge theme-audit">AUDIT</div>
+        <h3 class="question-text">Vous êtes-vous blessé(e) ou avez-vous blessé quelqu'un d'autre parce que vous aviez bu ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="a_q9" value="0"> <span>Non</span></label>
+          <label class="option-btn"><input type="radio" name="a_q9" value="2"> <span>Oui, mais pas au cours des 12 derniers mois</span></label>
+          <label class="option-btn"><input type="radio" name="a_q9" value="4"> <span>Oui, au cours des 12 derniers mois</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">10</div><div class="question-content">
+        <div class="question-theme-badge theme-audit">AUDIT</div>
+        <h3 class="question-text">Un de vos proches, un médecin ou un autre professionnel de santé s'est-il préoccupé de votre consommation d'alcool ou vous a-t-il suggéré de la diminuer ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="a_q10" value="0"> <span>Non</span></label>
+          <label class="option-btn"><input type="radio" name="a_q10" value="2"> <span>Oui, mais pas au cours des 12 derniers mois</span></label>
+          <label class="option-btn"><input type="radio" name="a_q10" value="4"> <span>Oui, au cours des 12 derniers mois</span></label>
+        </div>
+      </div></div>
+
+      <div class="form-actions">
+        <div id="audit-missing-msg" class="info-box info-box--warn hidden" role="alert" aria-live="polite">Veuillez répondre à toutes les questions.</div>
+        <button class="btn-primary btn-large" onclick="calculateAUDIT()">Calculer mon score AUDIT
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="audit-results" class="results-panel hidden" aria-live="polite">
+      <h3 class="results-title">Votre score AUDIT</h3>
+      <div class="gauge-container">
+        <div class="gauge-wrap">
+          <svg class="gauge-svg" viewBox="0 0 200 130" aria-hidden="true">
+            <path d="M20,110 A90,90 0 0,1 180,110" fill="none" stroke="#E8E8E8" stroke-width="16" stroke-linecap="round"/>
+            <path id="audit-gauge-arc" d="M20,110 A90,90 0 0,1 180,110" fill="none" stroke="#D4820A" stroke-width="16" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" style="transition:stroke-dashoffset 1s ease,stroke 0.5s"/>
+            <text id="audit-score-text" x="100" y="95" text-anchor="middle" font-family="'Playfair Display',serif" font-size="38" fill="#1F3864" font-weight="700">—</text>
+            <text x="100" y="115" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5A6A82">/ 40 points</text>
+          </svg>
+        </div>
+      </div>
+      <div class="risk-level-badge" id="audit-risk-badge"></div>
+      <div class="risk-detail" id="audit-risk-detail"></div>
+      <div class="recommendations-panel" id="audit-recommendations"></div>
+      <div class="disclaimer-box">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5.5" r=".75" fill="currentColor"/></svg>
+        Résultat indicatif. En cas de difficultés avec l'alcool : Alcool Info Service <strong>0 800 235 006</strong> (gratuit, anonyme, 8h–2h).
+      </div>
+      <div class="module-source">Source : Babor TF, Higgins-Biddle JC, Saunders JB, Monteiro MG. AUDIT: The Alcohol Use Disorders Identification Test. WHO/MSD/MSB/01.6a. Organisation mondiale de la Santé, 2001.</div>
+      <div class="form-actions mt-32">
+        <button class="btn-secondary" onclick="restartAUDIT()">Recommencer</button>
+        <button class="btn-primary" onclick="navigateTo('fagerstrom')">Continuer → Tabac <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 6 — FAGERSTRÖM (Tabac)
+  ───────────────────────────────────────── -->
+  <section id="section-fagerstrom" class="section" aria-labelledby="fag-title">
+    <div class="section-header section-header--fagerstrom">
+      <div class="section-header-eyebrow">Heatherton TF et al. — Br J Addict. 1991</div>
+      <h2 class="section-header-title" id="fag-title">Test de Fagerström</h2>
+      <p class="section-header-desc">Mesure le degré de dépendance physique à la nicotine et guide les stratégies de sevrage tabagique adaptées.</p>
+    </div>
+
+    <!-- Gate : fumeur actuel ? -->
+    <div class="questionnaire-form" id="fag-gate">
+      <div class="question-card">
+        <div class="question-content">
+          <div class="question-theme-badge theme-fagerstrom">TABAC</div>
+          <h3 class="question-text">Êtes-vous fumeur(euse) actuel(le) ?</h3>
+          <p class="question-hint">Inclut cigarettes, pipe, cigares, e-cigarette à nicotine, tabac à rouler.</p>
+          <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+            <label class="option-btn option-btn--positive"><input type="radio" name="fag_smoker" value="oui" onchange="showFagerstromGate('oui')"> <span>Oui, je fume actuellement</span></label>
+            <label class="option-btn option-btn--negative"><input type="radio" name="fag_smoker" value="non" onchange="showFagerstromGate('non')"> <span>Non</span></label>
+          </div>
+          <div id="fag-non-smoker-msg" class="info-box info-box--success hidden" style="margin-top:16px">
+            ✓ Bravo ! Le test de Fagerström s'adresse aux fumeurs actuels. Vous n'êtes pas concerné(e) par ce module.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="fagerstrom-form" class="questionnaire-form hidden">
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">01</div><div class="question-content">
+        <div class="question-theme-badge theme-fagerstrom">TABAC</div>
+        <h3 class="question-text">Combien de temps après votre réveil fumez-vous votre première cigarette ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="f2_q1" value="3"> <span>Dans les 5 premières minutes</span></label>
+          <label class="option-btn"><input type="radio" name="f2_q1" value="2"> <span>Entre 6 et 30 minutes</span></label>
+          <label class="option-btn"><input type="radio" name="f2_q1" value="1"> <span>Entre 31 et 60 minutes</span></label>
+          <label class="option-btn"><input type="radio" name="f2_q1" value="0"> <span>Après 60 minutes</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">02</div><div class="question-content">
+        <div class="question-theme-badge theme-fagerstrom">TABAC</div>
+        <h3 class="question-text">Trouvez-vous difficile de ne pas fumer dans les endroits où c'est interdit (hôpital, cinéma, avion…) ?</h3>
+        <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="f2_q2" value="1"> <span>Oui</span></label>
+          <label class="option-btn"><input type="radio" name="f2_q2" value="0"> <span>Non</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">03</div><div class="question-content">
+        <div class="question-theme-badge theme-fagerstrom">TABAC</div>
+        <h3 class="question-text">Quelle cigarette regretteriez-vous le plus de ne pas pouvoir fumer ?</h3>
+        <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="f2_q3" value="1"> <span>La première du matin</span></label>
+          <label class="option-btn"><input type="radio" name="f2_q3" value="0"> <span>N'importe quelle autre</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">04</div><div class="question-content">
+        <div class="question-theme-badge theme-fagerstrom">TABAC</div>
+        <h3 class="question-text">Combien de cigarettes fumez-vous par jour ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="f2_q4" value="0"> <span>10 ou moins</span></label>
+          <label class="option-btn"><input type="radio" name="f2_q4" value="1"> <span>11 à 20</span></label>
+          <label class="option-btn"><input type="radio" name="f2_q4" value="2"> <span>21 à 30</span></label>
+          <label class="option-btn"><input type="radio" name="f2_q4" value="3"> <span>31 ou plus</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">05</div><div class="question-content">
+        <div class="question-theme-badge theme-fagerstrom">TABAC</div>
+        <h3 class="question-text">Fumez-vous à un rythme plus élevé le matin que le reste de la journée ?</h3>
+        <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="f2_q5" value="1"> <span>Oui</span></label>
+          <label class="option-btn"><input type="radio" name="f2_q5" value="0"> <span>Non</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">06</div><div class="question-content">
+        <div class="question-theme-badge theme-fagerstrom">TABAC</div>
+        <h3 class="question-text">Fumez-vous même si vous êtes malade et devez rester au lit la majeure partie du temps ?</h3>
+        <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="f2_q6" value="1"> <span>Oui</span></label>
+          <label class="option-btn"><input type="radio" name="f2_q6" value="0"> <span>Non</span></label>
+        </div>
+      </div></div>
+
+      <div class="form-actions">
+        <div id="fag-missing-msg" class="info-box info-box--warn hidden" role="alert">Veuillez répondre à toutes les questions.</div>
+        <button class="btn-primary btn-large" onclick="calculateFagerstrom()">Calculer mon score
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="fagerstrom-results" class="results-panel hidden" aria-live="polite">
+      <h3 class="results-title">Votre niveau de dépendance à la nicotine</h3>
+      <div class="gauge-container">
+        <div class="gauge-wrap">
+          <svg class="gauge-svg" viewBox="0 0 200 130" aria-hidden="true">
+            <path d="M20,110 A90,90 0 0,1 180,110" fill="none" stroke="#E8E8E8" stroke-width="16" stroke-linecap="round"/>
+            <path id="fag-gauge-arc" d="M20,110 A90,90 0 0,1 180,110" fill="none" stroke="#4A5568" stroke-width="16" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" style="transition:stroke-dashoffset 1s ease,stroke 0.5s"/>
+            <text id="fag-score-text" x="100" y="95" text-anchor="middle" font-family="'Playfair Display',serif" font-size="38" fill="#1F3864" font-weight="700">—</text>
+            <text x="100" y="115" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5A6A82">/ 10 points</text>
+          </svg>
+        </div>
+      </div>
+      <div class="risk-level-badge" id="fag-risk-badge"></div>
+      <div class="risk-detail" id="fag-risk-detail"></div>
+      <div class="recommendations-panel" id="fag-recommendations"></div>
+      <div class="info-box info-box--info" style="margin-bottom:16px">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M9 8v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="6" r=".75" fill="currentColor"/></svg>
+        <span><strong>Tabac Info Service : 3989</strong> (0,15 €/min) · <a href="https://www.tabac-info-service.fr" target="_blank" rel="noopener noreferrer" style="color:var(--navy);text-decoration:underline">tabac-info-service.fr</a> — Accompagnement gratuit, disponible 7j/7</span>
+      </div>
+      <div class="module-source">Source : Heatherton TF, Kozlowski LT, Frecker RC, Fagerström KO. The Fagerström Test for Nicotine Dependence: a revision of the Fagerström Tolerance Questionnaire. Br J Addict. 1991;86(9):1119-1127. doi:10.1111/j.1360-0443.1991.tb01879.x</div>
+      <div class="form-actions mt-32">
+        <button class="btn-secondary" onclick="restartFagerstrom()">Recommencer</button>
+        <button class="btn-primary" onclick="navigateTo('act')">Continuer → Asthme <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 7 — ACT (Asthme)
+  ───────────────────────────────────────── -->
+  <section id="section-act" class="section" aria-labelledby="act-title">
+    <div class="section-header section-header--act">
+      <div class="section-header-eyebrow">Nathan RA et al. — J Allergy Clin Immunol. 2004</div>
+      <h2 class="section-header-title" id="act-title">ACT — Contrôle de l'Asthme</h2>
+      <p class="section-header-desc">L'Asthma Control Test évalue le niveau de contrôle de votre asthme au cours des 4 dernières semaines.</p>
+    </div>
+
+    <div class="questionnaire-form" id="act-gate">
+      <div class="question-card">
+        <div class="question-content">
+          <div class="question-theme-badge theme-act">ASTHME</div>
+          <h3 class="question-text">Avez-vous été diagnostiqué(e) pour de l'asthme ou ressentez-vous des difficultés respiratoires récurrentes (sifflements, essoufflement, toux nocturne) ?</h3>
+          <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+            <label class="option-btn"><input type="radio" name="act_gate" value="oui" onchange="showACTForm('oui')"> <span>Oui</span></label>
+            <label class="option-btn"><input type="radio" name="act_gate" value="non" onchange="showACTForm('non')"> <span>Non</span></label>
+          </div>
+          <div id="act-non-msg" class="info-box info-box--success hidden" style="margin-top:16px">✓ Ce module s'adresse aux personnes asthmatiques ou présentant des symptômes respiratoires récurrents.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="act-form" class="questionnaire-form hidden">
+      <p class="questionnaire-note" style="padding:0 0 16px;color:var(--gray);font-size:0.85rem;font-style:italic;">Les 5 questions suivantes portent sur les <strong>4 dernières semaines</strong>.</p>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">01</div><div class="question-content">
+        <div class="question-theme-badge theme-act">ACT</div>
+        <h3 class="question-text">Combien de fois votre asthme vous a-t-il empêché(e) d'effectuer vos activités habituelles au travail, à l'école ou chez vous ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="act_q1" value="1"> <span>Tout le temps</span></label>
+          <label class="option-btn"><input type="radio" name="act_q1" value="2"> <span>Souvent</span></label>
+          <label class="option-btn"><input type="radio" name="act_q1" value="3"> <span>Parfois</span></label>
+          <label class="option-btn"><input type="radio" name="act_q1" value="4"> <span>Rarement</span></label>
+          <label class="option-btn"><input type="radio" name="act_q1" value="5"> <span>Jamais</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">02</div><div class="question-content">
+        <div class="question-theme-badge theme-act">ACT</div>
+        <h3 class="question-text">Avez-vous eu une respiration difficile (essoufflement) ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="act_q2" value="1"> <span>Plus d'une fois par jour</span></label>
+          <label class="option-btn"><input type="radio" name="act_q2" value="2"> <span>Une fois par jour</span></label>
+          <label class="option-btn"><input type="radio" name="act_q2" value="3"> <span>3 à 6 fois par semaine</span></label>
+          <label class="option-btn"><input type="radio" name="act_q2" value="4"> <span>1 à 2 fois par semaine</span></label>
+          <label class="option-btn"><input type="radio" name="act_q2" value="5"> <span>Jamais</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">03</div><div class="question-content">
+        <div class="question-theme-badge theme-act">ACT</div>
+        <h3 class="question-text">Les symptômes de votre asthme (sifflements, toux, essoufflement, oppression thoracique) vous ont-ils réveillé(e) la nuit ou plus tôt que prévu le matin ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="act_q3" value="1"> <span>4 nuits par semaine ou plus</span></label>
+          <label class="option-btn"><input type="radio" name="act_q3" value="2"> <span>2 à 3 nuits par semaine</span></label>
+          <label class="option-btn"><input type="radio" name="act_q3" value="3"> <span>Une fois par semaine</span></label>
+          <label class="option-btn"><input type="radio" name="act_q3" value="4"> <span>1 à 2 fois par mois</span></label>
+          <label class="option-btn"><input type="radio" name="act_q3" value="5"> <span>Jamais</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">04</div><div class="question-content">
+        <div class="question-theme-badge theme-act">ACT</div>
+        <h3 class="question-text">Avez-vous utilisé votre bronchodilatateur de secours (ex : Ventoline) ou un traitement par nébuliseur ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="act_q4" value="1"> <span>3 fois par jour ou plus</span></label>
+          <label class="option-btn"><input type="radio" name="act_q4" value="2"> <span>1 à 2 fois par jour</span></label>
+          <label class="option-btn"><input type="radio" name="act_q4" value="3"> <span>2 à 3 fois par semaine</span></label>
+          <label class="option-btn"><input type="radio" name="act_q4" value="4"> <span>1 fois par semaine ou moins</span></label>
+          <label class="option-btn"><input type="radio" name="act_q4" value="5"> <span>Jamais</span></label>
+        </div>
+      </div></div>
+
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">05</div><div class="question-content">
+        <div class="question-theme-badge theme-act">ACT</div>
+        <h3 class="question-text">Comment évaluez-vous le contrôle de votre asthme au cours des 4 dernières semaines ?</h3>
+        <div class="options-grid" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="act_q5" value="1"> <span>Pas du tout contrôlé</span></label>
+          <label class="option-btn"><input type="radio" name="act_q5" value="2"> <span>Mal contrôlé</span></label>
+          <label class="option-btn"><input type="radio" name="act_q5" value="3"> <span>Un peu contrôlé</span></label>
+          <label class="option-btn"><input type="radio" name="act_q5" value="4"> <span>Bien contrôlé</span></label>
+          <label class="option-btn"><input type="radio" name="act_q5" value="5"> <span>Totalement contrôlé</span></label>
+        </div>
+      </div></div>
+
+      <div class="form-actions">
+        <div id="act-missing-msg" class="info-box info-box--warn hidden" role="alert">Veuillez répondre à toutes les questions.</div>
+        <button class="btn-primary btn-large" onclick="calculateACT()">Calculer mon score ACT
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="act-results" class="results-panel hidden" aria-live="polite">
+      <h3 class="results-title">Votre score ACT</h3>
+      <div class="gauge-container">
+        <div class="gauge-wrap">
+          <svg class="gauge-svg" viewBox="0 0 200 130" aria-hidden="true">
+            <path d="M20,110 A90,90 0 0,1 180,110" fill="none" stroke="#E8E8E8" stroke-width="16" stroke-linecap="round"/>
+            <path id="act-gauge-arc" d="M20,110 A90,90 0 0,1 180,110" fill="none" stroke="#0369A1" stroke-width="16" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" style="transition:stroke-dashoffset 1s ease,stroke 0.5s"/>
+            <text id="act-score-text" x="100" y="95" text-anchor="middle" font-family="'Playfair Display',serif" font-size="38" fill="#1F3864" font-weight="700">—</text>
+            <text x="100" y="115" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5A6A82">/ 25 points</text>
+          </svg>
+        </div>
+      </div>
+      <div class="risk-level-badge" id="act-risk-badge"></div>
+      <div class="risk-detail" id="act-risk-detail"></div>
+      <div class="recommendations-panel" id="act-recommendations"></div>
+      <div class="module-source">Source : Nathan RA, Sorkness CA, Kosinski M et al. Development of the asthma control test: a survey for assessing asthma control. J Allergy Clin Immunol. 2004;113(1):59-65. doi:10.1016/j.jaci.2003.09.008</div>
+      <div class="form-actions mt-32">
+        <button class="btn-secondary" onclick="restartACT()">Recommencer</button>
+        <button class="btn-primary" onclick="navigateTo('stopbang')">Continuer → Apnée du sommeil <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 8 — STOP-BANG (Apnée)
+  ───────────────────────────────────────── -->
+  <section id="section-stopbang" class="section" aria-labelledby="sb-title">
+    <div class="section-header section-header--stopbang">
+      <div class="section-header-eyebrow">Chung F et al. — Anesthesiology. 2008</div>
+      <h2 class="section-header-title" id="sb-title">STOP-BANG — Apnée du Sommeil</h2>
+      <p class="section-header-desc">Questionnaire de dépistage du Syndrome d'Apnées Obstructives du Sommeil (SAOS) — 8 questions, résultat immédiat.</p>
+    </div>
+
+    <div id="stopbang-form" class="questionnaire-form">
+      <div id="stopbang-imc-prefill" class="info-box info-box--info hidden" style="margin-bottom:16px" aria-live="polite"></div>
+
+      <!-- S -->
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">S</div><div class="question-content">
+        <div class="question-theme-badge theme-stopbang">STOP-BANG</div>
+        <h3 class="question-text"><strong>S</strong>noring — Ronflez-vous fort (assez fort pour être entendu à travers une porte fermée) ?</h3>
+        <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="sb_s" value="1"> <span>Oui</span></label>
+          <label class="option-btn"><input type="radio" name="sb_s" value="0"> <span>Non</span></label>
+        </div>
+      </div></div>
+
+      <!-- T -->
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">T</div><div class="question-content">
+        <div class="question-theme-badge theme-stopbang">STOP-BANG</div>
+        <h3 class="question-text"><strong>T</strong>ired — Vous sentez-vous souvent fatigué(e), épuisé(e) ou somnolent(e) pendant la journée ?</h3>
+        <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="sb_t" value="1"> <span>Oui</span></label>
+          <label class="option-btn"><input type="radio" name="sb_t" value="0"> <span>Non</span></label>
+        </div>
+      </div></div>
+
+      <!-- O -->
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">O</div><div class="question-content">
+        <div class="question-theme-badge theme-stopbang">STOP-BANG</div>
+        <h3 class="question-text"><strong>O</strong>bserved — Quelqu'un a-t-il observé que vous arrêtiez de respirer, que vous haletiez ou que vous vous étouffiez pendant votre sommeil ?</h3>
+        <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="sb_o" value="1"> <span>Oui</span></label>
+          <label class="option-btn"><input type="radio" name="sb_o" value="0"> <span>Non / Je dors seul(e)</span></label>
+        </div>
+      </div></div>
+
+      <!-- P -->
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">P</div><div class="question-content">
+        <div class="question-theme-badge theme-stopbang">STOP-BANG</div>
+        <h3 class="question-text"><strong>P</strong>ressure — Avez-vous ou êtes-vous traité(e) pour de l'hypertension artérielle ?</h3>
+        <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="sb_p" value="1"> <span>Oui</span></label>
+          <label class="option-btn"><input type="radio" name="sb_p" value="0"> <span>Non</span></label>
+        </div>
+      </div></div>
+
+      <!-- B — IMC auto depuis FINDRISK -->
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">B</div><div class="question-content">
+        <div class="question-theme-badge theme-stopbang">STOP-BANG</div>
+        <h3 class="question-text"><strong>B</strong>MI — Votre IMC est-il supérieur à 35 kg/m² ?</h3>
+        <div id="sb-imc-auto" class="hidden" aria-live="polite"></div>
+        <div class="options-grid options-grid--2col" id="sb-imc-options" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="sb_b" value="1"> <span>Oui (IMC &gt; 35)</span></label>
+          <label class="option-btn"><input type="radio" name="sb_b" value="0"> <span>Non (IMC ≤ 35)</span></label>
+        </div>
+      </div></div>
+
+      <!-- A -->
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">A</div><div class="question-content">
+        <div class="question-theme-badge theme-stopbang">STOP-BANG</div>
+        <h3 class="question-text"><strong>A</strong>ge — Avez-vous plus de 50 ans ?</h3>
+        <div id="sb-age-auto" class="hidden" aria-live="polite"></div>
+        <div class="options-grid options-grid--2col" id="sb-age-options" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="sb_a" value="1"> <span>Oui (&gt; 50 ans)</span></label>
+          <label class="option-btn"><input type="radio" name="sb_a" value="0"> <span>Non (≤ 50 ans)</span></label>
+        </div>
+      </div></div>
+
+      <!-- N -->
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">N</div><div class="question-content">
+        <div class="question-theme-badge theme-stopbang">STOP-BANG</div>
+        <h3 class="question-text"><strong>N</strong>eck — Votre tour de cou est-il supérieur à 40 cm ?</h3>
+        <p class="question-hint">Mesurez au niveau de la pomme d'Adam.</p>
+        <div class="options-grid options-grid--2col" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="sb_n" value="1"> <span>Oui (&gt; 40 cm)</span></label>
+          <label class="option-btn"><input type="radio" name="sb_n" value="0"> <span>Non (≤ 40 cm)</span></label>
+        </div>
+      </div></div>
+
+      <!-- G -->
+      <div class="question-card"><div class="question-watermark" aria-hidden="true">G</div><div class="question-content">
+        <div class="question-theme-badge theme-stopbang">STOP-BANG</div>
+        <h3 class="question-text"><strong>G</strong>ender — Êtes-vous de sexe masculin ?</h3>
+        <div id="sb-sex-auto" class="hidden" aria-live="polite"></div>
+        <div class="options-grid options-grid--2col" id="sb-sex-options" role="radiogroup" aria-required="true">
+          <label class="option-btn"><input type="radio" name="sb_g" value="1"> <span>Oui</span></label>
+          <label class="option-btn"><input type="radio" name="sb_g" value="0"> <span>Non</span></label>
+        </div>
+      </div></div>
+
+      <div class="form-actions">
+        <div id="sb-missing-msg" class="info-box info-box--warn hidden" role="alert">Veuillez répondre à toutes les questions.</div>
+        <button class="btn-primary btn-large" onclick="calculateSTOPBANG()">Calculer mon risque
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="stopbang-results" class="results-panel hidden" aria-live="polite">
+      <h3 class="results-title">Votre risque d'apnée du sommeil</h3>
+      <div class="gauge-container">
+        <div class="gauge-wrap">
+          <svg class="gauge-svg" viewBox="0 0 200 130" aria-hidden="true">
+            <path d="M20,110 A90,90 0 0,1 180,110" fill="none" stroke="#E8E8E8" stroke-width="16" stroke-linecap="round"/>
+            <path id="sb-gauge-arc" d="M20,110 A90,90 0 0,1 180,110" fill="none" stroke="#4338CA" stroke-width="16" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" style="transition:stroke-dashoffset 1s ease,stroke 0.5s"/>
+            <text id="sb-score-text" x="100" y="95" text-anchor="middle" font-family="'Playfair Display',serif" font-size="38" fill="#1F3864" font-weight="700">—</text>
+            <text x="100" y="115" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5A6A82">/ 8 critères</text>
+          </svg>
+        </div>
+      </div>
+      <div class="risk-level-badge" id="sb-risk-badge"></div>
+      <div class="risk-detail" id="sb-risk-detail"></div>
+      <div class="recommendations-panel" id="sb-recommendations"></div>
+      <div class="module-source">Source : Chung F, Ward B, Ho J et al. Preoperative identification of sleep apnea risk in elective surgical patients, using the Berlin questionnaire. J Clin Anesth. 2007;19(2):130-134. doi:10.1097/ALN.0b013e31816d83e4</div>
+      <div class="form-actions mt-32">
+        <button class="btn-secondary" onclick="restartSTOPBANG()">Recommencer</button>
+        <button class="btn-primary" onclick="navigateTo('mrs')">Continuer → Ménopause <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 9 — MRS (Ménopause)
+  ───────────────────────────────────────── -->
+  <section id="section-mrs" class="section" aria-labelledby="mrs-title">
+    <div class="section-header section-header--mrs">
+      <div class="section-header-eyebrow">Heinemann K et al. — Health Qual Life Outcomes. 2004</div>
+      <h2 class="section-header-title" id="mrs-title">MRS — Échelle de Ménopause</h2>
+      <p class="section-header-desc">La Menopause Rating Scale évalue la sévérité des symptômes liés à la (pré)ménopause dans 3 domaines : somatovégétatif, psychologique et urogénital.</p>
+    </div>
+
+    <!-- Gate -->
+    <div class="questionnaire-form" id="mrs-gate">
+      <div id="mrs-not-eligible" class="info-box info-box--info hidden" style="margin:0 0 24px">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M9 8v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="6" r=".75" fill="currentColor"/></svg>
+        <span id="mrs-not-eligible-text"></span>
+      </div>
+      <div class="question-card" id="mrs-gate-card">
+        <div class="question-content">
+          <div class="question-theme-badge theme-mrs">MRS</div>
+          <h3 class="question-text">Avez-vous des symptômes liés à la (pré)ménopause ou êtes-vous en période de transition ménopausique ?</h3>
+          <p class="question-hint">Ce module s'adresse aux femmes de 40 ans et plus.</p>
+          <div class="options-grid options-grid--2col" role="radiogroup">
+            <label class="option-btn"><input type="radio" name="mrs_gate" value="oui" onchange="showMRSForm('oui')"> <span>Oui</span></label>
+            <label class="option-btn"><input type="radio" name="mrs_gate" value="non" onchange="showMRSForm('non')"> <span>Non / Pas concernée</span></label>
+          </div>
+          <div id="mrs-gate-no-msg" class="info-box info-box--success hidden" style="margin-top:16px">✓ Ce module n'est pas applicable à votre situation actuelle.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mrs-form" class="questionnaire-form hidden">
+      <p style="padding:0 0 8px;color:var(--gray);font-size:0.85rem;font-style:italic;">Pour chaque symptôme, indiquez son intensité : 0 = Absent, 1 = Léger, 2 = Modéré, 3 = Sévère, 4 = Très sévère.</p>
+
+      <!-- Domaine Somatovégétatif -->
+      <div class="mrs-domain-header" style="--domain-color:#9D174D">
+        <span class="mrs-domain-icon" aria-hidden="true">🌡️</span>
+        <div>
+          <div class="mrs-domain-title">Domaine Somatovégétatif</div>
+          <div class="mrs-domain-sub">Items 1 à 4 — Score sur 16</div>
+        </div>
+      </div>
+      <div id="mrs-somato-items"></div>
+
+      <!-- Domaine Psychologique -->
+      <div class="mrs-domain-header" style="--domain-color:#9D174D;margin-top:24px">
+        <span class="mrs-domain-icon" aria-hidden="true">🧠</span>
+        <div>
+          <div class="mrs-domain-title">Domaine Psychologique</div>
+          <div class="mrs-domain-sub">Items 5 à 7 — Score sur 12</div>
+        </div>
+      </div>
+      <div id="mrs-psycho-items"></div>
+
+      <!-- Domaine Urogénital -->
+      <div class="mrs-domain-header" style="--domain-color:#9D174D;margin-top:24px">
+        <span class="mrs-domain-icon" aria-hidden="true">💧</span>
+        <div>
+          <div class="mrs-domain-title">Domaine Urogénital</div>
+          <div class="mrs-domain-sub">Items 8 à 11 — Score sur 16</div>
+        </div>
+      </div>
+      <div id="mrs-uro-items"></div>
+
+      <div class="form-actions">
+        <div id="mrs-missing-msg" class="info-box info-box--warn hidden" role="alert">Veuillez évaluer tous les symptômes.</div>
+        <button class="btn-primary btn-large" onclick="calculateMRS()">Calculer mon score MRS
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mrs-results" class="results-panel hidden" aria-live="polite">
+      <h3 class="results-title">Vos scores MRS</h3>
+      <div id="mrs-scores-grid" class="mrs-scores-grid"></div>
+      <div class="risk-level-badge" id="mrs-risk-badge"></div>
+      <div class="risk-detail" id="mrs-risk-detail"></div>
+      <div class="recommendations-panel" id="mrs-recommendations"></div>
+      <div class="module-source">Source : Heinemann K, Assmann A, Möhner S, Schneider HP, Heinemann LA. Reliability of the Menopause Rating Scale (MRS). Health Qual Life Outcomes. 2004;2:45. doi:10.1186/1477-7525-2-45 · Schneider HP, Heinemann LA, Rosemeier HP et al. The Menopause Rating Scale (MRS): reliability of scores of menopausal complaints. Climacteric. 2000;3(2):59-64.</div>
+      <div class="form-actions mt-32">
+        <button class="btn-secondary" onclick="restartMRS()">Recommencer</button>
+        <button class="btn-primary" onclick="navigateTo('recap')">Voir mon récapitulatif <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 10 — MON RÉCAPITULATIF
+  ───────────────────────────────────────── -->
+  <section id="section-recap" class="section" aria-labelledby="recap-title">
+    <div class="section-header section-header--recap">
+      <h2 class="section-header-title" id="recap-title">Mon Récapitulatif</h2>
+      <p class="section-header-desc">Synthèse de tous vos bilans et plan d'action personnalisé.</p>
+    </div>
+
+    <div id="recap-empty" class="empty-state" role="status">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="8" y="8" width="48" height="48" rx="8" stroke="#C9972B" stroke-width="2" opacity="0.3"/><path d="M20 24h24M20 32h24M20 40h16" stroke="#5A6A82" stroke-width="2" stroke-linecap="round" opacity="0.5"/></svg>
+      <p>Complétez au moins un module pour générer votre récapitulatif.</p>
+      <button class="btn-primary" onclick="navigateTo('bilan')">Commencer mon bilan</button>
+    </div>
+
+    <div id="recap-content" class="hidden">
+      <!-- En-tête imprimable -->
+      <div class="recap-header print-only">
+        <div class="recap-header-logo">
+          <svg width="40" height="40" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <polygon points="18,2 34,10 34,26 18,34 2,26 2,10" fill="#1F3864" stroke="#C9972B" stroke-width="1.5"/>
+            <path d="M18 9 L18 27 M11 13 L25 23 M25 13 L11 23" stroke="#C9972B" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <div class="recap-header-brand">AOD Prévention</div>
+            <div class="recap-header-sub">Bilan de prévention santé</div>
+          </div>
+        </div>
+        <div class="recap-header-date" id="recap-date"></div>
+      </div>
+
+      <!-- Tableau synthèse -->
+      <div class="recap-table-wrap" role="region" aria-label="Tableau de synthèse des bilans">
+        <h3 class="recap-section-title">Synthèse des évaluations</h3>
+        <table class="recap-table" id="recap-main-table">
+          <thead>
+            <tr>
+              <th scope="col">Module</th>
+              <th scope="col">Résultat</th>
+              <th scope="col">Niveau de risque</th>
+              <th scope="col">Action recommandée</th>
+            </tr>
+          </thead>
+          <tbody id="recap-table-body"></tbody>
+        </table>
+      </div>
+
+      <!-- Plan d'action -->
+      <div class="action-plan">
+        <h3 class="recap-section-title">Plan d'action personnalisé</h3>
+        <div id="action-plan-list" class="action-list" role="list"></div>
+      </div>
+
+      <!-- Actions impression -->
+      <div class="recap-actions no-print">
+        <button class="btn-primary btn-large" onclick="window.print()" aria-label="Imprimer ou exporter ce récapitulatif en PDF">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="3" y="2" width="12" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M3 7h12v7a1 1 0 01-1 1H4a1 1 0 01-1-1V7z" stroke="currentColor" stroke-width="1.5"/><path d="M6 11h6M6 14h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><rect x="12" y="5.5" width="2" height="2" rx="0.5" fill="currentColor"/></svg>
+          Imprimer / Exporter PDF
+        </button>
+        <button class="btn-secondary" onclick="restartAll()" aria-label="Recommencer tous les bilans">
+          Nouveau bilan
+        </button>
+      </div>
+
+      <!-- Footer imprimable -->
+      <div class="recap-footer print-only">
+        <div class="separator-gold" aria-hidden="true"></div>
+        <p>Ce bilan est un outil d'information et d'orientation. Il ne remplace pas une consultation médicale. <strong>AOD Santé — aodsante.fr</strong></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ════════════════════════════════════════════════
+     BOTTOM NAV (Mobile)
+═════════════════════════════════════════════════ -->
+<nav class="bottom-nav" role="navigation" aria-label="Navigation mobile">
+  <button class="bottom-nav-item active" data-section="accueil" onclick="navigateTo('accueil')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 9.5L10 3l7 6.5V17a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.5"/></svg><span>Accueil</span></button>
+  <button class="bottom-nav-item" data-section="bilan" onclick="navigateTo('bilan')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="2" width="14" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 7h6M7 11h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Bilan</span></button>
+  <button class="bottom-nav-item" data-section="findrisk" onclick="navigateTo('findrisk')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Diabète</span></button>
+  <button class="bottom-nav-item" data-section="cardio" onclick="navigateTo('cardio')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 17s-7-5-7-9a4 4 0 018 0 4 4 0 018 0c0 4-7 9-7 9z" stroke="currentColor" stroke-width="1.5"/></svg><span>Cardio</span></button>
+  <button class="bottom-nav-item" data-section="audit" onclick="navigateTo('audit')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 2h6l1 6H6L7 2z" stroke="currentColor" stroke-width="1.5"/><path d="M6 8c0 0-2 3-2 6h12c0-3-2-6-2-6" stroke="currentColor" stroke-width="1.5"/></svg><span>Alcool</span></button>
+  <button class="bottom-nav-item" data-section="fagerstrom" onclick="navigateTo('fagerstrom')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 14h8M14 14h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 10c1 0 3 1 3 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Tabac</span></button>
+  <button class="bottom-nav-item" data-section="act" onclick="navigateTo('act')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4c-3 0-6 2-6 5s2 5 6 7c4-2 6-4 6-7s-3-5-6-5z" stroke="currentColor" stroke-width="1.5"/></svg><span>Asthme</span></button>
+  <button class="bottom-nav-item" data-section="stopbang" onclick="navigateTo('stopbang')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10a7 7 0 0014 0" stroke="currentColor" stroke-width="1.5"/><path d="M7 5c.5-1 2-2 3-2s2.5 1 3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Apnée</span></button>
+  <button class="bottom-nav-item" data-section="mrs" onclick="navigateTo('mrs')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M10 12v6M7 15h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Ménopause</span></button>
+  <button class="bottom-nav-item" data-section="recap" onclick="navigateTo('recap')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Récap</span></button>
+</nav>
+
+<script src="/prevention/app.js"></script>
+
+<!-- ════════════════════════════════════════════════
+     FOOTER — MENTIONS LÉGALES
+═════════════════════════════════════════════════ -->
+<footer class="app-footer no-print" role="contentinfo">
+  <div class="app-footer-inner">
+    <div class="app-footer-brand">
+      <span class="app-footer-brand-name">AOD Prévention</span>
+      <span class="app-footer-sep">·</span>
+      <span>Un outil AOD Santé</span>
+    </div>
+    <div class="app-footer-links">
+      <button class="app-footer-link" onclick="document.getElementById('modal-mentions').style.display='flex'" aria-label="Mentions légales">Mentions légales</button>
+      <span class="app-footer-sep">·</span>
+      <button class="app-footer-link" onclick="document.getElementById('modal-mentions').style.display='flex'" aria-label="Politique de confidentialité">Confidentialité &amp; RGPD</button>
+      <span class="app-footer-sep">·</span>
+      <a href="mailto:contact@aodsante.fr" class="app-footer-link">Contact</a>
+    </div>
+    <div class="app-footer-disclaimer">
+      Outil d'aide à l'orientation — Ne remplace pas une consultation médicale — Données stockées localement sur votre appareil uniquement
+    </div>
+  </div>
+</footer>
+
+<!-- Modal Mentions légales -->
+<div id="modal-mentions" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-mentions-title" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-mentions-title">Mentions légales &amp; Confidentialité</h2>
+      <button class="modal-close" onclick="document.getElementById('modal-mentions').style.display='none'" aria-label="Fermer">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h3>Éditeur</h3>
+      <p><strong>AOD Santé</strong><br>
+      [Forme juridique — SIRET : à compléter]<br>
+      [Adresse : à compléter]<br>
+      Directeur de publication : [Nom — à compléter]<br>
+      Contact : <a href="mailto:contact@aodsante.fr">contact@aodsante.fr</a></p>
+
+      <h3>Hébergement</h3>
+      <p>[Nom de l'hébergeur — à compléter]<br>
+      [Adresse et contact — à compléter]</p>
+
+      <h3>Nature de l'outil</h3>
+      <p>AOD Prévention est un <strong>outil numérique d'aide à l'orientation en santé</strong>. Il ne constitue pas un dispositif médical (DM) au sens du règlement UE 2017/745. Les scores et résultats affichés sont des outils d'information et d'orientation ; ils ne se substituent en aucun cas à une consultation médicale, à un diagnostic ou à une décision thérapeutique.</p>
+      <p>Les algorithmes utilisés (FINDRISK, SCORE2, AUDIT, Fagerström, ACT, STOP-BANG, MRS) sont des outils validés scientifiquement, présentés dans leur usage indicatif de dépistage. Les sources bibliographiques sont indiquées au bas de chaque module.</p>
+
+      <h3>Données personnelles &amp; RGPD</h3>
+      <p><strong>Aucune donnée personnelle n'est collectée, transmise ou stockée sur un serveur.</strong> Toutes les réponses et valeurs saisies dans cet outil sont conservées exclusivement dans le <em>sessionStorage</em> de votre navigateur, sur votre propre appareil. Ces données sont effacées à la fermeture de l'onglet.</p>
+      <p>Conformément au Règlement (UE) 2016/679 (RGPD), aucun traitement de données à caractère personnel n'est effectué par AOD Santé dans le cadre de cet outil.</p>
+      <p>Pour toute question relative à la protection des données : <a href="mailto:contact@aodsante.fr">contact@aodsante.fr</a></p>
+
+      <h3>Propriété intellectuelle</h3>
+      <p>Le contenu de cet outil (textes, mise en page, code source) est la propriété d'AOD Santé. Toute reproduction partielle ou totale sans autorisation préalable est interdite. Les questionnaires utilisés (FINDRISK, AUDIT, etc.) sont des outils publiés dans la littérature scientifique internationale sous leurs références respectives.</p>
+
+      <h3>Limitation de responsabilité</h3>
+      <p>AOD Santé ne pourra être tenu responsable de décisions de santé prises sur la seule base des résultats affichés par cet outil. En cas de résultat préoccupant, consultez un professionnel de santé qualifié.</p>
+
+      <p class="modal-legal-version">Version : 1.0 — Mise à jour : Juin 2026 — Loi n° 2004-575 du 21 juin 2004 (LCEN)</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

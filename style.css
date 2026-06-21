@@ -330,23 +330,87 @@ h3 { font-size: 1.3rem; font-weight: 700; }
 /* ===== DÉTERMINANTS DE SANTÉ ===== */
 .determinants {
   background: var(--off-white);
-  padding: 96px 80px;
+  padding: 56px 80px 16px;
 }
 .determinants__inner {
   max-width: 1200px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 56px;
+  align-items: center;
 }
 .determinants__header {
-  max-width: 720px;
-  margin-bottom: 56px;
+  margin-bottom: 0;
 }
 .determinants__header h2 { margin-bottom: 16px; }
 .determinants__header p { color: var(--text-muted); line-height: 1.75; font-size: 1rem; }
 .determinants__header strong { color: var(--navy); }
 
-/* Infographie SVG déterminants */
+/* Infographie déterminants */
 .det-visual { width: 100%; }
-.det-visual svg { width: 100%; height: auto; display: block; }
+
+/* Barre proportionnelle */
+.det-stacked { margin-bottom: 48px; }
+.det-stacked__bar {
+  display: flex;
+  height: 52px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  gap: 2px;
+}
+.det-stacked__seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.92);
+  transition: filter 0.2s;
+  cursor: default;
+}
+.det-stacked__seg:hover { filter: brightness(1.1); }
+.det-stacked__seg--1 { background: var(--navy); }
+.det-stacked__seg--2 { background: var(--blue-mid); }
+.det-stacked__seg--3 { background: var(--gold); }
+.det-stacked__seg--4 { background: #5b7fa6; }
+.det-stacked__seg--5 { background: #8aa3bf; }
+
+.det-stacked__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.det-stacked__legend span { display: flex; align-items: center; gap: 7px; }
+.det-stacked__dot {
+  display: inline-block;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  font-style: normal;
+  flex-shrink: 0;
+}
+.det-stacked__dot--1 { background: var(--navy); }
+.det-stacked__dot--2 { background: var(--blue-mid); }
+.det-stacked__dot--3 { background: var(--gold); }
+.det-stacked__dot--4 { background: #5b7fa6; }
+.det-stacked__dot--5 { background: #8aa3bf; }
+
+/* Callout AOD */
+.det-callout {
+  background: var(--navy);
+  color: rgba(255,255,255,0.8);
+  padding: 22px 32px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid var(--gold);
+}
+.det-callout strong { color: var(--gold-light); }
 
 /* Liste typographique des déterminants */
 .det-list {
@@ -365,7 +429,7 @@ h3 { font-size: 1.3rem; font-weight: 700; }
 .det-row:hover { background: rgba(15,43,78,0.02); }
 
 .det-row__num {
-  font-family: var(--font-title);
+  font-family: var(--ff-serif);
   font-size: 4rem;
   font-weight: 900;
   line-height: 1;
@@ -417,6 +481,9 @@ h3 { font-size: 1.3rem; font-weight: 700; }
   font-style: italic;
 }
 
+@media (max-width: 1000px) {
+  .determinants__inner { grid-template-columns: 1fr; gap: 32px; }
+}
 @media (max-width: 900px) {
   .det-row { grid-template-columns: 100px 1fr; grid-template-rows: auto auto; gap: 16px 24px; }
   .det-row__mid { grid-column: 2; }
@@ -431,7 +498,7 @@ h3 { font-size: 1.3rem; font-weight: 700; }
 
 /* ===== MISSIONS ===== */
 .missions {
-  padding: 96px 80px;
+  padding: 48px 80px;
   background: var(--off-white);
 }
 
@@ -654,8 +721,12 @@ h3 { font-size: 1.3rem; font-weight: 700; }
 .atout strong { display: block; color: var(--white); font-size: 0.9rem; margin-bottom: 2px; }
 .atout p { font-size: 0.825rem; color: rgba(255,255,255,0.5); }
 
-.reseau-block {
+.reseau-block--full {
+  grid-column: 1 / -1;
   margin-top: 40px;
+}
+.reseau-block {
+  margin-top: 28px;
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(212,175,100,0.3);
   border-radius: 12px;
@@ -735,6 +806,7 @@ h3 { font-size: 1.3rem; font-weight: 700; }
 .rcard__img { overflow: hidden; }
 .rcard__img img { transition: transform 0.45s; }
 .rcard:hover .rcard__img img { transform: scale(1.05); }
+.img-sharp { filter: contrast(1.06) saturate(1.08) brightness(1.01); }
 
 .rcard__body { padding: 24px 28px; }
 .rcard__tag {
@@ -888,6 +960,14 @@ h3 { font-size: 1.3rem; font-weight: 700; }
 .form-group textarea { resize: vertical; min-height: 110px; }
 .form-group input::placeholder,
 .form-group textarea::placeholder { color: #bdc5d4; }
+.form-rgpd {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-top: 10px;
+  opacity: 0.75;
+}
+.form-rgpd a { color: var(--blue-mid); text-decoration: underline; }
 .form-success {
   display: none;
   background: var(--blue-light);
