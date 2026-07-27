@@ -1,3 +1,5 @@
 # Clé d'administration Firebase — ne jamais publier / committer
 gestion/serviceAccountKey.json
+gestion/serviceAccountKey*.json.txt
+gestion/~$*
 gestion/seed/node_modules/

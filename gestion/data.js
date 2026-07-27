@@ -41,7 +41,7 @@ export const MISSIONS = [
       {
         id: "medecin-traitant",
         titre: "Faciliter l'accès à un médecin traitant",
-        referents: ["sabrina", "malika.kemache"],
+        referents: ["sabrina", "malika.kemache", "lounes"],
         indicateurs: [
           "Atteindre 20 patients en ALD sans médecin traitant (soit -146 vs 166 initial)",
           "Atteindre 1 331 patients de +16 ans sans MT (soit -3 000)",
@@ -80,7 +80,7 @@ export const MISSIONS = [
       {
         id: "telemedecine",
         titre: "Développer téléconsultation et télémédecine",
-        referents: ["solene", "samia"],
+        referents: ["solene", "samia", "lounes"],
         indicateurs: [
           "Déployer des créneaux dédiés de téléconsultation pour personnes âgées/isolées",
           "Promouvoir l'outil Direct AP-HP auprès des professionnels du territoire",
@@ -109,8 +109,9 @@ export const MISSIONS = [
         titre: "Parcours Cardio-Respiratoire",
         referents: ["patrick"],
         indicateurs: [
-          "Augmenter les dépistages LDCT chez les sujets éligibles",
-          "Organiser la décision partagée et le sevrage tabagique",
+          "Atteindre 100 patients intégrés au parcours cardio-respiratoire",
+          "Réaliser 75 dépistages LDCT chez les fumeurs éligibles (50-80 ans, ≥20 paquets-années)",
+          "Réaliser 70 orientations vers la tabacologie",
           "Améliorer le suivi coordonné (délais < 30 jours pour orientations prioritaires)",
         ],
         livrables: [
@@ -306,7 +307,7 @@ export const MISSIONS = [
         titre: "Aide à l'installation de nouveaux professionnels",
         referents: ["mathilde", "patrick"],
         indicateurs: [
-          "Mettre en place le guichet unique « Pépinière de Drancy »",
+          "Mettre en place un guichet unique d'aide à l'installation",
           "Accompagner les projets de création de MSP / regroupement de PS",
         ],
         livrables: [

@@ -8,12 +8,12 @@
 // uniquement dans ce navigateur, non partagées).
 // ════════════════════════════════════════════════
 export const firebaseConfig = {
-  apiKey: "REPLACE_ME",
-  authDomain: "REPLACE_ME",
-  projectId: "REPLACE_ME",
-  storageBucket: "REPLACE_ME",
-  messagingSenderId: "REPLACE_ME",
-  appId: "REPLACE_ME",
+  apiKey: "AIzaSyCy5a6Kd1LC4ALLJfSptRvxWJU_GuGT2G8",
+  authDomain: "gestion-cpts-dbmb.firebaseapp.com",
+  projectId: "gestion-cpts-dbmb",
+  storageBucket: "gestion-cpts-dbmb.firebasestorage.app",
+  messagingSenderId: "650015178405",
+  appId: "1:650015178405:web:0ff4296231e5d23ffe574c",
 };
 
 export const isFirebaseConfigured = firebaseConfig.apiKey !== "REPLACE_ME";
