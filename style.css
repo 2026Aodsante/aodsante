@@ -1041,6 +1041,8 @@ h3 { font-size: 1.3rem; font-weight: 700; }
   .intro-band { padding: 40px 24px; }
 
   .missions__header { padding: 40px 24px 24px; flex-direction: column; gap: 4px; }
+  .missions__grid { grid-template-columns: 1fr; }
+  .mcard--wide { grid-column: auto; }
   .mission { grid-template-columns: 1fr; min-height: auto; }
   .mission--reverse { grid-template-columns: 1fr; }
   .mission__num { display: none; }
