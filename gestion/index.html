@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CPTS DBMB — Gestion de projet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/gestion/style.css">
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     ÉCRAN DE CONNEXION
+═════════════════════════════════════════════════ -->
+<div class="login-screen" id="login-screen">
+  <div class="login-left">
+    <img class="login-logo" src="/gestion/images/logo-cpts-dbmb.png" alt="CPTS Drancy - Le Blanc-Mesnil - Le Bourget">
+    <div class="login-eyebrow">CPTS Drancy · Le Blanc-Mesnil · Le Bourget</div>
+    <h1 class="login-title">Gestion de<br><em>projet</em></h1>
+    <p class="login-sub">Suivi des missions ACI par référent et agenda partagé de l'équipe. Un espace commun, simple, pour avancer ensemble.</p>
+  </div>
+  <div class="login-right">
+    <div class="login-form-card">
+      <h2>Connexion</h2>
+      <p id="login-mode-note">Sélectionnez votre nom et entrez votre mot de passe.</p>
+
+      <form id="login-form" autocomplete="off">
+        <div class="form-group">
+          <label class="form-label" for="login-member">Votre nom</label>
+          <select class="form-select" id="login-member" required></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="login-password">Mot de passe</label>
+          <input class="form-input" type="password" id="login-password" required>
+        </div>
+        <div class="form-error" id="login-error"></div>
+        <button class="btn-primary login-submit" type="submit">Se connecter</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     APPLICATION (visible une fois connecté)
+═════════════════════════════════════════════════ -->
+<nav class="sidebar hidden" id="app-sidebar" role="navigation" aria-label="Navigation principale">
+  <div class="sidebar-brand">
+    <img class="sidebar-logo" src="/gestion/images/logo-cpts-dbmb.png" alt="CPTS DBMB">
+    <div class="sidebar-brand-sub">Gestion de projet</div>
+  </div>
+
+  <ul class="sidebar-nav" role="list">
+    <li><button class="nav-item active" data-section="accueil">
+      <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 9.5L10 3l7 6.5V17a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+      <span class="nav-label">Accueil</span>
+    </button></li>
+    <li><button class="nav-item" data-section="missions">
+      <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="2" width="14" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <span class="nav-label">Missions</span>
+    </button></li>
+    <li><button class="nav-item" data-section="agenda">
+      <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 8h14M7 2v4M13 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <span class="nav-label">Agenda partagé</span>
+    </button></li>
+    <li><button class="nav-item" data-section="profil">
+      <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 17c1-3.5 4-5 6.5-5s5.5 1.5 6.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <span class="nav-label">Mon profil</span>
+    </button></li>
+  </ul>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user-avatar" id="user-avatar">?</div>
+    <div class="sidebar-user-info">
+      <div class="sidebar-user-name" id="user-name">—</div>
+      <div class="sidebar-user-role" id="user-role">—</div>
+    </div>
+    <button class="btn-icon logout-btn" id="logout-btn" title="Se déconnecter" aria-label="Se déconnecter">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M8 4H4v12h4M13 14l4-4-4-4M6 10h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</nav>
+
+<main class="main-content hidden" id="main-content" role="main">
+
+  <!-- ─── ACCUEIL ─────────────────────────────── -->
+  <section id="section-accueil" class="section active">
+    <div class="section-header">
+      <div class="section-header-eyebrow" id="accueil-date">—</div>
+      <h1 class="section-header-title">Bonjour <span id="accueil-name">—</span></h1>
+      <p class="section-header-desc">Retrouvez ici l'état d'avancement des missions et les prochains événements de l'agenda partagé.</p>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-card-value" id="stat-mes-actions">0</div>
+        <div class="summary-card-label">Actions dont je suis référent(e)</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-value" id="stat-en-cours">0</div>
+        <div class="summary-card-label">Actions en cours (toute la CPTS)</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-value" id="stat-prochain-evt">—</div>
+        <div class="summary-card-label">Prochain événement</div>
+      </div>
+    </div>
+
+    <div class="accueil-columns">
+      <div class="accueil-block">
+        <h3>Mes actions à suivre</h3>
+        <div id="accueil-mes-actions"></div>
+      </div>
+      <div class="accueil-block">
+        <h3>Prochains événements</h3>
+        <div id="accueil-evenements"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MISSIONS ────────────────────────────── -->
+  <section id="section-missions" class="section">
+    <div class="section-header">
+      <div class="section-header-eyebrow">Contrat ACI — 5ème année de fonctionnement</div>
+      <h1 class="section-header-title">Missions &amp; référents</h1>
+      <p class="section-header-desc">Chaque référent met à jour l'avancement de ses actions. Le statut est visible par toute l'équipe en temps réel.</p>
+    </div>
+
+    <div class="missions-toolbar">
+      <div class="filter-toggle" role="tablist">
+        <button class="filter-btn active" data-filter="toutes">Toutes les missions</button>
+        <button class="filter-btn" data-filter="mine">Mes missions</button>
+      </div>
+    </div>
+
+    <div class="missions-list" id="missions-list"></div>
+  </section>
+
+  <!-- ─── AGENDA ──────────────────────────────── -->
+  <section id="section-agenda" class="section">
+    <div class="section-header">
+      <div class="section-header-eyebrow">Équipe CPTS DBMB</div>
+      <h1 class="section-header-title">Agenda partagé</h1>
+      <p class="section-header-desc">Réunions, journées de prévention, soirées de formation... Tous les membres peuvent ajouter un événement.</p>
+    </div>
+
+    <div class="agenda-toolbar">
+      <div class="agenda-month-nav">
+        <button class="btn-icon" id="cal-prev" aria-label="Mois précédent">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <span class="agenda-month-label" id="cal-month-label">—</span>
+        <button class="btn-icon" id="cal-next" aria-label="Mois suivant">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <button class="btn-primary" id="add-event-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Ajouter un événement
+      </button>
+    </div>
+
+    <div class="agenda-layout">
+      <div class="calendar">
+        <div class="calendar-weekdays">
+          <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+        </div>
+        <div class="calendar-grid" id="calendar-grid"></div>
+      </div>
+      <div class="agenda-side">
+        <div class="agenda-panel">
+          <h3 id="selected-day-label">Événements du jour</h3>
+          <div id="selected-day-events"></div>
+        </div>
+        <div class="agenda-panel">
+          <h3>Tous les prochains événements</h3>
+          <div id="all-upcoming-events"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROFIL ──────────────────────────────── -->
+  <section id="section-profil" class="section">
+    <div class="section-header">
+      <h1 class="section-header-title">Mon profil</h1>
+      <p class="section-header-desc">Vos informations et votre mot de passe.</p>
+    </div>
+    <div class="profil-card">
+      <h3 id="profil-name">—</h3>
+      <p class="role" id="profil-role">—</p>
+
+      <form id="password-form">
+        <div class="form-group">
+          <label class="form-label" for="new-password">Nouveau mot de passe</label>
+          <input class="form-input" type="password" id="new-password" minlength="6" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="new-password-confirm">Confirmer le nouveau mot de passe</label>
+          <input class="form-input" type="password" id="new-password-confirm" minlength="6" required>
+        </div>
+        <button class="btn-primary" type="submit">Mettre à jour le mot de passe</button>
+        <div class="form-msg" id="password-msg"></div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- ─── MODAL AJOUT ÉVÉNEMENT ─────────────────── -->
+<div class="modal-overlay" id="event-modal">
+  <div class="modal-box">
+    <h3>Nouvel événement</h3>
+    <form id="event-form">
+      <div class="form-group">
+        <label class="form-label" for="event-title">Titre</label>
+        <input class="form-input" type="text" id="event-title" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="event-date">Date</label>
+        <input class="form-input" type="date" id="event-date" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="event-time">Heure (optionnel)</label>
+        <input class="form-input" type="time" id="event-time">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="event-desc">Description (optionnel)</label>
+        <textarea class="form-textarea" id="event-desc"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="event-cancel">Annuler</button>
+        <button type="submit" class="btn-primary">Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module" src="/gestion/app.js"></script>
+</body>
+</html>

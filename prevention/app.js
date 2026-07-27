@@ -64,7 +64,7 @@ function navigateTo(sectionId) {
 
 /* ─── Progress global ────────────────────────── */
 function updateProgress() {
-  const modules = ['bilan', 'biobilan', 'findrisk', 'cardio', 'cancers', 'audit', 'fagerstrom', 'act', 'stopbang', 'mrs'];
+  const modules = ['bilan', 'biobilan', 'ipaq', 'findrisk', 'cardio', 'cancers', 'audit', 'fagerstrom', 'act', 'stopbang', 'mrs', 'le8'];
   const done = modules.filter(m => state[m] && state[m].completed).length;
   const pct = (done / modules.length) * 100;
 
@@ -1410,7 +1410,10 @@ function updateScreeningTable() {
 ══════════════════════════════════════════════ */
 
 function generateRecap() {
-  const hasAny = state.bilan.completed || state.findrisk.completed || state.cardio.completed || state.cancers.completed;
+  const hasAny = state.bilan?.completed || state.ipaq?.completed || state.biobilan?.completed ||
+                 state.findrisk?.completed || state.cardio?.completed || state.cancers?.completed ||
+                 state.audit?.completed || state.fagerstrom?.completed || state.act?.completed ||
+                 state.stopbang?.completed || state.mrs?.completed;
 
   document.getElementById('recap-empty').classList.toggle('hidden', hasAny);
   document.getElementById('recap-content').classList.toggle('hidden', !hasAny);
@@ -1425,7 +1428,7 @@ function generateRecap() {
   const rows = [];
   const actions = [];
 
-  if (state.bilan.completed) {
+  if (state.bilan?.completed) {
     const scores = state.bilan.themeScores;
     const allPcts = Object.values(scores).map(s => s.pct);
     const avgPct = allPcts.reduce((a, b) => a + b, 0) / allPcts.length;
@@ -1442,7 +1445,7 @@ function generateRecap() {
     }
   }
 
-  if (state.findrisk.completed) {
+  if (state.findrisk?.completed) {
     const levelLabels = { 'low': 'Faible', 'low-mid': 'Légèrement élevé', 'mid': 'Modéré', 'high': 'Élevé', 'very-high': 'Très élevé' };
     const levelClasses = { 'low': 'risk-low', 'low-mid': 'risk-low-mid', 'mid': 'risk-mid', 'high': 'risk-high', 'very-high': 'risk-very-high' };
     const l = state.findrisk.level;
@@ -1457,7 +1460,7 @@ function generateRecap() {
     }
   }
 
-  if (state.cardio.completed) {
+  if (state.cardio?.completed) {
     const levelLabels = { 'low': 'Faible', 'mid': 'Modéré', 'high': 'Élevé' };
     const levelClasses = { 'low': 'risk-low', 'mid': 'risk-mid', 'high': 'risk-high' };
     const l = state.cardio.level;
@@ -1474,7 +1477,7 @@ function generateRecap() {
     }
   }
 
-  if (state.cancers.completed) {
+  if (state.cancers?.completed) {
     const programs = state.cancers.programs;
     const latePrograms = Object.entries(programs).filter(([k, v]) => v && v.status === 'late').map(([k]) => k);
     const soonPrograms = Object.entries(programs).filter(([k, v]) => v && v.status === 'soon').map(([k]) => k);
@@ -1491,20 +1494,23 @@ function generateRecap() {
     }
   }
 
-  // Remplir tableau
-  document.getElementById('recap-table-body').innerHTML = rows.map(r => `
-    <tr>
-      <td><strong>${r.module}</strong></td>
-      <td>${r.result}</td>
-      <td><span class="risk-level-badge ${r.levelClass}" style="font-size:0.75rem;padding:6px 14px;">${r.level}</span></td>
-      <td style="font-size:0.85rem;color:var(--gray);">${r.action}</td>
-    </tr>
-  `).join('');
+  // IPAQ — doit être avant le remplissage du tableau
+  if (state.ipaq && state.ipaq.completed) {
+    const levMap = { faible: 'Niveau faible', modere: 'Niveau modéré', eleve: 'Niveau élevé' };
+    const levCls = { faible: 'risk-high', modere: 'risk-low-mid', eleve: 'risk-low' };
+    const l = state.ipaq.level;
+    rows.push({ module: 'IPAQ — Activité physique', result: Math.round(state.ipaq.totalMet) + ' MET-min/sem',
+      level: levMap[l], levelClass: levCls[l],
+      action: l === 'faible' ? 'Augmenter l\'activité physique progressivement' : l === 'modere' ? 'Intensifier ou diversifier l\'activité' : 'Maintenir le niveau actuel' });
+    // Croisement IPAQ faible + FINDRISK élevé
+    if (l === 'faible' && state.findrisk?.level === 'high') {
+      actions.push({ priority: 1, title: 'Double facteur de risque : sédentarité + FINDRISK élevé',
+        desc: 'Un niveau d\'activité physique insuffisant et un risque diabétique élevé sont des facteurs combinés. L\'activité physique est la première mesure de prévention du diabète de type 2.' });
+    }
+    if (l === 'faible') actions.push({ priority: 2, title: 'Augmenter l\'activité physique', desc: 'Objectif OMS : 150 min d\'activité modérée par semaine. Commencez par 10 min de marche quotidienne et augmentez progressivement.' });
+    if (state.ipaq.sedLevel === 'eleve') actions.push({ priority: 2, title: 'Réduire la sédentarité', desc: `${state.ipaq.q7}h/jour en position assise — fractionnez toutes les 60–90 min par une pause active de 5 minutes.` });
+  }
 
-  // Plan d'action
-  actions.sort((a, b) => a.priority - b.priority);
-
-  // Compléter avec actions génériques si peu de modules
   // Modules additionnels complétés
   if (state.audit && state.audit.completed && !state.audit.notApplicable) {
     const lMap = { 'low': 'Faible risque', 'low-mid': 'Usage à risque', 'mid': 'Usage nocif', 'very-high': 'Dépendance probable' };
@@ -1551,9 +1557,33 @@ function generateRecap() {
     if (l5 === 'high' || l5 === 'mid') actions.push({ priority: l5 === 'high' ? 1 : 3, title: 'Symptômes ménopausiques ' + (lMap5[l5] || '').toLowerCase(), desc: 'Score MRS total ' + state.mrs.total + '/44. Consultation gynécologique pour évaluer les options thérapeutiques (THM, alternatives).' });
   }
 
-  if (!state.findrisk.completed) actions.push({ priority: 4, title: 'Compléter le score FINDRISK', desc: 'Évaluez votre risque de diabète de type 2 (8 questions, 5 min).' });
-  if (!state.cardio.completed) actions.push({ priority: 4, title: 'Compléter le risque cardiovasculaire', desc: 'Calculez votre risque SCORE2 si vous avez votre dernier bilan sanguin.' });
-  if (!state.cancers.completed) actions.push({ priority: 4, title: 'Vérifier les dépistages cancers', desc: 'Vérifiez votre éligibilité aux programmes INCa.' });
+  // LE8 dans récap
+  if (state.le8?.completed) {
+    const ls = state.le8.globalScore;
+    const lCls = ls >= 80 ? 'risk-low' : ls >= 65 ? 'risk-low-mid' : ls >= 50 ? 'risk-mid' : 'risk-high';
+    rows.push({ module: 'Life\'s Essential 8 (AHA 2022)', result: ls + '/100 (' + state.le8.compCount + '/8 composantes)',
+      level: le8Level(ls), levelClass: lCls,
+      action: ls < 65 ? 'Agir en priorité sur les composantes les plus basses' : ls < 80 ? 'Continuer les efforts' : 'Maintenir le profil préventif actuel' });
+    if (ls < 65) actions.push({ priority: 1, title: 'Score Life\'s Essential 8 à améliorer',
+      desc: `Score global ${ls}/100 — revenez sur le module LE8 pour identifier vos 3 priorités d'amélioration personnalisées.` });
+  }
+
+  if (!state.findrisk?.completed) actions.push({ priority: 4, title: 'Compléter le score FINDRISK', desc: 'Évaluez votre risque de diabète de type 2 (8 questions, 5 min).' });
+  if (!state.cardio?.completed) actions.push({ priority: 4, title: 'Compléter le risque cardiovasculaire', desc: 'Calculez votre risque SCORE2 si vous avez votre dernier bilan sanguin.' });
+  if (!state.cancers?.completed) actions.push({ priority: 4, title: 'Vérifier les dépistages cancers', desc: 'Vérifiez votre éligibilité aux programmes INCa.' });
+
+  // Remplir tableau (après toutes les rows)
+  document.getElementById('recap-table-body').innerHTML = rows.map(r => `
+    <tr>
+      <td><strong>${r.module}</strong></td>
+      <td>${r.result}</td>
+      <td><span class="risk-level-badge ${r.levelClass}" style="font-size:0.75rem;padding:6px 14px;">${r.level}</span></td>
+      <td style="font-size:0.85rem;color:var(--gray);">${r.action}</td>
+    </tr>
+  `).join('');
+
+  // Plan d'action
+  actions.sort((a, b) => a.priority - b.priority);
 
   const actionList = document.getElementById('action-plan-list');
   actionList.innerHTML = actions.slice(0, 8).map((a, i) => `
@@ -1580,6 +1610,251 @@ function restartAll() {
   saveState();
   updateProgress();
   navigateTo('accueil');
+}
+
+/* ══════════════════════════════════════════════
+   MODULE LIFE'S ESSENTIAL 8
+   Lloyd-Jones DM et al. Circulation. 2022
+══════════════════════════════════════════════ */
+
+const LE8_COMPS = [
+  { id:'diet',     name:'Alimentation', icon:'🥗' },
+  { id:'activity', name:'Activité',     icon:'🏃' },
+  { id:'tobacco',  name:'Tabac',        icon:'🚭' },
+  { id:'sleep',    name:'Sommeil',      icon:'😴' },
+  { id:'bmi',      name:'IMC',          icon:'⚖️' },
+  { id:'lipids',   name:'Lipides',      icon:'🫀' },
+  { id:'glucose',  name:'Glycémie',     icon:'🩸' },
+  { id:'bp',       name:'Tension',      icon:'💊' },
+];
+
+function le8ScoreColor(s) {
+  if (s < 50) return '#DC2626';
+  if (s < 65) return '#EA580C';
+  if (s < 80) return '#CA8A04';
+  return '#16A34A';
+}
+function le8Level(s) {
+  if (s < 50) return 'Priorité d\'action';
+  if (s < 65) return 'Des progrès importants sont possibles';
+  if (s < 80) return 'Profil intermédiaire — continuez vos efforts';
+  return 'Excellent profil préventif';
+}
+function le8TobaccoChange() {
+  const smk = document.querySelector('input[name="le8_smk"]:checked')?.value;
+  document.getElementById('le8-quit-duration')?.classList.toggle('hidden', smk !== 'ex');
+}
+function le8CalcNonHDL() {
+  const c = parseFloat(document.getElementById('le8-chol-total')?.value);
+  const h = parseFloat(document.getElementById('le8-hdl')?.value);
+  const el = document.getElementById('le8-nonhdl-display');
+  if (el && c && h) el.textContent = (c - h).toFixed(2) + ' mmol/L';
+  else if (el) el.textContent = '—';
+}
+
+function initLE8() {
+  const insufficient = document.getElementById('le8-insufficient');
+  const form = document.getElementById('le8-form');
+  if (!insufficient || !form) return;
+
+  if (!state.findrisk?.completed || !state.ipaq?.completed) {
+    insufficient.classList.remove('hidden');
+    form.classList.add('hidden');
+    const missing = [];
+    if (!state.findrisk?.completed) missing.push({ id:'findrisk', label:'FINDRISK — Diabète' });
+    if (!state.ipaq?.completed)     missing.push({ id:'ipaq',     label:'IPAQ — Activité physique' });
+    if (!state.fagerstrom?.completed) missing.push({ id:'fagerstrom', label:'Fagerström — Tabac (recommandé)' });
+    document.getElementById('le8-missing-modules').innerHTML = missing.map(m =>
+      `<button class="le8-missing-chip" onclick="navigateTo('${m.id}')">→ ${m.label}</button>`
+    ).join('');
+    return;
+  }
+
+  insufficient.classList.add('hidden');
+  form.classList.remove('hidden');
+
+  const profile = getProfile();
+  const bio = profile.bio || {};
+
+  document.getElementById('le8-tobacco-fallback')?.classList.toggle('hidden', !!state.fagerstrom?.completed);
+  document.getElementById('le8-lipids-input')?.classList.toggle('hidden', bio.nonHDL != null);
+  document.getElementById('le8-glucose-input')?.classList.toggle('hidden', bio.glyc != null || bio.hba1c != null);
+  const hasBP = !!(state.cardio?.data?.sbp || bio.pas);
+  document.getElementById('le8-bp-input')?.classList.toggle('hidden', hasBP);
+}
+
+function computeLE8Components() {
+  const profile = getProfile();
+  const bio = profile.bio || {};
+  const scores = {};
+
+  // 1. Alimentation
+  const a = [1,2,3,4,5].map(i => parseInt(document.querySelector(`input[name="le8_a${i}"]:checked`)?.value ?? -1));
+  if (a.some(v => v < 0)) { scores.diet = null; }
+  else {
+    const wts = [[0,1,3,4],[0,1,3,4],[0,1,3,4],[0,1,3,4],[0,1,3,4]];
+    const pts = a.reduce((s,v,i) => s + wts[i][v], 0);
+    scores.diet = Math.round((pts / 20) * 100);
+  }
+
+  // 2. Activité (MVPA sans marche)
+  if (state.ipaq?.completed && state.ipaq.mvpa) {
+    const { daysIntense:di, minIntense:mi, daysModerate:dm, minModerate:mm } = state.ipaq.mvpa;
+    const mvpa = di*mi + dm*mm;
+    scores.activity = mvpa === 0 ? 0 : mvpa < 60 ? 25 : mvpa < 150 ? 50 : mvpa < 300 ? 75 : 100;
+  } else { scores.activity = null; }
+
+  // 3. Tabac
+  if (state.fagerstrom?.completed) {
+    scores.tobacco = state.fagerstrom.notSmoker ? 100 : 0;
+  } else {
+    const smk = document.querySelector('input[name="le8_smk"]:checked')?.value;
+    if (!smk) { scores.tobacco = null; }
+    else if (smk === 'current') { scores.tobacco = 0; }
+    else if (smk === 'never')   { scores.tobacco = 100; }
+    else {
+      const quit = document.querySelector('input[name="le8_quit"]:checked')?.value;
+      scores.tobacco = !quit ? null : quit==='lt1' ? 25 : quit==='1to5' ? 50 : 75;
+    }
+  }
+
+  // 4. Sommeil
+  const slp = document.querySelector('input[name="le8_sleep"]:checked')?.value;
+  if (!slp) { scores.sleep = null; }
+  else {
+    const m = { lt5:0,'5':50,'6':50,'7':100,'8':100,'9':75,gt10:0 };
+    let sc = m[slp] ?? 0;
+    if (state.stopbang?.score >= 5) sc = Math.max(Math.min(sc-15, 60), 0);
+    scores.sleep = sc;
+  }
+
+  // 5. IMC
+  const imc = profile.imc;
+  scores.bmi = imc == null ? null : imc >= 30 ? 0 : imc >= 25 ? 50 : imc >= 23 ? 75 : 100;
+
+  // 6. Lipides (non-HDL mmol/L → mg/dL)
+  let nonHDL = bio.nonHDL;
+  if (nonHDL == null && document.getElementById('le8-lipids-input')?.dataset.skip !== '1') {
+    const c = parseFloat(document.getElementById('le8-chol-total')?.value);
+    const h = parseFloat(document.getElementById('le8-hdl')?.value);
+    if (c && h) nonHDL = c - h;
+  }
+  if (nonHDL != null && document.getElementById('le8-lipids-input')?.dataset.skip !== '1') {
+    const mg = nonHDL * 38.67;
+    scores.lipids = mg >= 220 ? 0 : mg >= 190 ? 25 : mg >= 160 ? 50 : mg >= 130 ? 75 : 100;
+  } else { scores.lipids = null; }
+
+  // 7. Glycémie
+  let glucScore = null;
+  const glycGL = parseFloat(document.getElementById('le8-glyc-gl')?.value);
+  const hba1c  = parseFloat(document.getElementById('le8-hba1c')?.value);
+  const glucSkip = document.getElementById('le8-glucose-input')?.dataset.skip === '1';
+  if (!glucSkip && glycGL) {
+    const mg = glycGL * 100;
+    glucScore = mg >= 126 ? 0 : mg >= 110 ? 25 : mg >= 100 ? 50 : 100;
+  } else if (!glucSkip && hba1c) {
+    glucScore = hba1c >= 6.5 ? 0 : hba1c >= 5.7 ? Math.round(25+(6.5-hba1c)/(6.5-5.7)*25) : 100;
+  } else if (bio.glyc != null) {
+    const mg = bio.glyc * 100;
+    glucScore = mg >= 126 ? 0 : mg >= 110 ? 25 : mg >= 100 ? 50 : 100;
+  } else if (bio.hba1c != null) {
+    const h = bio.hba1c;
+    glucScore = h >= 6.5 ? 0 : h >= 5.7 ? Math.round(25+(6.5-h)/(6.5-5.7)*25) : 100;
+  } else if (state.findrisk?.completed) {
+    const q7 = document.querySelector('input[name="f_hyperglycemia"]:checked')?.value;
+    glucScore = q7 === '5' ? 0 : 75;
+  }
+  scores.glucose = glucScore;
+
+  // 8. Tension artérielle
+  let sbp = state.cardio?.data?.sbp || bio.pas;
+  let dbp = bio.pad;
+  if (!sbp && document.getElementById('le8-bp-input')?.dataset.skip !== '1') {
+    sbp = parseFloat(document.getElementById('le8-sbp')?.value);
+    dbp = parseFloat(document.getElementById('le8-dbp')?.value);
+  }
+  if (document.getElementById('le8-bp-input')?.dataset.skip === '1') sbp = null;
+  if (sbp) {
+    if (sbp >= 160 || (dbp && dbp >= 100)) scores.bp = 0;
+    else if (sbp >= 140 || (dbp && dbp >= 90)) scores.bp = 25;
+    else if (sbp >= 130 || (dbp && dbp >= 80)) scores.bp = 50;
+    else if (sbp >= 120 && (!dbp || dbp < 80)) scores.bp = 75;
+    else scores.bp = 100;
+  } else { scores.bp = null; }
+
+  return scores;
+}
+
+function calculateLE8() {
+  const scores = computeLE8Components();
+  const available = Object.values(scores).filter(s => s !== null);
+  if (available.length < 1) { alert('Répondez d\'abord aux questions.'); return; }
+
+  const globalScore = Math.round(available.reduce((s,v) => s+v, 0) / available.length);
+  const compCount   = available.length;
+  state.le8 = { scores, globalScore, compCount, completed: true };
+  saveState(); updateProgress();
+
+  document.getElementById('le8-form').classList.add('hidden');
+  const results = document.getElementById('le8-results');
+  results.classList.remove('hidden');
+
+  // Jauge
+  const color = le8ScoreColor(globalScore);
+  const arc = document.getElementById('le8-arc');
+  arc.style.stroke = color;
+  setTimeout(() => { arc.style.strokeDashoffset = 377 - (globalScore/100)*377; }, 100);
+  const scoreEl = document.getElementById('le8-score-center');
+  scoreEl.textContent = globalScore;
+  scoreEl.setAttribute('fill', color);
+  document.getElementById('le8-level-label').textContent = le8Level(globalScore);
+  document.getElementById('le8-level-label').style.color = color;
+  document.getElementById('le8-comp-count').textContent =
+    `Calculé sur ${compCount}/8 composantes${compCount<8?' — complétez les modules manquants pour un indice plus précis':''}`;
+
+  // Grille
+  const modLinks = { diet:null, activity:'ipaq', tobacco:'fagerstrom', sleep:'stopbang', bmi:'findrisk', lipids:'biobilan', glucose:'biobilan', bp:'cardio' };
+  document.getElementById('le8-components-grid').innerHTML = LE8_COMPS.map(c => {
+    const s = scores[c.id];
+    if (s === null) {
+      const mod = modLinks[c.id];
+      return `<div class="le8-comp-card"><div class="le8-comp-card-icon">${c.icon}</div><div class="le8-comp-card-name">${c.name}</div><div class="le8-comp-card-na"><div class="le8-comp-card-na-badge">À compléter</div>${mod?`<div class="le8-comp-card-link" onclick="navigateTo('${mod}')">→ Aller au module</div>`:''}</div></div>`;
+    }
+    const col = le8ScoreColor(s);
+    return `<div class="le8-comp-card" style="border-top-color:${col}"><div class="le8-comp-card-icon">${c.icon}</div><div class="le8-comp-card-name">${c.name}</div><div class="le8-comp-card-bar-wrap"><div class="le8-comp-card-bar"><div class="le8-comp-card-bar-fill" style="width:${s}%;background:${col}"></div></div></div><div class="le8-comp-card-score" style="color:${col}">${s}<span style="font-size:0.75rem;font-weight:400;color:var(--gray)">/100</span></div></div>`;
+  }).join('');
+
+  // Plan d'action — 3 plus basses
+  const actionMsgs = {
+    diet:     s => s<50 ? 'Augmentez à 2 portions de légumes/jour et 1 portion de légumineuses/semaine. Réduisez les aliments ultra-transformés.' : 'Ajoutez une portion de poisson gras par semaine pour les oméga-3.',
+    activity: s => s<25 ? '30 min de marche rapide 5 jours/semaine suffisent. Commencez par 10 minutes par jour.' : 'Intégrez 1–2 séances intenses/semaine pour dépasser 300 MET-min.',
+    tobacco:  () => 'Chaque année sans tabac réduit votre risque cardiovasculaire. Tabac Info Service : 3989.',
+    sleep:    s => s<50 ? 'Consultez un médecin pour explorer vos troubles du sommeil. Un dépistage apnée peut être utile.' : 'Visez 7–8h régulières. Évitez les écrans 1h avant de dormir.',
+    bmi:      s => s<50 ? 'Une prise en charge médicale est recommandée. Une perte de 5–7 % réduit significativement le risque de diabète.' : 'Maintenez votre poids par l\'alimentation équilibrée et l\'activité physique.',
+    lipids:   s => s<50 ? 'Consultez votre médecin pour un bilan lipidique et discuter d\'un traitement hypolipémiant.' : 'Réduisez les graisses saturées et augmentez les fibres (légumineuses, avoine).',
+    glucose:  s => s<50 ? 'Consultez votre médecin pour une glycémie à jeun et HbA1c. Un suivi nutritionnel peut être proposé.' : 'Limitez les sucres rapides. L\'activité physique améliore la sensibilité à l\'insuline.',
+    bp:       s => s<50 ? 'Consultez votre médecin pour une évaluation tensionnelle. Automesure sur 3 jours recommandée.' : 'Réduisez le sel (max 5g/jour), limitez l\'alcool, augmentez l\'activité physique.',
+  };
+  const ranked = LE8_COMPS.filter(c => scores[c.id]!==null).map(c=>({...c,score:scores[c.id]})).sort((a,b)=>a.score-b.score).slice(0,3);
+  document.getElementById('le8-action-plan').innerHTML = ranked.length === 0 ? '' : `
+    <div class="le8-action-plan-title">Vos ${ranked.length} priorité${ranked.length>1?'s':''} d'amélioration</div>
+    ${ranked.map((c,i) => `<div class="le8-action-item"><div class="le8-action-rank">${i+1}</div><div class="le8-action-text"><strong>${c.icon} ${c.name} — ${c.score}/100</strong><span>${actionMsgs[c.id]?.(c.score)||''}</span></div></div>`).join('')}`;
+
+  results.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function restartLE8() {
+  state.le8 = { completed:false };
+  saveState(); updateProgress();
+  document.getElementById('le8-results').classList.add('hidden');
+  document.getElementById('le8-form').classList.add('hidden');
+  document.getElementById('le8-insufficient').classList.add('hidden');
+  document.querySelectorAll('#section-le8 input[type="radio"]').forEach(r => r.checked=false);
+  ['le8-lipids-input','le8-glucose-input','le8-bp-input'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) delete el.dataset.skip;
+  });
+  initLE8();
 }
 
 /* ══════════════════════════════════════════════
@@ -2300,6 +2575,205 @@ function checkBilanRealAge(val) {
 }
 
 /* ══════════════════════════════════════════════
+   MODULE IPAQ — Activité Physique
+   Craig CL et al. Med Sci Sports Exerc. 2003
+══════════════════════════════════════════════ */
+
+const IPAQ_MET = { intense: 8.0, moderate: 4.0, walk: 3.3 };
+
+function ipaqGetDays(id) { return parseInt(document.getElementById(id)?.value) || 0; }
+function ipaqGetMin(hId, mId) {
+  const h = parseInt(document.getElementById(hId)?.value) || 0;
+  const m = parseInt(document.getElementById(mId)?.value) || 0;
+  return Math.min(h * 60 + m, 180); // plafond IPAQ 180 min
+}
+function ipaqFmtDays(n) { return n === 0 ? '0 jour' : n === 1 ? '1 jour' : n + ' jours'; }
+function ipaqFmtH(n) { return n < 1 ? Math.round(n * 60) + ' min' : (n % 1 === 0 ? n + 'h' : Math.floor(n) + 'h' + Math.round((n % 1) * 60) + 'min'); }
+
+function ipaqUpdate() {
+  const q1 = ipaqGetDays('ipaq-q1-days');
+  const q3 = ipaqGetDays('ipaq-q3-days');
+  const q5 = ipaqGetDays('ipaq-q5-days');
+  const q7 = parseFloat(document.getElementById('ipaq-q7')?.value) || 0;
+
+  // Labels sliders
+  document.getElementById('ipaq-q1-val').textContent = ipaqFmtDays(q1);
+  document.getElementById('ipaq-q3-val').textContent = ipaqFmtDays(q3);
+  document.getElementById('ipaq-q5-val').textContent = ipaqFmtDays(q5);
+  document.getElementById('ipaq-q7-val').textContent = q7 % 1 === 0 ? q7 + 'h' : Math.floor(q7) + 'h30';
+
+  // Day dots
+  [['ipaq-q1-dots', q1, '#EF4444'], ['ipaq-q3-dots', q3, '#F59E0B'], ['ipaq-q5-dots', q5, '#16A34A']].forEach(([id, val, color]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = Array.from({length: 7}, (_, i) => {
+      const day = ['L','M','M','J','V','S','D'][i];
+      return `<div class="ipaq-day-dot ${i < val ? 'active' : ''}" style="${i < val ? `border-color:${color};background:${color}` : ''}">${day}</div>`;
+    }).join('');
+  });
+
+  // Grisage durées si 0 jours
+  document.getElementById('ipaq-q2-wrap')?.classList.toggle('disabled', q1 === 0);
+  document.getElementById('ipaq-q4-wrap')?.classList.toggle('disabled', q3 === 0);
+  document.getElementById('ipaq-q6-wrap')?.classList.toggle('disabled', q5 === 0);
+
+  // Hints plafond 180 min
+  [['ipaq-q2-h','ipaq-q2-m','ipaq-q2-hint'], ['ipaq-q4-h','ipaq-q4-m','ipaq-q4-hint'], ['ipaq-q6-h','ipaq-q6-m','ipaq-q6-hint']].forEach(([hId,mId,hintId]) => {
+    const min = ipaqGetMin(hId, mId);
+    const hint = document.getElementById(hintId);
+    if (hint) hint.textContent = min >= 180 ? '⚠ Plafonné à 180 min (règle IPAQ)' : '';
+  });
+}
+
+function calculateIPAQ() {
+  const q1 = ipaqGetDays('ipaq-q1-days');
+  const q2 = q1 > 0 ? ipaqGetMin('ipaq-q2-h', 'ipaq-q2-m') : 0;
+  const q3 = ipaqGetDays('ipaq-q3-days');
+  const q4 = q3 > 0 ? ipaqGetMin('ipaq-q4-h', 'ipaq-q4-m') : 0;
+  const q5 = ipaqGetDays('ipaq-q5-days');
+  const q6 = q5 > 0 ? ipaqGetMin('ipaq-q6-h', 'ipaq-q6-m') : 0;
+  const q7 = parseFloat(document.getElementById('ipaq-q7')?.value) || 0;
+
+  const metIntense  = IPAQ_MET.intense   * q1 * q2;
+  const metModerate = IPAQ_MET.moderate  * q3 * q4;
+  const metWalk     = IPAQ_MET.walk      * q5 * q6;
+  const totalMet    = metIntense + metModerate + metWalk;
+
+  const warn = document.getElementById('ipaq-warn');
+  if (totalMet > 10000) {
+    warn.textContent = 'Valeurs inhabituelles (> 10 000 MET-min/sem) — vérifiez vos saisies avant de calculer.';
+    warn.classList.remove('hidden');
+    return;
+  }
+  warn.classList.add('hidden');
+
+  // Classification IPAQ
+  let level, levelLabel, levelColor, levelIcon, msg;
+  if (totalMet < 600) {
+    level = 'faible'; levelLabel = 'Niveau faible'; levelColor = '#EF4444'; levelIcon = '🔴';
+    msg = 'Votre niveau d\'activité est insuffisant pour protéger votre santé. L\'OMS recommande au moins 150 min d\'activité modérée par semaine. Chaque pas compte — commencez par 10 min par jour.';
+  } else if (totalMet < 3000) {
+    level = 'modere'; levelLabel = 'Niveau modéré'; levelColor = '#F59E0B'; levelIcon = '🟡';
+    msg = 'Votre niveau d\'activité est satisfaisant. Pour des bénéfices accrus sur la santé cardiovasculaire et métabolique, visez 300 min/semaine d\'activité modérée ou intégrez des séances plus intenses.';
+  } else {
+    level = 'eleve'; levelLabel = 'Niveau élevé'; levelColor = '#16A34A'; levelIcon = '🟢';
+    msg = 'Excellent niveau d\'activité. Vous réduisez significativement vos risques cardiovasculaires, métaboliques et mentaux. Maintenez ce rythme et pensez au renforcement musculaire ≥ 2×/semaine.';
+  }
+
+  // Sédentarité Q7
+  let sedLevel, sedLabel, sedIcon;
+  if (q7 < 6) { sedLevel = 'faible'; sedLabel = 'Sédentarité faible'; sedIcon = '🟢'; }
+  else if (q7 <= 8) { sedLevel = 'moderate'; sedLabel = 'Sédentarité modérée'; sedIcon = '🟡'; }
+  else { sedLevel = 'eleve'; sedLabel = 'Sédentarité élevée'; sedIcon = '🔴'; }
+
+  state.ipaq = { totalMet, level, sedLevel, q7,
+    mvpa: { daysIntense: q1, minIntense: q2, daysModerate: q3, minModerate: q4 },
+    completed: true };
+  saveState(); updateProgress();
+
+  // Affichage résultats
+  document.getElementById('ipaq-form').classList.add('hidden');
+  const results = document.getElementById('ipaq-results');
+  results.classList.remove('hidden');
+
+  // Jauge MET horizontale (0→5000)
+  const pct = Math.min(totalMet / 5000 * 100, 100);
+  setTimeout(() => {
+    const cursor = document.getElementById('ipaq-met-cursor');
+    if (cursor) cursor.style.left = pct + '%';
+    const curVal = document.getElementById('ipaq-met-cursor-val');
+    if (curVal) curVal.textContent = Math.round(totalMet) + ' MET-min/sem';
+  }, 100);
+
+  // Card activité
+  const actCard = document.getElementById('ipaq-activity-card');
+  actCard.style.borderLeftColor = levelColor;
+  document.getElementById('ipaq-activity-icon').textContent = levelIcon;
+  document.getElementById('ipaq-activity-level').textContent = levelLabel;
+  document.getElementById('ipaq-activity-level').style.color = levelColor;
+  document.getElementById('ipaq-met-detail').textContent = Math.round(totalMet) + ' MET-min / semaine';
+  document.getElementById('ipaq-activity-msg').textContent = msg;
+
+  // Card sédentarité
+  const sedCard = document.getElementById('ipaq-sedentary-card');
+  const sedColors = { faible: '#16A34A', moderate: '#F59E0B', eleve: '#EF4444' };
+  sedCard.style.borderLeftColor = sedColors[sedLevel];
+  document.getElementById('ipaq-sedentary-icon').textContent = sedIcon;
+  document.getElementById('ipaq-sedentary-level').textContent = sedLabel;
+  document.getElementById('ipaq-sedentary-level').style.color = sedColors[sedLevel];
+  document.getElementById('ipaq-sedentary-msg').textContent = q7 < 6
+    ? 'Votre temps assis quotidien est dans les limites recommandées.'
+    : q7 <= 8
+    ? 'Votre temps assis est modéré. Veillez à l\'interrompre régulièrement par des pauses actives.'
+    : `${ipaqFmtH(q7)} par jour en position assise — risque accru de maladies cardiovasculaires et métaboliques.`;
+
+  // Alerte sédentarité
+  document.getElementById('ipaq-sedentary-alert').classList.toggle('hidden', q7 <= 6);
+
+  // Breakdown MET
+  document.getElementById('ipaq-met-breakdown').innerHTML = `
+    <div class="ipaq-breakdown-item">
+      <div class="ipaq-breakdown-label"><span class="ipaq-breakdown-dot" style="background:#EF4444"></span>Activités intenses</div>
+      <div class="ipaq-breakdown-val">${Math.round(metIntense)} MET-min</div>
+    </div>
+    <div class="ipaq-breakdown-item">
+      <div class="ipaq-breakdown-label"><span class="ipaq-breakdown-dot" style="background:#F59E0B"></span>Activités modérées</div>
+      <div class="ipaq-breakdown-val">${Math.round(metModerate)} MET-min</div>
+    </div>
+    <div class="ipaq-breakdown-item">
+      <div class="ipaq-breakdown-label"><span class="ipaq-breakdown-dot" style="background:#16A34A"></span>Marche</div>
+      <div class="ipaq-breakdown-val">${Math.round(metWalk)} MET-min</div>
+    </div>
+  `;
+
+  // Recommandations
+  const recos = [];
+  if (level === 'faible') {
+    recos.push('Commencez par 10 minutes de marche par jour — c\'est suffisant pour débuter et créer l\'habitude.');
+    recos.push('Intégrez l\'activité dans votre quotidien : prendre les escaliers, descendre un arrêt plus tôt, marcher pendant les pauses.');
+    recos.push('Objectif progressif : atteindre 30 minutes de marche 5 jours/semaine en 4 semaines.');
+  } else if (level === 'modere') {
+    recos.push('Essayez d\'ajouter une séance d\'activité intense par semaine (course, vélo en côte, natation rapide).');
+    recos.push('Visez 300 min/semaine d\'activité modérée pour maximiser les bénéfices cardiovasculaires.');
+  } else {
+    recos.push('Excellent ! Pensez au renforcement musculaire ≥ 2 fois par semaine si ce n\'est pas déjà le cas (gainage, squats, résistance).');
+    recos.push('Veillez à la récupération et à l\'hydratation pour maintenir ce niveau durablement.');
+  }
+  if (q7 > 6) recos.push('Fractionnez vos périodes assises : levez-vous et bougez 5 minutes toutes les 60 à 90 minutes.');
+
+  document.getElementById('ipaq-recommendations').innerHTML = '<div class="recommendations-title">Recommandations personnalisées</div>' +
+    recos.map(r => `<div class="recommendation-item"><span class="recommendation-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#16A34A" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>${r}</div>`).join('');
+
+  // Auto-remplissage FINDRISK Q4
+  const findriskQ4 = document.querySelector('input[name="f_activity"]');
+  const noteEl = document.getElementById('ipaq-findrisk-note');
+  const jours_actifs = q1 + q3 + q5;
+  if (findriskQ4) {
+    const actifSuffisant = totalMet >= 600 && jours_actifs >= 4;
+    findriskQ4.closest('.options-grid')?.querySelectorAll('input').forEach(r => r.checked = false);
+    const target = document.querySelector(`input[name="f_activity"][value="${actifSuffisant ? '0' : '2'}"]`);
+    if (target) target.checked = true;
+    noteEl.className = 'info-box info-box--info';
+    noteEl.classList.remove('hidden');
+    noteEl.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span>FINDRISK Q4 pré-rempli depuis votre évaluation IPAQ (<strong>${actifSuffisant ? 'Oui — activité suffisante' : 'Non — activité insuffisante'}</strong>) — <button class="btn-link" onclick="document.querySelector('input[name=f_activity]')?.closest('.options-grid')?.querySelectorAll('input').forEach(r=>r.checked=false);this.closest('.info-box').classList.add('hidden')">Modifier</button></span>`;
+  }
+
+  results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function restartIPAQ() {
+  state.ipaq = { completed: false };
+  saveState(); updateProgress();
+  document.getElementById('ipaq-results').classList.add('hidden');
+  document.getElementById('ipaq-form').classList.remove('hidden');
+  ['ipaq-q1-days','ipaq-q3-days','ipaq-q5-days'].forEach(id => { const el = document.getElementById(id); if (el) el.value = 0; });
+  document.getElementById('ipaq-q7').value = 6;
+  ['ipaq-q2-h','ipaq-q2-m','ipaq-q4-h','ipaq-q4-m','ipaq-q6-h','ipaq-q6-m'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ipaqUpdate();
+}
+
+/* ══════════════════════════════════════════════
    MODULE AUDIT — Alcool
 ══════════════════════════════════════════════ */
 
@@ -2682,31 +3156,42 @@ function restartSTOPBANG() {
 const MRS_ITEMS = {
   somato: [
     { id: 'mrs_1', label: 'Bouffées de chaleur / sueurs',
-      desc: 'Sensation soudaine de chaleur intense au visage, cou ou poitrine, avec transpiration — le jour ou la nuit (sueurs nocturnes pouvant mouiller les draps).' },
+      desc: `<strong>Signes typiques :</strong> Vague soudaine de chaleur intense qui monte du thorax vers le visage et le cou, durent 2 à 4 minutes, parfois accompagnée de rougeur du visage et de transpiration abondante. Peuvent survenir plusieurs fois par heure le jour ou la nuit.<br>
+<strong>Exemples concrets :</strong> Vous devez vous déshabiller en réunion, vous réveillez trempée et devez changer la literie, votre visage devient rouge écarlate brusquement. Certaines femmes ressentent des frissons juste après.` },
     { id: 'mrs_2', label: 'Gêne cardiaque',
-      desc: 'Battements inhabituels, irréguliers ou fortement perceptibles (cœur qui "s\'emballe", palpitations), oppression dans la poitrine sans effort particulier.' },
+      desc: `<strong>Signes typiques :</strong> Palpitations (sensation que le cœur bat fort, vite ou de façon irrégulière), "raté" du cœur, oppression thoracique ou essoufflement inhabituel sans effort physique particulier.<br>
+<strong>Exemples concrets :</strong> Vous sentez votre cœur "s'emballer" en vous levant du canapé, vous avez l'impression qu'il saute un battement, vous ressentez une pression dans la poitrine au repos. Ces symptômes doivent être évalués par un médecin pour éliminer une cause cardiaque.` },
     { id: 'mrs_3', label: 'Troubles du sommeil',
-      desc: 'Difficultés à s\'endormir le soir, réveils nocturnes fréquents sans raison, réveil très matinal avec impossibilité de se rendormir.' },
+      desc: `<strong>Signes typiques :</strong> Difficultés à trouver le sommeil malgré la fatigue, réveils nocturnes répétés (souvent liés aux bouffées de chaleur), réveil définitif à 4h ou 5h du matin sans pouvoir se rendormir, sommeil non réparateur.<br>
+<strong>Exemples concrets :</strong> Vous regardez le plafond pendant une heure avant de dormir, vous vous réveillez 3 ou 4 fois par nuit en transpirant, vous vous levez épuisée alors que vous avez "dormi" 8 heures. La fatigue diurne qui s'ensuit est fréquente.` },
     { id: 'mrs_4', label: 'Douleurs musculaires et articulaires',
-      desc: 'Douleurs, raideurs ou inconforts dans les muscles et articulations (dos, genoux, épaules, mains) sans blessure ni maladie articulaire connue.' },
+      desc: `<strong>Signes typiques :</strong> Douleurs diffuses dans les muscles, raideurs articulaires (surtout le matin), sensations de "courbatures" permanentes, douleurs dans les mains, les doigts, les genoux ou les épaules sans cause traumatique ou inflammatoire connue.<br>
+<strong>Exemples concrets :</strong> Vos doigts sont raides le matin pendant 30 minutes, monter les escaliers est douloureux sans raison, vos poignets et genoux vous font souffrir de façon inhabituelle. Ces douleurs sont liées à la baisse des œstrogènes qui ont un rôle anti-inflammatoire.` },
   ],
   psycho: [
     { id: 'mrs_5', label: 'Humeur dépressive',
-      desc: 'Tristesse persistante, découragement, larmes faciles, perte d\'envie ou d\'intérêt pour des activités habituellement plaisantes, humeur changeante sans raison évidente.' },
+      desc: `<strong>Signes typiques :</strong> Tristesse sans raison apparente, larmes faciles, perte d\'élan vital et de motivation, sentiment de vide ou d\'inutilité, anédonie (ne plus ressentir de plaisir dans des activités habituellement appréciées), sautes d\'humeur rapides.<br>
+<strong>Exemples concrets :</strong> Vous pleurez sans savoir pourquoi, vous n\'avez plus envie de sortir ni de voir des amis, vous avez du mal à vous lever le matin, les choses qui vous faisaient plaisir vous laissent indifférente. Différent d\'une dépression avérée, mais à surveiller si persistant.` },
     { id: 'mrs_6', label: 'Irritabilité / nervosité',
-      desc: 'Vous vous énervez plus facilement qu\'avant, impatience accrue, tension intérieure, réactions plus vives que d\'habitude face à des situations du quotidien.' },
+      desc: `<strong>Signes typiques :</strong> Seuil de tolérance abaissé, vous vous énervez pour des détails qui ne vous affectaient pas avant, tension intérieure permanente, impatience accrue avec les proches ou les collègues, sensation d\'être "à fleur de peau".<br>
+<strong>Exemples concrets :</strong> Un bruit dans la maison vous fait réagir de façon disproportionnée, vous "craquez" en voiture pour un rien, vous avez du mal à contenir vos réactions même en sachant qu\'elles sont excessives, vos proches vous disent que vous êtes différente.` },
     { id: 'mrs_7', label: 'Anxiété',
-      desc: 'Inquiétude ou malaise diffus sans raison précise, crises d\'angoisse soudaines (cœur rapide, souffle court, peur intense), sensation que quelque chose de mauvais va arriver.' },
+      desc: `<strong>Signes typiques :</strong> Inquiétude excessive et difficile à contrôler, anticipation du pire pour des situations banales, malaise diffus et persistant, crises d\'angoisse soudaines (montée d\'adrénaline, cœur rapide, souffle court, nœud à l\'estomac).<br>
+<strong>Exemples concrets :</strong> Vous ressassez des inquiétudes pour votre santé, vos enfants, votre travail sans pouvoir vous arrêter, vous avez des attaques de panique dans des situations inoffensives, vous évitez certaines activités par peur. Peut s\'accompagner d\'une sensation de "ne pas être bien dans sa peau".` },
   ],
   uro: [
     { id: 'mrs_8',  label: 'Problèmes de sexualité',
-      desc: 'Diminution du désir sexuel, moindre plaisir ou satisfaction lors des rapports, changements notables dans la fréquence ou la qualité de la vie sexuelle par rapport à votre habitude.' },
+      desc: `<strong>Signes typiques :</strong> Baisse ou disparition du désir sexuel, diminution de l\'excitation physique, rapports sexuels moins fréquents ou moins satisfaisants, difficultés à atteindre l\'orgasme, parfois douleurs lors des rapports (liées à la sécheresse vaginale).<br>
+<strong>Exemples concrets :</strong> Vous n\'avez plus d\'envie spontanée, les rapports sont devenus douloureux ou inconfortables, vous vous sentez "déconnectée" de votre corps pendant l\'intimité. Ces changements sont fréquents et traitables — ne pas les normaliser sans en parler à un médecin.` },
     { id: 'mrs_9',  label: 'Problèmes urinaires',
-      desc: 'Besoin d\'uriner plus souvent (y compris la nuit), difficulté à vous "retenir", petites fuites urinaires lors d\'un effort (toux, fou rire, sport, éternuement).' },
+      desc: `<strong>Signes typiques :</strong> Besoin d\'uriner plus fréquemment (pollakiurie), envies pressantes difficiles à différer, fuites urinaires à l\'effort (toux, rire, éternuement, sport) ou par urgence, nécessité de se lever la nuit pour uriner (nycturie).<br>
+<strong>Exemples concrets :</strong> Vous devez connaître les toilettes avant d\'aller quelque part, vous avez des fuites en riant ou en éternuant, vous vous réveillez 2 à 3 fois par nuit pour uriner, vous devez vous précipiter aux toilettes dès l\'envie. Souvent lié à l\'atrophie des muqueuses urinaires.` },
     { id: 'mrs_10', label: 'Sécheresse vaginale',
-      desc: 'Sensation de sécheresse, d\'irritation ou de brûlure dans le vagin au quotidien ou lors des rapports sexuels, douleurs à la pénétration, inconfort persistant.' },
+      desc: `<strong>Signes typiques :</strong> Sensation de sécheresse, picotements, brûlures ou irritations permanentes dans le vagin, douleurs lors de la pénétration ou lors des rapports sexuels (dyspareunie), vulve sensible ou douloureuse, pertes vaginales modifiées.<br>
+<strong>Exemples concrets :</strong> Vous ressentez une gêne constante "en bas" même sans rapport, les rapports sexuels sont douloureux au point de les éviter, vous avez des brûlures après uriner, votre vulve vous semble plus sensible ou irritée. Traitement efficace disponible — à aborder sans tabou avec votre médecin.` },
     { id: 'mrs_11', label: 'Inconfort physique général',
-      desc: 'Douleurs ou raideurs dans les articulations, sensation de gonflement dans les mains ou doigts, inconforts physiques diffus sans explication médicale connue.' },
+      desc: `<strong>Signes typiques :</strong> Douleurs ou raideurs articulaires diffuses (mains, poignets, chevilles, hanches), sensation de gonflement ou d\'engourdissement dans les membres, fourmillements, douleurs abdominales basses ou pelviennes sans rapport avec un cycle menstruel régulier.<br>
+<strong>Exemples concrets :</strong> Vos bagues ne passent plus le matin (doigts gonflés), vous avez des fourmillements dans les mains la nuit, vous ressentez des douleurs pelviennes diffuses sans raison gynécologique évidente. Ces symptômes peuvent être liés à la carence en œstrogènes.` },
   ]
 };
 
@@ -2738,6 +3223,25 @@ function showMRSForm(val) {
   if (val === 'oui') {
     form.classList.remove('hidden');
     msg.classList.add('hidden');
+    // Ajouter l'intro si pas déjà présente
+    if (!document.getElementById('mrs-intro')) {
+      const intro = document.createElement('div');
+      intro.id = 'mrs-intro';
+      intro.className = 'mrs-intro-box';
+      intro.innerHTML = `
+        <div class="mrs-intro-title">Comment utiliser cette échelle ?</div>
+        <p>Pour chaque symptôme, évaluez son intensité sur les <strong>4 dernières semaines</strong> :</p>
+        <div class="mrs-intro-scale">
+          <span class="mrs-intro-chip chip-0">0 — Absent</span>
+          <span class="mrs-intro-chip chip-1">1 — Léger (gêne légère, vie normale)</span>
+          <span class="mrs-intro-chip chip-2">2 — Modéré (gêne notable, quelques limitations)</span>
+          <span class="mrs-intro-chip chip-3">3 — Sévère (impact quotidien significatif)</span>
+          <span class="mrs-intro-chip chip-4">4 — Très sévère (invalidant, consultation urgente)</span>
+        </div>
+        <p style="margin-top:10px;font-size:0.8rem">Lisez la description de chaque symptôme avant de répondre — certains signes de la (pré)ménopause sont peu connus et facilement attribués au stress ou à la fatigue.</p>
+      `;
+      form.insertBefore(intro, form.firstChild);
+    }
     // Rendre les items MRS
     renderMRSItems('mrs-somato-items', MRS_ITEMS.somato);
     renderMRSItems('mrs-psycho-items', MRS_ITEMS.psycho);
@@ -2899,6 +3403,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const cAge = document.getElementById('c-age')?.value;
   if (cSex) updateProfile({ sex: cSex.value });
   if (cAge) updateProfile({ age: parseInt(cAge) });
+
+  // Initialiser IPAQ
+  if (document.getElementById('ipaq-q1-days')) { ipaqUpdate(); }
+
+  // Initialiser LE8
+  if (document.getElementById('le8-insufficient')) { initLE8(); }
 
   // Initialiser l'onglet saisie comme visible
   const saisieTab = document.getElementById('bio-tab-saisie');

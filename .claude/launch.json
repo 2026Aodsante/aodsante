@@ -13,5 +13,19 @@
       "runtimeArgs": ["-NoProfile", "-Command", "$listener = New-Object System.Net.HttpListener; $listener.Prefixes.Add('http://localhost:3000/'); $listener.Start(); while ($listener.IsListening) { $ctx = $listener.GetContext(); $req = $ctx.Request; $res = $ctx.Response; $path = $req.Url.LocalPath; if ($path -eq '/') { $path = '/index.html' }; $file = Join-Path 'C:\\Users\\mathi\\Desktop\\CLAUDE IA\\Site' $path.TrimStart('/'); if (Test-Path $file) { $bytes = [System.IO.File]::ReadAllBytes($file); $ext = [System.IO.Path]::GetExtension($file); $mime = if ($ext -eq '.html') { 'text/html' } elseif ($ext -eq '.css') { 'text/css' } elseif ($ext -eq '.js') { 'application/javascript' } elseif ($ext -eq '.png') { 'image/png' } elseif ($ext -eq '.jpg') { 'image/jpeg' } elseif ($ext -eq '.svg') { 'image/svg+xml' } else { 'application/octet-stream' }; $res.ContentType = $mime; $res.ContentLength64 = $bytes.Length; $res.OutputStream.Write($bytes, 0, $bytes.Length) } else { $res.StatusCode = 404 }; $res.Close() }"],
       "port": 3000
     }
+  ,
+    {
+      "name": "cs-ide",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "$listener = New-Object System.Net.HttpListener; $listener.Prefixes.Add('http://localhost:3457/'); $listener.Start(); while ($listener.IsListening) { $ctx = $listener.GetContext(); $req = $ctx.Request; $res = $ctx.Response; $path = $req.Url.LocalPath; if ($path -eq '/' -or $path -eq '/cs-ide/' -or $path -eq '/cs-ide') { $path = '/cs-ide/index.html' }; $file = Join-Path 'C:\\Users\\mathi\\Desktop\\CLAUDE IA\\Site' $path.TrimStart('/'); if (Test-Path $file) { $bytes = [System.IO.File]::ReadAllBytes($file); $ext = [System.IO.Path]::GetExtension($file); $mime = if ($ext -eq '.html') { 'text/html' } elseif ($ext -eq '.css') { 'text/css' } elseif ($ext -eq '.js') { 'application/javascript' } elseif ($ext -eq '.pdf') { 'application/pdf' } elseif ($ext -eq '.png') { 'image/png' } elseif ($ext -eq '.jpg') { 'image/jpeg' } elseif ($ext -eq '.svg') { 'image/svg+xml' } else { 'application/octet-stream' }; $res.ContentType = $mime; $res.ContentLength64 = $bytes.Length; $res.OutputStream.Write($bytes, 0, $bytes.Length) } else { $res.StatusCode = 404 }; $res.Close() }"],
+      "port": 3457
+    }
+  ,
+    {
+      "name": "gestion",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "$listener = New-Object System.Net.HttpListener; $listener.Prefixes.Add('http://localhost:3458/'); $listener.Start(); while ($listener.IsListening) { $ctx = $listener.GetContext(); $req = $ctx.Request; $res = $ctx.Response; $path = $req.Url.LocalPath; if ($path -eq '/' -or $path -eq '/gestion/' -or $path -eq '/gestion') { $path = '/gestion/index.html' }; $file = Join-Path 'C:\\Users\\mathi\\Desktop\\CLAUDE IA\\Site' $path.TrimStart('/'); if (Test-Path $file) { $bytes = [System.IO.File]::ReadAllBytes($file); $ext = [System.IO.Path]::GetExtension($file); $mime = if ($ext -eq '.html') { 'text/html' } elseif ($ext -eq '.css') { 'text/css' } elseif ($ext -eq '.js') { 'text/javascript' } elseif ($ext -eq '.png') { 'image/png' } elseif ($ext -eq '.jpg') { 'image/jpeg' } elseif ($ext -eq '.svg') { 'image/svg+xml' } else { 'application/octet-stream' }; $res.ContentType = $mime; $res.ContentLength64 = $bytes.Length; $res.OutputStream.Write($bytes, 0, $bytes.Length) } else { $res.StatusCode = 404 }; $res.Close() }"],
+      "port": 3458
+    }
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "name": "cpts-dbmb-gestion-seed",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Script d'initialisation Firebase (comptes membres + données) pour l'outil de gestion CPTS DBMB",
+  "main": "seed.js",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}

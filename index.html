@@ -236,7 +236,7 @@
         <div class="mcard__body">
           <div class="mcard__num">04</div>
           <h3>Formations &amp; Interventions</h3>
-          <p>Formatrice certifiée et intervenante terrain — trois axes de formation au service des professionnels de santé et des établissements.</p>
+          <p>Formatrice et intervenante terrain — trois axes de formation au service des professionnels de santé et des établissements.</p>
           <div class="mcard__tags">
             <span>Encadrement SSES</span><span>Formation prévention &amp; promotion santé</span><span>Formation exercice coordonné</span><span>Conférences</span><span>Enseignement IFMK / IFSI</span>
           </div>
@@ -317,6 +317,10 @@
           <div class="reseau-expert">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             Entreprise de travaux
+          </div>
+          <div class="reseau-expert">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9l7-6 7 6v12"/><path d="M9 21v-6h6v6"/><path d="M12 3v3"/><path d="M5 9h14"/></svg>
+            Architecte
           </div>
         </div>
       </div>
@@ -462,27 +466,30 @@
       </div>
     </div>
     <div class="cta-final__right">
-      <form class="form" onsubmit="handleSubmit(event)">
+      <form class="form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="c07269c4-2f0e-47d6-9e01-9fa9215311b5" />
+        <input type="hidden" name="subject" value="Nouvelle demande — AOD Santé" />
+        <input type="hidden" name="redirect" value="false" />
         <div class="form-row">
           <div class="form-group">
             <label>Nom / Structure</label>
-            <input type="text" placeholder="Dr. Martin — CPTS Seine-Nord" required />
+            <input type="text" name="name" placeholder="Dr. Martin — CPTS Seine-Nord" required />
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input type="email" placeholder="contact@cpts.fr" required />
+            <input type="email" name="email" placeholder="contact@cpts.fr" required />
           </div>
         </div>
         <div class="form-group">
           <label>Type de structure</label>
-          <select>
+          <select name="structure">
             <option value="">— Sélectionner —</option>
             <option>CPTS</option><option>MSP</option><option>Association / ESMS</option><option>URPS / ARS</option><option>Autre</option>
           </select>
         </div>
         <div class="form-group">
           <label>Votre projet</label>
-          <textarea rows="4" placeholder="Décrivez brièvement votre besoin..." required></textarea>
+          <textarea name="message" rows="4" placeholder="Décrivez brièvement votre besoin..." required></textarea>
         </div>
         <button type="submit" class="btn btn--primary btn--full">Envoyer ma demande →</button>
         <p class="form-rgpd">Données utilisées uniquement pour répondre à votre demande. Droit d'accès, de modification ou de suppression sur simple demande à <a href="mailto:mathildemoysan@outlook.fr">mathildemoysan@outlook.fr</a> — <a href="mentions-legales.html">mentions légales</a>.</p>

@@ -14,13 +14,32 @@ navLinks.querySelectorAll('a').forEach(a => {
   a.addEventListener('click', () => navLinks.classList.remove('open'));
 });
 
-// Contact form
-function handleSubmit(e) {
-  e.preventDefault();
-  const success = document.getElementById('formSuccess');
-  success.classList.add('visible');
-  e.target.reset();
-  setTimeout(() => success.classList.remove('visible'), 6000);
+// Contact form — Web3Forms
+const contactForm = document.querySelector('.form');
+if (contactForm) {
+  contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = contactForm.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+    const data = new FormData(contactForm);
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
+      const json = await res.json();
+      if (json.success) {
+        const success = document.getElementById('formSuccess');
+        success.classList.add('visible');
+        contactForm.reset();
+        setTimeout(() => success.classList.remove('visible'), 6000);
+      } else {
+        alert("Une erreur s'est produite. Veuillez réessayer ou nous contacter par email.");
+      }
+    } catch {
+      alert("Erreur réseau. Veuillez réessayer.");
+    }
+    btn.disabled = false;
+    btn.textContent = 'Envoyer ma demande →';
+  });
 }
 
 // Fade-in on scroll

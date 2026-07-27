@@ -29,7 +29,7 @@
       <span class="nav-label">Accueil</span>
     </button></li>
 
-    <li class="nav-group-header" aria-hidden="true">Prévention officielle</li>
+    <li class="nav-group-header" aria-hidden="true">Via l'Assurance Maladie</li>
     <li><button class="nav-item" data-section="bilan" aria-label="Mon Bilan Prévention">
       <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="2" width="14" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
       <span class="nav-label">Mon Bilan Prévention</span>
@@ -46,6 +46,11 @@
       <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 3v3a1 1 0 001 1h2a1 1 0 001-1V3" stroke="currentColor" stroke-width="1.5"/><rect x="4" y="5" width="12" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
       <span class="nav-label">Mon Bilan Biologique</span>
       <span class="nav-badge" id="badge-biobilan" aria-hidden="true"></span>
+    </button></li>
+    <li><button class="nav-item" data-section="ipaq" aria-label="IPAQ Activité physique">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="4" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v5M7 9l-2 4M13 9l2 4M8 11l-1 5M12 11l1 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <span class="nav-label">IPAQ — Activité physique</span>
+      <span class="nav-badge" id="badge-ipaq" aria-hidden="true"></span>
     </button></li>
     <li><button class="nav-item" data-section="findrisk" aria-label="Score FINDRISK Diabète">
       <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
@@ -89,6 +94,13 @@
       <span class="nav-badge" id="badge-mrs" aria-hidden="true"></span>
     </button></li>
 
+    <li class="nav-separator" aria-hidden="true"></li>
+    <li class="nav-group-header le8-nav-header" aria-hidden="true">◉ Mon Score Global</li>
+    <li><button class="nav-item nav-item--le8" data-section="le8" aria-label="Life's Essential 8 — Score global">
+      <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#7C3AED" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="#7C3AED" opacity="0.3"/></svg></span>
+      <span class="nav-label">Life's Essential 8</span>
+      <span class="nav-badge" id="badge-le8" aria-hidden="true"></span>
+    </button></li>
     <li class="nav-separator" aria-hidden="true"></li>
     <li><button class="nav-item" data-section="recap" aria-label="Mon Récapitulatif">
       <span class="nav-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="15" r="3" fill="currentColor" opacity="0.6"/></svg></span>
@@ -136,7 +148,7 @@
           personnalisé
         </h1>
         <p class="hero-subtitle">
-          Identifiez vos priorités de santé et préparez votre prochaine consultation. Cet outil d'orientation ne remplace pas l'avis de votre médecin.
+          Des scores validés scientifiquement pour identifier vos priorités de santé et préparer votre prochaine consultation. Cet outil d'orientation ne remplace pas l'avis de votre médecin.
         </p>
         <div class="hero-cta-group">
           <button class="btn-primary btn-large" onclick="navigateTo('bilan')" aria-label="Commencer mon bilan prévention">
@@ -186,13 +198,21 @@
         <p class="module-card-desc">Saisissez vos valeurs biologiques (cholestérol, glycémie, tension) pour débloquer SCORE2 et enrichir votre profil de risque. Normes de référence intégrées.</p>
         <div class="module-card-tag">Débloque SCORE2</div>
       </div>
+      <div class="module-card module-card--ipaq" role="listitem" tabindex="0" onclick="navigateTo('ipaq')" onkeydown="if(event.key==='Enter')navigateTo('ipaq')" aria-label="IPAQ Activité physique">
+        <div class="module-card-accent"></div>
+        <div class="module-card-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="5" r="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M14 8v7M10 12l-3 6M18 12l3 6M11 15l-1.5 7M17 15l1.5 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="module-card-number" aria-hidden="true">★</div>
+        <h3 class="module-card-title">IPAQ — Activité physique</h3>
+        <p class="module-card-desc">Questionnaire international validé. Calcule vos MET-minutes hebdomadaires et classe votre niveau d'activité selon les seuils OMS 2020.</p>
+        <div class="module-card-tag">Niveaux OMS · 7 questions</div>
+      </div>
       <div class="module-card module-card--findrisk" role="listitem" tabindex="0" onclick="navigateTo('findrisk')" onkeydown="if(event.key==='Enter')navigateTo('findrisk')" aria-label="Score FINDRISK Diabète">
         <div class="module-card-accent"></div>
         <div class="module-card-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.8"/><path d="M14 8v7l4 2.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
         <div class="module-card-number" aria-hidden="true">03</div>
         <h3 class="module-card-title">FINDRISK — Diabète</h3>
         <p class="module-card-desc">Score finlandais validé. Estime le risque de diabète de type 2 à 10 ans. 8 questions, pas de biologie requise.</p>
-        <div class="module-card-tag">Score 0–26</div>
+        <div class="module-card-tag">Risque à 10 ans · 8 questions</div>
       </div>
       <div class="module-card module-card--cardio" role="listitem" tabindex="0" onclick="navigateTo('cardio')" onkeydown="if(event.key==='Enter')navigateTo('cardio')" aria-label="Risque cardiovasculaire SCORE2">
         <div class="module-card-accent"></div>
@@ -212,7 +232,7 @@
         <div class="module-card-number" aria-hidden="true">05</div>
         <h3 class="module-card-title">AUDIT — Alcool</h3>
         <p class="module-card-desc">Test OMS en 10 questions. Repère les consommations à risque, nocives ou une dépendance probable.</p>
-        <div class="module-card-tag">Score 0–40</div>
+        <div class="module-card-tag">Usage à risque · 10 questions</div>
       </div>
       <div class="module-card module-card--fagerstrom" role="listitem" tabindex="0" onclick="navigateTo('fagerstrom')" onkeydown="if(event.key==='Enter')navigateTo('fagerstrom')" aria-label="Test de Fagerström Tabac">
         <div class="module-card-accent"></div>
@@ -240,7 +260,7 @@
         <div class="module-card-number" aria-hidden="true">08</div>
         <h3 class="module-card-title">STOP-BANG — Apnée du sommeil</h3>
         <p class="module-card-desc">8 critères cliniques pour dépister le risque d'apnée obstructive du sommeil. Résultat immédiat.</p>
-        <div class="module-card-tag">Score 0–8</div>
+        <div class="module-card-tag">8 critères · résultat immédiat</div>
       </div>
     </div>
 
@@ -253,6 +273,28 @@
         <h3 class="module-card-title">MRS — Ménopause</h3>
         <p class="module-card-desc">Menopause Rating Scale — 11 items évaluant les symptômes somatovégétatifs, psychologiques et urogénitaux liés à la ménopause. Femmes 40 ans et plus.</p>
         <div class="module-card-tag">Femmes ≥ 40 ans</div>
+      </div>
+    </div>
+
+    <!-- Card LE8 — score de synthèse, pleine largeur -->
+    <div class="le8-accueil-card" role="button" tabindex="0" onclick="navigateTo('le8')" onkeydown="if(event.key==='Enter')navigateTo('le8')" aria-label="Accéder à Life's Essential 8 — Score global">
+      <div class="le8-accueil-left">
+        <div class="le8-accueil-badge">◉ Score de synthèse</div>
+        <h3 class="le8-accueil-title">Life's Essential 8</h3>
+        <p class="le8-accueil-desc">Score composite agrégé construit à partir de vos données collectées dans les autres modules — alimentation, activité physique, tabac, sommeil, IMC, lipides, glycémie et tension artérielle.</p>
+        <div class="le8-accueil-tags">
+          <span class="le8-tag">American Heart Association 2022</span>
+          <span class="le8-tag">8 composantes · Score /100</span>
+        </div>
+      </div>
+      <div class="le8-accueil-right" aria-hidden="true">
+        <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="80" cy="80" r="65" stroke="#EDE9FE" stroke-width="18"/>
+          <path d="M 22,125 A 65,65 0 1,1 138,125" stroke="#7C3AED" stroke-width="18" stroke-linecap="round" opacity="0.3"/>
+          <path d="M 22,125 A 65,65 0 1,1 120,32" stroke="#7C3AED" stroke-width="18" stroke-linecap="round"/>
+          <text x="80" y="75" text-anchor="middle" font-family="'Playfair Display',serif" font-size="30" fill="#7C3AED" font-weight="900">LE8</text>
+          <text x="80" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5A6A82">Score /100</text>
+        </svg>
       </div>
     </div>
 
@@ -397,6 +439,261 @@
           Continuer vers FINDRISK
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION IPAQ — ACTIVITÉ PHYSIQUE
+  ───────────────────────────────────────── -->
+  <section id="section-ipaq" class="section" aria-labelledby="ipaq-title">
+    <div class="section-header section-header--ipaq">
+      <div class="section-header-eyebrow">Craig CL et al. — Med Sci Sports Exerc. 2003</div>
+      <h2 class="section-header-title" id="ipaq-title">IPAQ — Activité Physique</h2>
+      <p class="section-header-desc">Le questionnaire international IPAQ Short Form mesure votre niveau d'activité physique hebdomadaire et le compare aux recommandations de l'OMS 2020.</p>
+    </div>
+
+    <div class="questionnaire-form" id="ipaq-form">
+      <div class="ipaq-intro">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="#16A34A" stroke-width="1.5"/><path d="M10 7v4" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="13.5" r=".75" fill="#16A34A"/></svg>
+        <span><strong>Pensez aux 7 derniers jours.</strong> Incluez toutes vos activités : travail, transports, tâches ménagères et loisirs.</span>
+      </div>
+
+      <!-- BLOC 1 — ACTIVITÉS INTENSES -->
+      <div class="ipaq-bloc ipaq-bloc--intense">
+        <div class="ipaq-bloc-header">
+          <div class="ipaq-bloc-dot" style="background:#EF4444" aria-hidden="true"></div>
+          <div>
+            <div class="ipaq-bloc-title">Activités intenses</div>
+            <div class="ipaq-bloc-sub">Effort important — respiration nettement accélérée · Ex : course à pied, natation rapide, vélo en côte, sports collectifs, travaux lourds</div>
+          </div>
+        </div>
+        <div class="ipaq-questions">
+          <div class="ipaq-q">
+            <label class="ipaq-q-label" for="ipaq-q1-days">Q1. Combien de jours dans la semaine ?</label>
+            <div class="ipaq-days-row">
+              <input type="range" id="ipaq-q1-days" class="ipaq-slider" min="0" max="7" value="0" oninput="ipaqUpdate()" aria-label="Jours d'activité intense">
+              <span class="ipaq-days-val" id="ipaq-q1-val">0 jour</span>
+            </div>
+            <div class="ipaq-day-dots" id="ipaq-q1-dots" aria-hidden="true"></div>
+          </div>
+          <div class="ipaq-q" id="ipaq-q2-wrap">
+            <label class="ipaq-q-label" for="ipaq-q2-h">Q2. Durée moyenne ces jours-là</label>
+            <div class="ipaq-time-row">
+              <div class="input-with-unit"><input type="number" id="ipaq-q2-h" class="form-input ipaq-time" min="0" max="16" placeholder="0" oninput="ipaqUpdate()"><span class="input-unit">h</span></div>
+              <div class="input-with-unit"><input type="number" id="ipaq-q2-m" class="form-input ipaq-time" min="0" max="59" placeholder="0" oninput="ipaqUpdate()"><span class="input-unit">min</span></div>
+              <span class="ipaq-time-hint" id="ipaq-q2-hint"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOC 2 — ACTIVITÉS MODÉRÉES -->
+      <div class="ipaq-bloc ipaq-bloc--moderate">
+        <div class="ipaq-bloc-header">
+          <div class="ipaq-bloc-dot" style="background:#F59E0B" aria-hidden="true"></div>
+          <div>
+            <div class="ipaq-bloc-title">Activités modérées</div>
+            <div class="ipaq-bloc-sub">Effort moyen — légèrement essoufflé · Ex : marche rapide, vélo plat, aquagym, jardinage, ménage actif — ne pas inclure la marche ordinaire</div>
+          </div>
+        </div>
+        <div class="ipaq-questions">
+          <div class="ipaq-q">
+            <label class="ipaq-q-label" for="ipaq-q3-days">Q3. Combien de jours dans la semaine ?</label>
+            <div class="ipaq-days-row">
+              <input type="range" id="ipaq-q3-days" class="ipaq-slider" min="0" max="7" value="0" oninput="ipaqUpdate()" aria-label="Jours d'activité modérée">
+              <span class="ipaq-days-val" id="ipaq-q3-val">0 jour</span>
+            </div>
+            <div class="ipaq-day-dots" id="ipaq-q3-dots" aria-hidden="true"></div>
+          </div>
+          <div class="ipaq-q" id="ipaq-q4-wrap">
+            <label class="ipaq-q-label" for="ipaq-q4-h">Q4. Durée moyenne ces jours-là</label>
+            <div class="ipaq-time-row">
+              <div class="input-with-unit"><input type="number" id="ipaq-q4-h" class="form-input ipaq-time" min="0" max="16" placeholder="0" oninput="ipaqUpdate()"><span class="input-unit">h</span></div>
+              <div class="input-with-unit"><input type="number" id="ipaq-q4-m" class="form-input ipaq-time" min="0" max="59" placeholder="0" oninput="ipaqUpdate()"><span class="input-unit">min</span></div>
+              <span class="ipaq-time-hint" id="ipaq-q4-hint"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOC 3 — MARCHE -->
+      <div class="ipaq-bloc ipaq-bloc--walk">
+        <div class="ipaq-bloc-header">
+          <div class="ipaq-bloc-dot" style="background:#16A34A" aria-hidden="true"></div>
+          <div>
+            <div class="ipaq-bloc-title">Marche</div>
+            <div class="ipaq-bloc-sub">Au moins 10 minutes d'affilée · Travail, loisirs, déplacements — tout inclus</div>
+          </div>
+        </div>
+        <div class="ipaq-questions">
+          <div class="ipaq-q">
+            <label class="ipaq-q-label" for="ipaq-q5-days">Q5. Combien de jours avez-vous marché au moins 10 min d'affilée ?</label>
+            <div class="ipaq-days-row">
+              <input type="range" id="ipaq-q5-days" class="ipaq-slider" min="0" max="7" value="0" oninput="ipaqUpdate()" aria-label="Jours de marche">
+              <span class="ipaq-days-val" id="ipaq-q5-val">0 jour</span>
+            </div>
+            <div class="ipaq-day-dots" id="ipaq-q5-dots" aria-hidden="true"></div>
+          </div>
+          <div class="ipaq-q" id="ipaq-q6-wrap">
+            <label class="ipaq-q-label" for="ipaq-q6-h">Q6. Durée totale de marche ces jours-là</label>
+            <div class="ipaq-time-row">
+              <div class="input-with-unit"><input type="number" id="ipaq-q6-h" class="form-input ipaq-time" min="0" max="16" placeholder="0" oninput="ipaqUpdate()"><span class="input-unit">h</span></div>
+              <div class="input-with-unit"><input type="number" id="ipaq-q6-m" class="form-input ipaq-time" min="0" max="59" placeholder="0" oninput="ipaqUpdate()"><span class="input-unit">min</span></div>
+              <span class="ipaq-time-hint" id="ipaq-q6-hint"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOC 4 — SÉDENTARITÉ -->
+      <div class="ipaq-bloc ipaq-bloc--sedentary">
+        <div class="ipaq-bloc-header">
+          <div class="ipaq-bloc-dot" style="background:#4A5568" aria-hidden="true"></div>
+          <div>
+            <div class="ipaq-bloc-title">Temps assis</div>
+            <div class="ipaq-bloc-sub">En moyenne par jour — travail, repas, transports, écrans, télévision</div>
+          </div>
+        </div>
+        <!-- Illustration postures sédentaires -->
+        <div class="ipaq-sedentary-illus" aria-hidden="true">
+          <svg viewBox="0 0 320 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Bureau -->
+            <g transform="translate(20,10)">
+              <rect x="5" y="50" width="50" height="4" rx="1" fill="#D6DCF0"/>
+              <rect x="10" y="54" width="3" height="16" fill="#D6DCF0"/>
+              <rect x="47" y="54" width="3" height="16" fill="#D6DCF0"/>
+              <rect x="15" y="30" width="30" height="20" rx="2" fill="#1F3864" opacity=".15"/>
+              <circle cx="30" cy="18" r="6" fill="#9AAABB"/>
+              <path d="M22 28v14M22 35h16" stroke="#9AAABB" stroke-width="3" stroke-linecap="round"/>
+              <text x="30" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#5A6A82">Bureau</text>
+            </g>
+            <!-- Canapé -->
+            <g transform="translate(125,10)">
+              <rect x="0" y="44" width="70" height="18" rx="4" fill="#D6DCF0"/>
+              <rect x="0" y="36" width="12" height="26" rx="4" fill="#C9C9D0"/>
+              <rect x="58" y="36" width="12" height="26" rx="4" fill="#C9C9D0"/>
+              <circle cx="35" cy="22" r="6" fill="#9AAABB"/>
+              <path d="M28 34l-3 28M42 34l3 28" stroke="#9AAABB" stroke-width="3" stroke-linecap="round"/>
+              <path d="M25 42h20" stroke="#9AAABB" stroke-width="3" stroke-linecap="round"/>
+              <text x="35" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#5A6A82">Canapé</text>
+            </g>
+            <!-- Voiture -->
+            <g transform="translate(235,8)">
+              <rect x="5" y="30" width="60" height="32" rx="6" fill="#D6DCF0"/>
+              <rect x="15" y="18" width="38" height="20" rx="4" fill="#C9C9D0"/>
+              <circle cx="18" cy="66" r="8" fill="#4A5568"/>
+              <circle cx="18" cy="66" r="4" fill="#D6DCF0"/>
+              <circle cx="52" cy="66" r="8" fill="#4A5568"/>
+              <circle cx="52" cy="66" r="4" fill="#D6DCF0"/>
+              <circle cx="30" cy="25" r="6" fill="#9AAABB"/>
+              <text x="35" y="82" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#5A6A82">Voiture</text>
+            </g>
+          </svg>
+        </div>
+        <div class="ipaq-questions">
+          <div class="ipaq-q">
+            <label class="ipaq-q-label" for="ipaq-q7">Q7. Temps assis moyen par jour</label>
+            <div class="ipaq-days-row">
+              <input type="range" id="ipaq-q7" class="ipaq-slider ipaq-slider--sedentary" min="0" max="16" step="0.5" value="6" oninput="ipaqUpdate()" aria-label="Heures assis par jour">
+              <span class="ipaq-days-val" id="ipaq-q7-val">6h</span>
+            </div>
+            <div class="ipaq-sedentary-labels" aria-hidden="true">
+              <span>0h</span><span>4h</span><span>8h</span><span>12h</span><span>16h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ipaq-warn" class="info-box info-box--warn hidden" role="alert" style="margin-top:8px" aria-live="polite"></div>
+
+      <div class="form-actions">
+        <button class="btn-primary btn-large" onclick="calculateIPAQ()">
+          Calculer mon niveau d'activité
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- RÉSULTATS IPAQ -->
+    <div id="ipaq-results" class="results-panel hidden" aria-live="polite">
+      <h3 class="results-title">Votre niveau d'activité physique</h3>
+
+      <!-- Jauge horizontale MET -->
+      <div class="ipaq-met-gauge-wrap">
+        <div class="ipaq-met-labels-top">
+          <span>Faible</span><span>Modéré</span><span>Élevé</span>
+        </div>
+        <div class="ipaq-met-gauge" role="img" aria-label="Jauge MET-min/semaine">
+          <div class="ipaq-met-track">
+            <div class="ipaq-met-zone" style="flex:600;background:#FCA5A5"></div>
+            <div class="ipaq-met-zone" style="flex:2400;background:#FDE68A"></div>
+            <div class="ipaq-met-zone" style="flex:2000;background:#BBF7D0"></div>
+          </div>
+          <div class="ipaq-met-cursor" id="ipaq-met-cursor" style="left:0%" aria-hidden="true">
+            <div class="ipaq-met-cursor-line"></div>
+            <div class="ipaq-met-cursor-val" id="ipaq-met-cursor-val"></div>
+          </div>
+          <div class="ipaq-met-ticks" aria-hidden="true">
+            <span style="left:0%">0</span>
+            <span style="left:12%">600</span>
+            <span style="left:60%">3 000</span>
+            <span style="left:100%">5 000+</span>
+          </div>
+        </div>
+        <div class="ipaq-met-unit">MET-min / semaine</div>
+      </div>
+
+      <div class="ipaq-results-grid">
+        <!-- Indicateur 1 : niveau activité -->
+        <div class="ipaq-result-card" id="ipaq-activity-card">
+          <div class="ipaq-result-icon" id="ipaq-activity-icon"></div>
+          <div class="ipaq-result-label">Niveau d'activité physique</div>
+          <div class="ipaq-result-value" id="ipaq-activity-level"></div>
+          <div class="ipaq-result-met" id="ipaq-met-detail"></div>
+          <div class="ipaq-result-msg" id="ipaq-activity-msg"></div>
+        </div>
+        <!-- Indicateur 2 : sédentarité -->
+        <div class="ipaq-result-card" id="ipaq-sedentary-card">
+          <div class="ipaq-result-icon" id="ipaq-sedentary-icon"></div>
+          <div class="ipaq-result-label">Sédentarité quotidienne</div>
+          <div class="ipaq-result-value" id="ipaq-sedentary-level"></div>
+          <div class="ipaq-result-msg" id="ipaq-sedentary-msg"></div>
+        </div>
+      </div>
+
+      <!-- Détail MET -->
+      <div id="ipaq-met-breakdown" class="ipaq-met-breakdown"></div>
+
+      <!-- Alerte sédentarité -->
+      <div id="ipaq-sedentary-alert" class="high-risk-alert hidden">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 2L21 19H1L11 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M11 9v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="11" cy="16.5" r="1" fill="currentColor"/></svg>
+        <div>
+          <div class="high-risk-alert-title">Sédentarité prolongée — facteur de risque indépendant</div>
+          <div class="high-risk-alert-body">Une sédentarité élevée est un facteur de risque cardiovasculaire, métabolique et mental, <strong>même chez les personnes physiquement actives par ailleurs</strong>. Pensez à fractionner les périodes assises toutes les 60 à 90 minutes (pause, marche, étirements).</div>
+        </div>
+      </div>
+
+      <!-- Encart OMS -->
+      <div class="ipaq-oms-card">
+        <div class="ipaq-oms-title">Recommandations OMS 2020 — Adultes 18–64 ans</div>
+        <div class="ipaq-oms-items">
+          <div class="ipaq-oms-item"><span class="ipaq-oms-arrow">→</span> <strong>150 à 300 min</strong> d'activité modérée par semaine</div>
+          <div class="ipaq-oms-item"><span class="ipaq-oms-arrow">→</span> <strong>OU 75 à 150 min</strong> d'activité intense par semaine</div>
+          <div class="ipaq-oms-item"><span class="ipaq-oms-arrow">→</span> <strong>Renforcement musculaire</strong> ≥ 2 jours par semaine</div>
+          <div class="ipaq-oms-item"><span class="ipaq-oms-arrow">→</span> <strong>Limiter les longues périodes sédentaires</strong></div>
+        </div>
+      </div>
+
+      <!-- Intégration FINDRISK -->
+      <div id="ipaq-findrisk-note" class="info-box info-box--info hidden" aria-live="polite" style="margin-bottom:16px"></div>
+
+      <div class="recommendations-panel" id="ipaq-recommendations"></div>
+
+      <div class="module-source">Source : Craig CL, Marshall AL, Sjöström M et al. International physical activity questionnaire: 12-country reliability and validity. Med Sci Sports Exerc. 2003;35(8):1381-1395. doi:10.1249/01.MSS.0000078924.61453.FB · OMS. Recommandations mondiales sur l'activité physique pour la santé. 2020.</div>
+      <div class="form-actions mt-32">
+        <button class="btn-secondary" onclick="restartIPAQ()">Recommencer</button>
+        <button class="btn-primary" onclick="navigateTo('findrisk')">Continuer → FINDRISK <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
     </div>
   </section>
@@ -2138,6 +2435,156 @@
       <div class="module-source">Source : Heinemann K, Assmann A, Möhner S, Schneider HP, Heinemann LA. Reliability of the Menopause Rating Scale (MRS). Health Qual Life Outcomes. 2004;2:45. doi:10.1186/1477-7525-2-45 · Schneider HP, Heinemann LA, Rosemeier HP et al. The Menopause Rating Scale (MRS): reliability of scores of menopausal complaints. Climacteric. 2000;3(2):59-64.</div>
       <div class="form-actions mt-32">
         <button class="btn-secondary" onclick="restartMRS()">Recommencer</button>
+        <button class="btn-primary" onclick="navigateTo('recap')">Voir mon récapitulatif <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION LE8 — LIFE'S ESSENTIAL 8
+  ───────────────────────────────────────── -->
+  <section id="section-le8" class="section" aria-labelledby="le8-title">
+    <div class="section-header section-header--le8">
+      <div class="section-header-eyebrow">Lloyd-Jones DM et al. — Circulation. 2022</div>
+      <h2 class="section-header-title" id="le8-title">Life's Essential 8</h2>
+      <p class="section-header-desc">Score composite de santé cardiovasculaire et préventive — 8 composantes agrégées depuis vos données collectées dans les autres modules, complétées par quelques questions ciblées.</p>
+    </div>
+
+    <div class="le8-legal-banner" role="note">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5.5" r=".75" fill="currentColor"/></svg>
+      <span><strong>Indice de style de vie — pas un diagnostic.</strong> Inspiré du Life's Essential 8 (AHA 2022). Indicateur de style de vie à des fins d'information et de sensibilisation. Ne se substitue pas à un bilan médical.</span>
+    </div>
+
+    <div id="le8-insufficient" class="le8-insufficient-state hidden" role="status">
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" aria-hidden="true"><circle cx="28" cy="28" r="24" stroke="#7C3AED" stroke-width="2" opacity="0.3"/><path d="M28 18v10l6 4" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/></svg>
+      <h3 class="le8-insufficient-title">Complétez d'abord les modules essentiels</h3>
+      <p style="font-size:0.875rem;color:var(--gray);margin-bottom:16px">Pour calculer votre Life's Essential 8, complétez au minimum FINDRISK, IPAQ et Fagerström :</p>
+      <div id="le8-missing-modules" class="le8-missing-list"></div>
+    </div>
+
+    <div id="le8-form" class="questionnaire-form hidden">
+      <div class="le8-comp-header">
+        <div class="le8-comp-dot" style="background:#7C3AED"></div>
+        <div class="le8-comp-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="14" r="6" stroke="#7C3AED" stroke-width="1.5"/><path d="M8 8c0-2 1-4 3-4s3 2 3 4" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round"/><path d="M11 4v4" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div><div class="le8-comp-title">Composante 1 — Alimentation</div><div class="le8-comp-sub">Vos habitudes alimentaires — 7 derniers jours</div></div>
+      </div>
+      <div class="le8-questions-grid">
+        <div class="le8-q"><div class="le8-q-label">Portions de légumes par jour <span class="le8-q-hint">(1 assiette de crudités, légumes cuits ou soupe)</span></div>
+          <div class="le8-options-row" role="radiogroup"><label class="le8-opt"><input type="radio" name="le8_a1" value="0"><span>0</span></label><label class="le8-opt"><input type="radio" name="le8_a1" value="1"><span>1</span></label><label class="le8-opt"><input type="radio" name="le8_a1" value="2"><span>2</span></label><label class="le8-opt"><input type="radio" name="le8_a1" value="3"><span>3 ou +</span></label></div></div>
+        <div class="le8-q"><div class="le8-q-label">Portions de fruits par jour</div>
+          <div class="le8-options-row" role="radiogroup"><label class="le8-opt"><input type="radio" name="le8_a2" value="0"><span>0</span></label><label class="le8-opt"><input type="radio" name="le8_a2" value="1"><span>1</span></label><label class="le8-opt"><input type="radio" name="le8_a2" value="2"><span>2</span></label><label class="le8-opt"><input type="radio" name="le8_a2" value="3"><span>3 ou +</span></label></div></div>
+        <div class="le8-q"><div class="le8-q-label">Légumineuses par semaine <span class="le8-q-hint">(lentilles, pois chiches, haricots)</span></div>
+          <div class="le8-options-row" role="radiogroup"><label class="le8-opt"><input type="radio" name="le8_a3" value="0"><span>Jamais</span></label><label class="le8-opt"><input type="radio" name="le8_a3" value="1"><span>1–2×</span></label><label class="le8-opt"><input type="radio" name="le8_a3" value="2"><span>3–4×</span></label><label class="le8-opt"><input type="radio" name="le8_a3" value="3"><span>5× ou +</span></label></div></div>
+        <div class="le8-q"><div class="le8-q-label">Aliments ultra-transformés par semaine <span class="le8-q-hint">(plats préparés, fast-food, sodas)</span></div>
+          <div class="le8-options-row" role="radiogroup"><label class="le8-opt"><input type="radio" name="le8_a4" value="0"><span>Tous les jours</span></label><label class="le8-opt"><input type="radio" name="le8_a4" value="1"><span>4–6×</span></label><label class="le8-opt"><input type="radio" name="le8_a4" value="2"><span>1–3×</span></label><label class="le8-opt"><input type="radio" name="le8_a4" value="3"><span>Rarement</span></label></div></div>
+        <div class="le8-q"><div class="le8-q-label">Poisson ou fruits de mer par semaine</div>
+          <div class="le8-options-row" role="radiogroup"><label class="le8-opt"><input type="radio" name="le8_a5" value="0"><span>Jamais</span></label><label class="le8-opt"><input type="radio" name="le8_a5" value="1"><span>1×</span></label><label class="le8-opt"><input type="radio" name="le8_a5" value="2"><span>2×</span></label><label class="le8-opt"><input type="radio" name="le8_a5" value="3"><span>3× ou +</span></label></div></div>
+      </div>
+
+      <div class="le8-comp-header" style="margin-top:24px">
+        <div class="le8-comp-dot" style="background:#4338CA"></div>
+        <div class="le8-comp-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="11" width="16" height="7" rx="2" stroke="#4338CA" stroke-width="1.5"/><path d="M3 15h16M7 11V9M15 11V9M7 9h8" stroke="#4338CA" stroke-width="1.5" stroke-linecap="round"/><path d="M13 5.5h2.5L13 8h2.5" stroke="#4338CA" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="le8-comp-title">Composante 4 — Sommeil</div><div class="le8-comp-sub">Durée moyenne par nuit</div></div>
+      </div>
+      <div class="le8-q" style="padding:0 0 12px">
+        <div class="le8-q-label">En moyenne, combien d'heures dormez-vous par nuit ?</div>
+        <div class="le8-options-row" role="radiogroup">
+          <label class="le8-opt"><input type="radio" name="le8_sleep" value="lt5"><span>&lt;5h</span></label>
+          <label class="le8-opt"><input type="radio" name="le8_sleep" value="5"><span>5h</span></label>
+          <label class="le8-opt"><input type="radio" name="le8_sleep" value="6"><span>6h</span></label>
+          <label class="le8-opt"><input type="radio" name="le8_sleep" value="7"><span>7h</span></label>
+          <label class="le8-opt"><input type="radio" name="le8_sleep" value="8"><span>8h</span></label>
+          <label class="le8-opt"><input type="radio" name="le8_sleep" value="9"><span>9h</span></label>
+          <label class="le8-opt"><input type="radio" name="le8_sleep" value="gt10"><span>≥10h</span></label>
+        </div>
+      </div>
+
+      <div id="le8-tobacco-fallback" class="hidden">
+        <div class="le8-comp-header" style="margin-top:24px">
+          <div class="le8-comp-dot" style="background:#4A5568"></div>
+          <div class="le8-comp-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 16h10M16 16h2" stroke="#4A5568" stroke-width="2.2" stroke-linecap="round"/><path d="M16 12c1.5 0 4 1.5 4 4" stroke="#4A5568" stroke-width="1.5" stroke-linecap="round"/><path d="M13 8c2-2 6-1 6 3" stroke="#4A5568" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div><div class="le8-comp-title">Composante 3 — Tabac</div><div class="le8-comp-sub">Statut tabagique (Fagerström non complété)</div></div>
+        </div>
+        <div class="le8-q" style="padding:0 0 8px"><div class="le8-q-label">Fumez-vous actuellement ?</div>
+          <div class="le8-options-row" role="radiogroup">
+            <label class="le8-opt"><input type="radio" name="le8_smk" value="current" onchange="le8TobaccoChange()"><span>Oui</span></label>
+            <label class="le8-opt"><input type="radio" name="le8_smk" value="ex" onchange="le8TobaccoChange()"><span>Non, j'ai arrêté</span></label>
+            <label class="le8-opt"><input type="radio" name="le8_smk" value="never" onchange="le8TobaccoChange()"><span>Jamais fumé(e)</span></label>
+          </div></div>
+        <div id="le8-quit-duration" class="le8-q hidden" style="padding:0 0 12px"><div class="le8-q-label">Depuis combien de temps ?</div>
+          <div class="le8-options-row" role="radiogroup">
+            <label class="le8-opt"><input type="radio" name="le8_quit" value="lt1"><span>&lt;1 an</span></label>
+            <label class="le8-opt"><input type="radio" name="le8_quit" value="1to5"><span>1–5 ans</span></label>
+            <label class="le8-opt"><input type="radio" name="le8_quit" value="gt5"><span>&gt;5 ans</span></label>
+          </div></div>
+      </div>
+
+      <div id="le8-lipids-input" class="hidden">
+        <div class="le8-comp-header" style="margin-top:24px">
+          <div class="le8-comp-dot" style="background:#C25B3F"></div>
+          <div class="le8-comp-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 19s-8-6-8-12a5 5 0 0110 0 5 5 0 0110 0c0 6-8 12-8 12z" stroke="#C25B3F" stroke-width="1.8"/></svg></div>
+          <div><div class="le8-comp-title">Composante 6 — Lipides sanguins</div><div class="le8-comp-sub">Non-HDL cholestérol (optionnel)</div></div>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px">
+          <div class="form-group"><label class="form-label">Cholestérol total (mmol/L)</label><div class="input-with-unit"><input type="number" id="le8-chol-total" class="form-input" placeholder="5.0" step="0.1" oninput="le8CalcNonHDL()" style="width:100px"><span class="input-unit">mmol/L</span></div></div>
+          <div class="form-group"><label class="form-label">HDL-cholestérol (mmol/L)</label><div class="input-with-unit"><input type="number" id="le8-hdl" class="form-input" placeholder="1.3" step="0.05" oninput="le8CalcNonHDL()" style="width:100px"><span class="input-unit">mmol/L</span></div></div>
+          <div class="form-group"><label class="form-label">Non-HDL (calculé)</label><div class="form-input--readonly" id="le8-nonhdl-display" style="padding:11px 14px;background:var(--bg);border:1.5px solid var(--navy-light);border-radius:var(--radius-sm);min-width:80px">—</div></div>
+        </div>
+        <button class="btn-link" style="font-size:0.8rem" onclick="document.getElementById('le8-lipids-input').dataset.skip='1';this.closest('.le8-comp-header + *').style.opacity='0.4'">Je n'ai pas ces données → exclure cette composante</button>
+      </div>
+
+      <div id="le8-glucose-input" class="hidden">
+        <div class="le8-comp-header" style="margin-top:24px">
+          <div class="le8-comp-dot" style="background:#2A7B6F"></div>
+          <div class="le8-comp-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><ellipse cx="11" cy="14" rx="7" ry="5" stroke="#2A7B6F" stroke-width="1.5"/><circle cx="11" cy="14" r="2" fill="#2A7B6F" opacity="0.4"/></svg></div>
+          <div><div class="le8-comp-title">Composante 7 — Glycémie</div><div class="le8-comp-sub">Si bilan récent disponible (optionnel)</div></div>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px">
+          <div class="form-group"><label class="form-label">Glycémie à jeun (g/L)</label><div class="input-with-unit"><input type="number" id="le8-glyc-gl" class="form-input" placeholder="0.95" step="0.01" style="width:100px"><span class="input-unit">g/L</span></div></div>
+          <div class="form-group"><label class="form-label">OU HbA1c (%)</label><div class="input-with-unit"><input type="number" id="le8-hba1c" class="form-input" placeholder="5.4" step="0.1" style="width:100px"><span class="input-unit">%</span></div></div>
+        </div>
+        <button class="btn-link" style="font-size:0.8rem" onclick="document.getElementById('le8-glucose-input').dataset.skip='1'">Pas de données → utiliser FINDRISK comme proxy</button>
+      </div>
+
+      <div id="le8-bp-input" class="hidden">
+        <div class="le8-comp-header" style="margin-top:24px">
+          <div class="le8-comp-dot" style="background:#7B5EA7"></div>
+          <div class="le8-comp-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="10" width="16" height="6" rx="3" stroke="#7B5EA7" stroke-width="1.5"/><path d="M3 13h16" stroke="#7B5EA7" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div><div class="le8-comp-title">Composante 8 — Pression artérielle</div><div class="le8-comp-sub">Mesure récente &lt; 3 mois (optionnel)</div></div>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px">
+          <div class="form-group"><label class="form-label">Systolique (mmHg)</label><div class="input-with-unit"><input type="number" id="le8-sbp" class="form-input" placeholder="120" min="60" max="250" style="width:100px"><span class="input-unit">mmHg</span></div></div>
+          <div class="form-group"><label class="form-label">Diastolique (mmHg)</label><div class="input-with-unit"><input type="number" id="le8-dbp" class="form-input" placeholder="75" min="40" max="150" style="width:100px"><span class="input-unit">mmHg</span></div></div>
+        </div>
+        <button class="btn-link" style="font-size:0.8rem" onclick="document.getElementById('le8-bp-input').dataset.skip='1'">Je ne connais pas ma tension → exclure cette composante</button>
+      </div>
+
+      <div class="form-actions" style="margin-top:28px">
+        <button class="btn-primary btn-large" onclick="calculateLE8()">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M9 5v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Calculer mon Life's Essential 8
+        </button>
+      </div>
+    </div>
+
+    <div id="le8-results" class="results-panel hidden" aria-live="polite">
+      <div class="le8-gauge-section">
+        <div class="le8-gauge-wrap">
+          <svg class="le8-gauge-svg" viewBox="0 0 200 160" aria-hidden="true">
+            <path d="M 25,135 A 80,80 0 1,1 175,135" fill="none" stroke="#EDE9FE" stroke-width="18" stroke-linecap="round"/>
+            <path id="le8-arc" d="M 25,135 A 80,80 0 1,1 175,135" fill="none" stroke="#7C3AED" stroke-width="18" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" style="transition:stroke-dashoffset 1.2s ease,stroke 0.5s"/>
+            <text id="le8-score-center" x="100" y="108" text-anchor="middle" font-family="'Playfair Display',serif" font-size="44" fill="#1F3864" font-weight="900">—</text>
+            <text x="100" y="128" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5A6A82">/100 — Indice préventif</text>
+          </svg>
+          <div class="le8-gauge-label" id="le8-level-label"></div>
+          <div class="le8-comp-count" id="le8-comp-count"></div>
+        </div>
+      </div>
+      <div class="le8-grid" id="le8-components-grid"></div>
+      <div id="le8-action-plan" class="le8-action-plan"></div>
+      <div class="module-source">Source : Lloyd-Jones DM et al. Life's Essential 8: Updating and Enhancing the American Heart Association's Construct of Cardiovascular Health. Circulation. 2022;146(5):e18-e43. doi:10.1161/CIR.0000000000001078</div>
+      <div class="form-actions mt-32">
+        <button class="btn-secondary" onclick="restartLE8()">Recalculer</button>
         <button class="btn-primary" onclick="navigateTo('recap')">Voir mon récapitulatif <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M8.5 3.5L13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
     </div>
