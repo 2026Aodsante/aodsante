@@ -1040,9 +1040,13 @@ h3 { font-size: 1.3rem; font-weight: 700; }
 
   .intro-band { padding: 40px 24px; }
 
-  .missions__header { padding: 40px 24px 24px; flex-direction: column; gap: 4px; }
-  .missions__grid { grid-template-columns: 1fr; }
+  .missions__header { padding: 40px 16px 24px; flex-direction: column; gap: 4px; }
+  .missions__grid { grid-template-columns: 1fr; gap: 16px; }
   .mcard--wide { grid-column: auto; }
+  .missions { padding: 48px 16px; }
+  .mcard__body { padding: 28px 24px; min-height: auto; text-align: left; }
+  .mcard--wide .mcard__body { grid-template-columns: 1fr; }
+  .mcard__tags { flex-wrap: wrap; gap: 6px; }
   .mission { grid-template-columns: 1fr; min-height: auto; }
   .mission--reverse { grid-template-columns: 1fr; }
   .mission__num { display: none; }
