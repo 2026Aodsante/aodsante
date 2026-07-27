@@ -1045,7 +1045,11 @@ h3 { font-size: 1.3rem; font-weight: 700; }
   .mcard--wide { grid-column: auto; }
   .missions { padding: 48px 16px; }
   .mcard__body { padding: 28px 24px; min-height: auto; text-align: left; }
-  .mcard--wide .mcard__body { grid-template-columns: 1fr; }
+  .mcard--wide .mcard__body { display: flex; flex-direction: column; grid-template-columns: unset; }
+  .mcard--wide .mcard__num { grid-row: unset; align-self: unset; }
+  .mcard--wide h3, .mcard--wide p { grid-column: unset; }
+  .mcard--wide .mcard__tags { grid-column: unset; grid-row: unset; align-self: unset; }
+  .mcard--wide .mcard__example { grid-column: unset; grid-row: unset; }
   .mcard__tags { flex-wrap: wrap; gap: 6px; }
   .mission { grid-template-columns: 1fr; min-height: auto; }
   .mission--reverse { grid-template-columns: 1fr; }
