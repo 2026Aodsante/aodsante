@@ -3,3 +3,4 @@ gestion/serviceAccountKey.json
 gestion/serviceAccountKey*.json.txt
 gestion/~$*
 gestion/seed/node_modules/
+gestion/seed/backups/
