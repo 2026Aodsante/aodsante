@@ -297,14 +297,19 @@ function renderEventItem(ev, withActions) {
         <div class="event-date-day">${d.getDate()}</div>
         <div class="event-date-month">${JOURS_COURT[d.getMonth()]}</div>
       </div>
-      <div class="event-item-body" data-view="${ev.id}" title="Cliquer pour voir le détail">
+      <div class="event-item-body" data-view="${ev.id}" title="Cliquer pour voir le détail et modifier">
         <div class="event-item-title">${ev.title}</div>
         ${ev.time ? `<div class="event-item-time">${ev.time}</div>` : ''}
         ${ev.description ? `<div class="event-item-desc">${ev.description}</div>` : ''}
+        ${ev.remarque ? `<div class="event-item-desc event-item-remarque"><strong>Remarque :</strong> ${ev.remarque}</div>` : ''}
+        ${ev.affiche ? `<a class="event-item-affiche" href="${ev.affiche}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg width="12" height="12" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="7.5" cy="8" r="1.3" fill="currentColor"/><path d="M4 14l4-4 3 3 2-2 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Voir l'affiche / document</a>` : ''}
         ${ev.createdBy ? `<div class="event-item-author"><svg width="12" height="12" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 17c1-3.5 4-5 6.5-5s5.5 1.5 6.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Ajouté par ${ev.createdBy}${ev.editedBy ? ` · modifié par ${ev.editedBy}` : ''}</div>` : ''}
       </div>
       ${withActions ? `
       <div class="event-item-actions">
+        <button class="btn-icon event-item-edit" data-view="${ev.id}" title="Modifier" aria-label="Modifier">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8-3.5 1 1-3.5 8-8z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
         <button class="btn-icon event-item-del" data-del="${ev.id}" title="Supprimer" aria-label="Supprimer">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V2.5h4V4M4 4l.5 9.5a1 1 0 001 1h5a1 1 0 001-1L12 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -440,6 +445,8 @@ function openEventModal(existingEvent) {
     document.getElementById('event-date').value = existingEvent.date || '';
     document.getElementById('event-time').value = existingEvent.time || '';
     document.getElementById('event-desc').value = existingEvent.description || '';
+    document.getElementById('event-remarque').value = existingEvent.remarque || '';
+    document.getElementById('event-affiche').value = existingEvent.affiche || '';
     let meta = '';
     if (existingEvent.createdBy) meta += `Créé par ${existingEvent.createdBy}${formatEventTimestamp(existingEvent.createdAt)}`;
     if (existingEvent.editedBy) meta += `${meta ? ' · ' : ''}Modifié par ${existingEvent.editedBy}${formatEventTimestamp(existingEvent.editedAt)}`;
@@ -465,6 +472,8 @@ document.getElementById('event-form').addEventListener('submit', async (e) => {
     date: document.getElementById('event-date').value,
     time: document.getElementById('event-time').value,
     description: document.getElementById('event-desc').value.trim(),
+    remarque: document.getElementById('event-remarque').value.trim(),
+    affiche: document.getElementById('event-affiche').value.trim(),
   };
   if (editingEventId) {
     await backend.updateEvent(editingEventId, event);
