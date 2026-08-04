@@ -91,6 +91,15 @@ export async function addEvent(event) {
   await addDoc(collection(db, 'events'), { ...event, createdAt: serverTimestamp() });
 }
 
+export async function updateEvent(eventId, patch) {
+  const ref = doc(db, 'events', eventId);
+  await setDoc(ref, {
+    ...patch,
+    editedBy: currentUser ? currentUser.name : '',
+    editedAt: serverTimestamp(),
+  }, { merge: true });
+}
+
 export async function deleteEvent(eventId) {
   await deleteDoc(doc(db, 'events', eventId));
 }

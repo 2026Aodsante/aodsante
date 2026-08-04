@@ -211,7 +211,8 @@
 <!-- ─── MODAL AJOUT ÉVÉNEMENT ─────────────────── -->
 <div class="modal-overlay" id="event-modal">
   <div class="modal-box">
-    <h3>Nouvel événement</h3>
+    <h3 id="event-modal-title">Nouvel événement</h3>
+    <div class="modal-event-meta" id="event-modal-meta"></div>
     <form id="event-form">
       <div class="form-group">
         <label class="form-label" for="event-title">Titre</label>
@@ -231,7 +232,7 @@
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-secondary" id="event-cancel">Annuler</button>
-        <button type="submit" class="btn-primary">Ajouter</button>
+        <button type="submit" class="btn-primary" id="event-submit-btn">Ajouter</button>
       </div>
     </form>
   </div>

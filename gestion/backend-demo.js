@@ -111,6 +111,16 @@ export async function addEvent(event) {
   eventsListeners.forEach(l => l(events));
 }
 
+export async function updateEvent(eventId, patch) {
+  const events = seedEventsIfEmpty();
+  const idx = events.findIndex(e => e.id === eventId);
+  const auth = readJSON(LS_AUTH, null);
+  const editor = auth ? MEMBERS_BY_ID[auth.id]?.name : '';
+  if (idx !== -1) events[idx] = { ...events[idx], ...patch, editedBy: editor, editedAt: new Date().toISOString() };
+  writeJSON(LS_EVENTS, events);
+  eventsListeners.forEach(l => l(events));
+}
+
 export async function deleteEvent(eventId) {
   let events = seedEventsIfEmpty();
   events = events.filter(e => e.id !== eventId);

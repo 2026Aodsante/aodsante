@@ -289,7 +289,7 @@ function formatEventDate(dateStr) {
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
 }
 
-function renderEventItem(ev, withDelete) {
+function renderEventItem(ev, withActions) {
   const d = new Date(ev.date + 'T00:00:00');
   return `
     <div class="event-item">
@@ -297,15 +297,18 @@ function renderEventItem(ev, withDelete) {
         <div class="event-date-day">${d.getDate()}</div>
         <div class="event-date-month">${JOURS_COURT[d.getMonth()]}</div>
       </div>
-      <div class="event-item-body">
+      <div class="event-item-body" data-view="${ev.id}" title="Cliquer pour voir le détail">
         <div class="event-item-title">${ev.title}</div>
         ${ev.time ? `<div class="event-item-time">${ev.time}</div>` : ''}
         ${ev.description ? `<div class="event-item-desc">${ev.description}</div>` : ''}
-        ${ev.createdBy ? `<div class="event-item-author"><svg width="12" height="12" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 17c1-3.5 4-5 6.5-5s5.5 1.5 6.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Ajouté par ${ev.createdBy}</div>` : ''}
+        ${ev.createdBy ? `<div class="event-item-author"><svg width="12" height="12" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 17c1-3.5 4-5 6.5-5s5.5 1.5 6.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Ajouté par ${ev.createdBy}${ev.editedBy ? ` · modifié par ${ev.editedBy}` : ''}</div>` : ''}
       </div>
-      ${withDelete ? `<button class="btn-icon event-item-del" data-del="${ev.id}" title="Supprimer" aria-label="Supprimer">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V2.5h4V4M4 4l.5 9.5a1 1 0 001 1h5a1 1 0 001-1L12 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>` : ''}
+      ${withActions ? `
+      <div class="event-item-actions">
+        <button class="btn-icon event-item-del" data-del="${ev.id}" title="Supprimer" aria-label="Supprimer">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V2.5h4V4M4 4l.5 9.5a1 1 0 001 1h5a1 1 0 001-1L12 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>` : ''}
     </div>`;
 }
 
@@ -343,7 +346,7 @@ function renderCalendar() {
     return `
       <div class="cal-day ${c.muted ? 'muted' : ''} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" data-date="${c.dateStr || ''}">
         <div class="cal-day-num">${c.day}</div>
-        <div class="cal-day-events">${evs.slice(0,2).map(ev => `<div class="cal-event-pill">${ev.title}</div>`).join('')}${evs.length > 2 ? `<div class="cal-event-pill">+${evs.length-2}</div>` : ''}</div>
+        <div class="cal-day-events">${evs.slice(0,2).map(ev => `<div class="cal-event-pill" data-pill="${ev.id}">${ev.title}</div>`).join('')}${evs.length > 2 ? `<div class="cal-event-pill">+${evs.length-2}</div>` : ''}</div>
       </div>`;
   }).join('');
 
@@ -352,6 +355,13 @@ function renderCalendar() {
       selectedDay = el.dataset.date;
       renderCalendar();
       renderSelectedDay();
+    });
+  });
+  grid.querySelectorAll('[data-pill]').forEach(pill => {
+    pill.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const ev = eventsList.find(ev2 => ev2.id === pill.dataset.pill);
+      if (ev) openEventModal(ev);
     });
   });
 
@@ -370,7 +380,7 @@ function renderSelectedDay() {
   label.textContent = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
   const evs = eventsList.filter(ev => ev.date === selectedDay);
   el.innerHTML = evs.length ? evs.map(ev => renderEventItem(ev, true)).join('') : `<div class="empty-state">Aucun événement ce jour.</div>`;
-  wireDeleteButtons(el);
+  wireEventItemActions(el);
 }
 
 function renderAllUpcoming() {
@@ -378,14 +388,20 @@ function renderAllUpcoming() {
   const todayStr = new Date().toISOString().slice(0,10);
   const upcoming = [...eventsList].filter(ev => ev.date >= todayStr).sort((a,b) => a.date.localeCompare(b.date)).slice(0, 8);
   el.innerHTML = upcoming.length ? upcoming.map(ev => renderEventItem(ev, true)).join('') : `<div class="empty-state">Aucun événement à venir.</div>`;
-  wireDeleteButtons(el);
+  wireEventItemActions(el);
 }
 
-function wireDeleteButtons(container) {
+function wireEventItemActions(container) {
   container.querySelectorAll('[data-del]').forEach(btn => {
     btn.addEventListener('click', async () => {
       await backend.deleteEvent(btn.dataset.del);
       toast('Événement supprimé.');
+    });
+  });
+  container.querySelectorAll('[data-view]').forEach(el => {
+    el.addEventListener('click', () => {
+      const ev = eventsList.find(e => e.id === el.dataset.view);
+      if (ev) openEventModal(ev);
     });
   });
 }
@@ -399,13 +415,46 @@ document.getElementById('cal-next').addEventListener('click', () => {
   renderCalendar();
 });
 
-/* ─── Modal ajout événement ──────────────────── */
+/* ─── Modal ajout / modification événement ───── */
 const eventModal = document.getElementById('event-modal');
-document.getElementById('add-event-btn').addEventListener('click', () => {
+const eventModalTitle = document.getElementById('event-modal-title');
+const eventModalMeta = document.getElementById('event-modal-meta');
+const eventSubmitBtn = document.getElementById('event-submit-btn');
+let editingEventId = null;
+
+function formatEventTimestamp(ts) {
+  try {
+    const d = ts?.toDate ? ts.toDate() : (ts ? new Date(ts) : null);
+    if (!d) return '';
+    return ` le ${d.toLocaleDateString('fr-FR')} à ${d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}`;
+  } catch (e) { return ''; }
+}
+
+function openEventModal(existingEvent) {
   document.getElementById('event-form').reset();
-  if (selectedDay) document.getElementById('event-date').value = selectedDay;
+  if (existingEvent) {
+    editingEventId = existingEvent.id;
+    eventModalTitle.textContent = 'Modifier l\'événement';
+    eventSubmitBtn.textContent = 'Enregistrer';
+    document.getElementById('event-title').value = existingEvent.title || '';
+    document.getElementById('event-date').value = existingEvent.date || '';
+    document.getElementById('event-time').value = existingEvent.time || '';
+    document.getElementById('event-desc').value = existingEvent.description || '';
+    let meta = '';
+    if (existingEvent.createdBy) meta += `Créé par ${existingEvent.createdBy}${formatEventTimestamp(existingEvent.createdAt)}`;
+    if (existingEvent.editedBy) meta += `${meta ? ' · ' : ''}Modifié par ${existingEvent.editedBy}${formatEventTimestamp(existingEvent.editedAt)}`;
+    eventModalMeta.textContent = meta;
+  } else {
+    editingEventId = null;
+    eventModalTitle.textContent = 'Nouvel événement';
+    eventSubmitBtn.textContent = 'Ajouter';
+    eventModalMeta.textContent = '';
+    if (selectedDay) document.getElementById('event-date').value = selectedDay;
+  }
   eventModal.classList.add('open');
-});
+}
+
+document.getElementById('add-event-btn').addEventListener('click', () => openEventModal(null));
 document.getElementById('event-cancel').addEventListener('click', () => eventModal.classList.remove('open'));
 eventModal.addEventListener('click', (e) => { if (e.target === eventModal) eventModal.classList.remove('open'); });
 
@@ -416,11 +465,15 @@ document.getElementById('event-form').addEventListener('submit', async (e) => {
     date: document.getElementById('event-date').value,
     time: document.getElementById('event-time').value,
     description: document.getElementById('event-desc').value.trim(),
-    createdBy: currentUser.name,
   };
-  await backend.addEvent(event);
+  if (editingEventId) {
+    await backend.updateEvent(editingEventId, event);
+    toast('Événement modifié.');
+  } else {
+    await backend.addEvent({ ...event, createdBy: currentUser.name });
+    toast('Événement ajouté.');
+  }
   eventModal.classList.remove('open');
-  toast('Événement ajouté.');
 });
 
 /* ══════════════════════════════════════════════
