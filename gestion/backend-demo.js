@@ -3,7 +3,7 @@
 // Utilisé tant que Firebase n'est pas configuré.
 // Même interface que backend-firebase.js pour un switch transparent.
 // ════════════════════════════════════════════════
-import { MEMBERS_BY_ID, MISSIONS } from './data.js';
+import { MEMBERS_BY_ID, MISSIONS } from './data.js?v=20260812';
 
 const LS_AUTH = 'gestion_demo_auth';
 const LS_ACTIONS = 'gestion_demo_actions';
