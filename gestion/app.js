@@ -278,7 +278,8 @@ function renderAccueil() {
   }).join('') : `<div class="empty-state">Vous n'êtes référent(e) d'aucune action pour le moment.</div>`;
 
   const evtEl = document.getElementById('accueil-evenements');
-  evtEl.innerHTML = upcoming.length ? upcoming.slice(0,5).map(renderEventItem).join('') : `<div class="empty-state">Aucun événement à venir.</div>`;
+  evtEl.innerHTML = upcoming.length ? upcoming.slice(0,5).map(ev => renderEventItem(ev, true)).join('') : `<div class="empty-state">Aucun événement à venir.</div>`;
+  wireEventItemActions(evtEl);
 }
 
 /* ══════════════════════════════════════════════
