@@ -3,8 +3,8 @@
 // Utilisé automatiquement dès que firebase-config.js contient une vraie config.
 // Même interface que backend-demo.js pour un switch transparent dans app.js.
 // ════════════════════════════════════════════════
-import { firebaseConfig } from './firebase-config.js?v=20260924';
-import { MEMBERS_BY_ID } from './data.js?v=20260924';
+import { firebaseConfig } from './firebase-config.js?v=20260924b';
+import { MEMBERS_BY_ID } from './data.js?v=20260924b';
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
 import {

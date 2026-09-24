@@ -3,12 +3,12 @@
 ═════════════════════════════════════════════════ */
 'use strict';
 
-import { MEMBERS, MEMBERS_BY_ID, MISSIONS } from './data.js?v=20260924';
-import { isFirebaseConfigured } from './firebase-config.js?v=20260924';
+import { MEMBERS, MEMBERS_BY_ID, MISSIONS } from './data.js?v=20260924b';
+import { isFirebaseConfigured } from './firebase-config.js?v=20260924b';
 
 const backend = isFirebaseConfigured
-  ? await import('./backend-firebase.js?v=20260924')
-  : await import('./backend-demo.js?v=20260924');
+  ? await import('./backend-firebase.js?v=20260924b')
+  : await import('./backend-demo.js?v=20260924b');
 
 let currentUser = null;
 let actionsMap = {};
@@ -393,7 +393,7 @@ function renderSelectedDay() {
 function renderAllUpcoming() {
   const el = document.getElementById('all-upcoming-events');
   const todayStr = new Date().toISOString().slice(0,10);
-  const upcoming = [...eventsList].filter(ev => ev.date >= todayStr).sort((a,b) => a.date.localeCompare(b.date));
+  const upcoming = [...eventsList].filter(ev => ev.date >= todayStr).sort((a,b) => a.date.localeCompare(b.date)).slice(0, 200);
   el.innerHTML = upcoming.length ? upcoming.map(ev => renderEventItem(ev, true)).join('') : `<div class="empty-state">Aucun événement à venir.</div>`;
   wireEventItemActions(el);
 }
