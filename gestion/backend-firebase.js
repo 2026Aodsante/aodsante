@@ -3,8 +3,8 @@
 // Utilisé automatiquement dès que firebase-config.js contient une vraie config.
 // Même interface que backend-demo.js pour un switch transparent dans app.js.
 // ════════════════════════════════════════════════
-import { firebaseConfig } from './firebase-config.js?v=20260924b';
-import { MEMBERS_BY_ID } from './data.js?v=20260924b';
+import { firebaseConfig } from './firebase-config.js?v=20260924c';
+import { MEMBERS_BY_ID } from './data.js?v=20260924c';
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
 import {
@@ -13,10 +13,14 @@ import {
 import {
   getFirestore, collection, doc, setDoc, onSnapshot, addDoc, deleteDoc, serverTimestamp,
 } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js';
+import {
+  getStorage, ref, uploadBytes, getDownloadURL, deleteObject,
+} from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js';
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 const EMAIL_DOMAIN = '@cptsdbmb.local';
 let currentUser = null; // { id, name, role }
@@ -102,4 +106,41 @@ export async function updateEvent(eventId, patch) {
 
 export async function deleteEvent(eventId) {
   await deleteDoc(doc(db, 'events', eventId));
+}
+
+export function watchDocuments(cb) {
+  return onSnapshot(collection(db, 'documents'), (snap) => {
+    const list = [];
+    snap.forEach(d => list.push({ id: d.id, ...d.data() }));
+    list.sort((a, b) => {
+      const ta = a.uploadedAt?.toMillis ? a.uploadedAt.toMillis() : 0;
+      const tb = b.uploadedAt?.toMillis ? b.uploadedAt.toMillis() : 0;
+      return tb - ta;
+    });
+    cb(list);
+  });
+}
+
+export async function uploadDocument(file, meta) {
+  const path = `documents/${Date.now()}_${file.name}`;
+  const storageRef = ref(storage, path);
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  await addDoc(collection(db, 'documents'), {
+    name: file.name,
+    size: file.size,
+    contentType: file.type || '',
+    storagePath: path,
+    url,
+    category: meta.category,
+    missionId: meta.missionId || null,
+    actionId: meta.actionId || null,
+    uploadedBy: currentUser ? currentUser.name : '',
+    uploadedAt: serverTimestamp(),
+  });
+}
+
+export async function deleteDocument(docId, storagePath) {
+  await deleteDoc(doc(db, 'documents', docId));
+  try { await deleteObject(ref(storage, storagePath)); } catch (e) {}
 }

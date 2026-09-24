@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/gestion/style.css?v=20260924b">
+  <link rel="stylesheet" href="/gestion/style.css?v=20260924c">
 </head>
 <body>
 
@@ -63,6 +63,10 @@
     <li><button class="nav-item" data-section="agenda">
       <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 8h14M7 2v4M13 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
       <span class="nav-label">Agenda partagé</span>
+    </button></li>
+    <li><button class="nav-item" data-section="documents">
+      <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 6.5a2 2 0 012-2h3l1.5 2H15a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-8z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+      <span class="nav-label">Documents</span>
     </button></li>
     <li><button class="nav-item" data-section="profil">
       <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 17c1-3.5 4-5 6.5-5s5.5 1.5 6.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
@@ -184,6 +188,31 @@
     </div>
   </section>
 
+  <!-- ─── DOCUMENTS ───────────────────────────── -->
+  <section id="section-documents" class="section">
+    <div class="section-header">
+      <div class="section-header-eyebrow">Espace partagé</div>
+      <h1 class="section-header-title">Documents</h1>
+      <p class="section-header-desc">Documents administratifs de la CPTS et pièces justificatives de chaque mission. Visibles par tous, ajout et suppression possibles par n'importe quel membre.</p>
+    </div>
+
+    <div class="documents-block">
+      <div class="documents-block-header">
+        <h3>Documents administratifs</h3>
+        <button class="btn-primary" id="add-admin-doc-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Ajouter un document
+        </button>
+      </div>
+      <div id="admin-documents-list"></div>
+    </div>
+
+    <div class="documents-block">
+      <h3>Pièces justificatives par mission</h3>
+      <div id="mission-documents-list"></div>
+    </div>
+  </section>
+
   <!-- ─── PROFIL ──────────────────────────────── -->
   <section id="section-profil" class="section">
     <div class="section-header">
@@ -250,8 +279,26 @@
   </div>
 </div>
 
+<!-- ─── MODAL AJOUT DOCUMENT ──────────────────── -->
+<div class="modal-overlay" id="doc-modal">
+  <div class="modal-box">
+    <h3 id="doc-modal-title">Ajouter un document</h3>
+    <form id="doc-form">
+      <div class="form-group">
+        <label class="form-label" for="doc-file">Fichier</label>
+        <input class="form-input" type="file" id="doc-file" required>
+        <div class="form-note">PDF, Word, Excel, image... (jusqu'à 10 Mo)</div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="doc-cancel">Annuler</button>
+        <button type="submit" class="btn-primary" id="doc-submit-btn">Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
-<script type="module" src="/gestion/app.js?v=20260924b"></script>
+<script type="module" src="/gestion/app.js?v=20260924c"></script>
 </body>
 </html>

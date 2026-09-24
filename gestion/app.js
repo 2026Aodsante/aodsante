@@ -3,16 +3,17 @@
 ═════════════════════════════════════════════════ */
 'use strict';
 
-import { MEMBERS, MEMBERS_BY_ID, MISSIONS } from './data.js?v=20260924b';
-import { isFirebaseConfigured } from './firebase-config.js?v=20260924b';
+import { MEMBERS, MEMBERS_BY_ID, MISSIONS } from './data.js?v=20260924c';
+import { isFirebaseConfigured } from './firebase-config.js?v=20260924c';
 
 const backend = isFirebaseConfigured
-  ? await import('./backend-firebase.js?v=20260924b')
-  : await import('./backend-demo.js?v=20260924b');
+  ? await import('./backend-firebase.js?v=20260924c')
+  : await import('./backend-demo.js?v=20260924c');
 
 let currentUser = null;
 let actionsMap = {};
 let eventsList = [];
+let documentsList = [];
 let missionsFilter = 'toutes';
 let calendarDate = new Date();
 let selectedDay = null;
@@ -196,6 +197,13 @@ function renderMissions() {
             <label class="form-label">Remarques</label>
             <textarea class="form-textarea action-remarque-input" placeholder="Notes, blocages, précisions..." data-mission="${m.id}" data-action="${a.id}">${st.remarque}</textarea>
           </div>
+          <div class="action-documents">
+            <div class="action-documents-header">
+              <span class="checklist-group-title">Pièces justificatives</span>
+              <button type="button" class="btn-link action-doc-add" data-mission="${m.id}" data-action="${a.id}">+ Ajouter un document</button>
+            </div>
+            <div class="action-documents-list" id="docs-${m.id}__${a.id}"></div>
+          </div>
         </div>`;
     }).join('');
 
@@ -240,6 +248,13 @@ function renderMissions() {
       }, 700);
     });
   });
+  list.querySelectorAll('.action-doc-add').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const { mission, action } = btn.dataset;
+      openDocModal({ category: 'action', missionId: mission, actionId: action });
+    });
+  });
+  renderActionDocuments();
 }
 
 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -488,6 +503,138 @@ document.getElementById('event-form').addEventListener('submit', async (e) => {
 });
 
 /* ══════════════════════════════════════════════
+   DOCUMENTS — administratifs & pièces justificatives
+══════════════════════════════════════════════ */
+const MAX_DOC_SIZE = 10 * 1024 * 1024; // 10 Mo
+
+function formatFileSize(bytes) {
+  if (!bytes) return '';
+  if (bytes < 1024) return `${bytes} o`;
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} Ko`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} Mo`;
+}
+
+function formatDocDate(ts) {
+  try {
+    const d = ts?.toDate ? ts.toDate() : (ts ? new Date(ts) : null);
+    if (!d) return '';
+    return d.toLocaleDateString('fr-FR');
+  } catch (e) { return ''; }
+}
+
+function fileIcon() {
+  return `<svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M5 2.5h7l3 3v11a1 1 0 01-1 1H5a1 1 0 01-1-1v-13a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 2.5V6h3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+}
+
+function docItemHtml(doc) {
+  return `
+    <div class="doc-item">
+      <span class="doc-item-icon">${fileIcon()}</span>
+      <a class="doc-item-name" href="${doc.url}" target="_blank" rel="noopener">${doc.name}</a>
+      <span class="doc-item-meta">${formatFileSize(doc.size)} · ${doc.uploadedBy || ''} · ${formatDocDate(doc.uploadedAt)}</span>
+      <button type="button" class="btn-icon doc-item-del" data-doc-del="${doc.id}" title="Supprimer" aria-label="Supprimer">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V2.5h4V4M4 4l.5 9.5a1 1 0 001 1h5a1 1 0 001-1L12 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>`;
+}
+
+function wireDocDeleteButtons(container) {
+  container.querySelectorAll('[data-doc-del]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const docItem = documentsList.find(d => d.id === btn.dataset.docDel);
+      await backend.deleteDocument(btn.dataset.docDel, docItem?.storagePath);
+      toast('Document supprimé.');
+    });
+  });
+}
+
+function renderActionDocuments() {
+  MISSIONS.forEach(m => m.actions.forEach(a => {
+    const el = document.getElementById(`docs-${m.id}__${a.id}`);
+    if (!el) return;
+    const docs = documentsList.filter(d => d.category === 'action' && d.missionId === m.id && d.actionId === a.id);
+    el.innerHTML = docs.length ? docs.map(docItemHtml).join('') : `<div class="doc-empty">Aucun document pour le moment.</div>`;
+    wireDocDeleteButtons(el);
+  }));
+}
+
+function renderDocumentsSection() {
+  const adminEl = document.getElementById('admin-documents-list');
+  if (adminEl) {
+    const adminDocs = documentsList.filter(d => d.category === 'admin');
+    adminEl.innerHTML = adminDocs.length ? adminDocs.map(docItemHtml).join('') : `<div class="empty-state">Aucun document administratif pour le moment.</div>`;
+    wireDocDeleteButtons(adminEl);
+  }
+
+  const missionEl = document.getElementById('mission-documents-list');
+  if (missionEl) {
+    missionEl.innerHTML = MISSIONS.map(m => {
+      const actionsHtml = m.actions.map(a => {
+        const docs = documentsList.filter(d => d.category === 'action' && d.missionId === m.id && d.actionId === a.id);
+        return `
+          <div class="doc-action-row">
+            <div class="doc-action-row-header">
+              <span class="doc-action-title">${a.titre}</span>
+              <button type="button" class="btn-link doc-action-add" data-mission="${m.id}" data-action="${a.id}">+ Ajouter</button>
+            </div>
+            <div class="doc-action-list">${docs.length ? docs.map(docItemHtml).join('') : `<div class="doc-empty">Aucun document.</div>`}</div>
+          </div>`;
+      }).join('');
+      return `
+        <div class="doc-mission-group">
+          <div class="doc-mission-title">${m.titre}</div>
+          ${actionsHtml}
+        </div>`;
+    }).join('');
+    missionEl.querySelectorAll('.doc-action-add').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const { mission, action } = btn.dataset;
+        openDocModal({ category: 'action', missionId: mission, actionId: action });
+      });
+    });
+    wireDocDeleteButtons(missionEl);
+  }
+}
+
+/* ─── Modal ajout document ────────────────────── */
+const docModal = document.getElementById('doc-modal');
+let docModalContext = null;
+
+function openDocModal(context) {
+  docModalContext = context;
+  document.getElementById('doc-form').reset();
+  document.getElementById('doc-modal-title').textContent = context.category === 'admin' ? 'Ajouter un document administratif' : 'Ajouter une pièce justificative';
+  docModal.classList.add('open');
+}
+
+document.getElementById('add-admin-doc-btn').addEventListener('click', () => openDocModal({ category: 'admin' }));
+document.getElementById('doc-cancel').addEventListener('click', () => docModal.classList.remove('open'));
+docModal.addEventListener('click', (e) => { if (e.target === docModal) docModal.classList.remove('open'); });
+
+document.getElementById('doc-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fileInput = document.getElementById('doc-file');
+  const file = fileInput.files[0];
+  if (!file) return;
+  if (file.size > MAX_DOC_SIZE) {
+    toast('Fichier trop volumineux (10 Mo maximum).');
+    return;
+  }
+  const submitBtn = document.getElementById('doc-submit-btn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Envoi en cours...';
+  try {
+    await backend.uploadDocument(file, docModalContext);
+    docModal.classList.remove('open');
+    toast('Document ajouté.');
+  } catch (err) {
+    toast("Erreur lors de l'envoi du document.");
+  }
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Ajouter';
+});
+
+/* ══════════════════════════════════════════════
    PROFIL — changement de mot de passe
 ══════════════════════════════════════════════ */
 document.getElementById('password-form').addEventListener('submit', async (e) => {
@@ -510,6 +657,7 @@ function renderAll() {
   renderMissions();
   renderCalendar();
   renderSelectedDay();
+  renderDocumentsSection();
 }
 
 populateLoginSelect();
@@ -523,6 +671,7 @@ backend.onAuthChange((user) => {
     showApp(user);
     backend.watchActions((map) => { actionsMap = map; renderAll(); });
     backend.watchEvents((list) => { eventsList = list; renderAll(); });
+    backend.watchDocuments((list) => { documentsList = list; renderAll(); });
   } else {
     showLogin();
   }

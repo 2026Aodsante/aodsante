@@ -3,16 +3,18 @@
 // Utilisé tant que Firebase n'est pas configuré.
 // Même interface que backend-firebase.js pour un switch transparent.
 // ════════════════════════════════════════════════
-import { MEMBERS_BY_ID, MISSIONS } from './data.js?v=20260924b';
+import { MEMBERS_BY_ID, MISSIONS } from './data.js?v=20260924c';
 
 const LS_AUTH = 'gestion_demo_auth';
 const LS_ACTIONS = 'gestion_demo_actions';
 const LS_EVENTS = 'gestion_demo_events';
+const LS_DOCUMENTS = 'gestion_demo_documents';
 const DEMO_PASSWORD = 'demo';
 
 let authListeners = [];
 let actionsListeners = [];
 let eventsListeners = [];
+let documentsListeners = [];
 
 function readJSON(key, fallback) {
   try {
@@ -126,4 +128,44 @@ export async function deleteEvent(eventId) {
   events = events.filter(e => e.id !== eventId);
   writeJSON(LS_EVENTS, events);
   eventsListeners.forEach(l => l(events));
+}
+
+export function watchDocuments(cb) {
+  const docs = readJSON(LS_DOCUMENTS, []);
+  cb(docs);
+  documentsListeners.push(cb);
+  return () => { documentsListeners = documentsListeners.filter(l => l !== cb); };
+}
+
+export async function uploadDocument(file, meta) {
+  const auth = readJSON(LS_AUTH, null);
+  const uploader = auth ? MEMBERS_BY_ID[auth.id]?.name : '';
+  const dataUrl = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+  const docs = readJSON(LS_DOCUMENTS, []);
+  docs.push({
+    id: 'doc' + Date.now(),
+    name: file.name,
+    size: file.size,
+    contentType: file.type || '',
+    url: dataUrl,
+    category: meta.category,
+    missionId: meta.missionId || null,
+    actionId: meta.actionId || null,
+    uploadedBy: uploader,
+    uploadedAt: new Date().toISOString(),
+  });
+  writeJSON(LS_DOCUMENTS, docs);
+  documentsListeners.forEach(l => l(docs));
+}
+
+export async function deleteDocument(docId) {
+  let docs = readJSON(LS_DOCUMENTS, []);
+  docs = docs.filter(d => d.id !== docId);
+  writeJSON(LS_DOCUMENTS, docs);
+  documentsListeners.forEach(l => l(docs));
 }
