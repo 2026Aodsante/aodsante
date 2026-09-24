@@ -233,6 +233,10 @@ h3 { font-size: 1.15rem; font-weight: 700; }
 .accueil-columns { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; padding: 8px 48px 48px; align-items: start; }
 .accueil-block { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px 28px; }
 .accueil-block h3 { color: var(--navy); margin-bottom: 16px; }
+.accueil-block-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.accueil-block-header h3 { margin-bottom: 0; }
+.btn-link { font-size: 0.8rem; font-weight: 600; color: var(--gold); white-space: nowrap; }
+.btn-link:hover { text-decoration: underline; }
 
 @media (max-width: 900px) {
   .summary-grid { grid-template-columns: 1fr; padding: 24px; }

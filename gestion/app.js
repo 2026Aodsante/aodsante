@@ -3,12 +3,12 @@
 ═════════════════════════════════════════════════ */
 'use strict';
 
-import { MEMBERS, MEMBERS_BY_ID, MISSIONS } from './data.js?v=20260812';
-import { isFirebaseConfigured } from './firebase-config.js?v=20260812';
+import { MEMBERS, MEMBERS_BY_ID, MISSIONS } from './data.js?v=20260924';
+import { isFirebaseConfigured } from './firebase-config.js?v=20260924';
 
 const backend = isFirebaseConfigured
-  ? await import('./backend-firebase.js?v=20260812')
-  : await import('./backend-demo.js?v=20260812');
+  ? await import('./backend-firebase.js?v=20260924')
+  : await import('./backend-demo.js?v=20260924');
 
 let currentUser = null;
 let actionsMap = {};
@@ -83,6 +83,7 @@ function navigateTo(sectionId) {
 document.querySelectorAll('.nav-item').forEach(btn => {
   btn.addEventListener('click', () => navigateTo(btn.dataset.section));
 });
+document.getElementById('accueil-voir-agenda').addEventListener('click', () => navigateTo('agenda'));
 
 /* ══════════════════════════════════════════════
    MISSIONS — indicateurs & livrables à cocher
@@ -392,7 +393,7 @@ function renderSelectedDay() {
 function renderAllUpcoming() {
   const el = document.getElementById('all-upcoming-events');
   const todayStr = new Date().toISOString().slice(0,10);
-  const upcoming = [...eventsList].filter(ev => ev.date >= todayStr).sort((a,b) => a.date.localeCompare(b.date)).slice(0, 8);
+  const upcoming = [...eventsList].filter(ev => ev.date >= todayStr).sort((a,b) => a.date.localeCompare(b.date));
   el.innerHTML = upcoming.length ? upcoming.map(ev => renderEventItem(ev, true)).join('') : `<div class="empty-state">Aucun événement à venir.</div>`;
   wireEventItemActions(el);
 }

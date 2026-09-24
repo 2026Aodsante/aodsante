@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/gestion/style.css?v=20260812">
+  <link rel="stylesheet" href="/gestion/style.css?v=20260924">
 </head>
 <body>
 
@@ -113,7 +113,10 @@
         <div id="accueil-mes-actions"></div>
       </div>
       <div class="accueil-block">
-        <h3>Prochains événements</h3>
+        <div class="accueil-block-header">
+          <h3>Prochains événements</h3>
+          <button class="btn-link" id="accueil-voir-agenda">Voir tout l'agenda →</button>
+        </div>
         <div id="accueil-evenements"></div>
       </div>
     </div>
@@ -249,6 +252,6 @@
 
 <div class="toast" id="toast"></div>
 
-<script type="module" src="/gestion/app.js?v=20260812"></script>
+<script type="module" src="/gestion/app.js?v=20260924"></script>
 </body>
 </html>
