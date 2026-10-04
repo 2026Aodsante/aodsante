@@ -25,7 +25,7 @@ export const MEMBERS = [
 // id -> objet membre (pratique pour l'affichage)
 export const MEMBERS_BY_ID = Object.fromEntries(MEMBERS.map(m => [m.id, m]));
 
-// Les 6 missions du contrat ACI (5ème année de fonctionnement, 19/12/2025-19/12/2026).
+// Les 6 missions du contrat ACI (5ème année de fonctionnement, 17/12/2025-16/12/2026).
 // Chaque action a des indicateurs (objectifs chiffrés) et des livrables (preuves/documents
 // attendus) : chaque élément est cochable indépendamment, plus une remarque libre.
 // L'ensemble est stocké/synchronisé dans Firestore (collection "actions").

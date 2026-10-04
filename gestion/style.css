@@ -214,6 +214,15 @@ h3 { font-size: 1.15rem; font-weight: 700; }
 .section-header-eyebrow { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gray); font-weight: 600; margin-bottom: 10px; }
 .section-header-title { color: var(--navy); margin-bottom: 10px; }
 .section-header-desc { color: var(--gray); max-width: 640px; font-size: 0.95rem; }
+.aci-period {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: 14px; padding: 6px 14px;
+  background: var(--gold-pale); color: #7A5A0F;
+  border: 1px solid var(--gold); border-radius: 20px;
+  font-size: 0.82rem;
+}
+.aci-period svg { flex-shrink: 0; }
+.aci-period strong { color: var(--navy); }
 
 /* ════════════════════════════════════════════════
    ACCUEIL — Résumé

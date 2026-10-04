@@ -3,12 +3,12 @@
 ═════════════════════════════════════════════════ */
 'use strict';
 
-import { MEMBERS, MEMBERS_BY_ID, MISSIONS } from './data.js?v=20260924c';
-import { isFirebaseConfigured } from './firebase-config.js?v=20260924c';
+import { MEMBERS, MEMBERS_BY_ID, MISSIONS } from './data.js?v=20261004';
+import { isFirebaseConfigured } from './firebase-config.js?v=20261004';
 
 const backend = isFirebaseConfigured
-  ? await import('./backend-firebase.js?v=20260924c')
-  : await import('./backend-demo.js?v=20260924c');
+  ? await import('./backend-firebase.js?v=20261004')
+  : await import('./backend-demo.js?v=20261004');
 
 let currentUser = null;
 let actionsMap = {};
