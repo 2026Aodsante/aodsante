@@ -8,12 +8,12 @@
 // uniquement dans ce navigateur, non partagées).
 // ════════════════════════════════════════════════
 export const firebaseConfig = {
-  apiKey: "REPLACE_ME",
-  authDomain: "REPLACE_ME",
-  projectId: "REPLACE_ME",
-  storageBucket: "REPLACE_ME",
-  messagingSenderId: "REPLACE_ME",
-  appId: "REPLACE_ME",
+  apiKey: "AIzaSyC-AYVMiNhSWlOr7XwFfJU_2EAr5_SYVSw",
+  authDomain: "gestion-cpts-rovira.firebaseapp.com",
+  projectId: "gestion-cpts-rovira",
+  storageBucket: "gestion-cpts-rovira.firebasestorage.app",
+  messagingSenderId: "215311133636",
+  appId: "1:215311133636:web:0e8187fa650ebf81cdd291",
 };
 
 export const isFirebaseConfigured = firebaseConfig.apiKey !== "REPLACE_ME";
