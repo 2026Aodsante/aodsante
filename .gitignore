@@ -4,3 +4,9 @@ gestion/serviceAccountKey*.json.txt
 gestion/~$*
 gestion/seed/node_modules/
 gestion/seed/backups/
+rovira/serviceAccountKey.json
+rovira/serviceAccountKey*.json.txt
+rovira/seed/node_modules/
+rovira/seed/passwords.local.txt
+rovira/seed/passwords.local.json
+rovira/Acces_CPTS_RoViRa.csv
