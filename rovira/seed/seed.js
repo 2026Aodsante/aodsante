@@ -4,7 +4,7 @@
 //
 // Ce script :
 //  1. Crée un compte Firebase Authentication pour chaque membre de data.js
-//     (identifiant "prenom@cptsrovira.local" + mot de passe aléatoire)
+//     (identifiant "prenom.nom@cptsrovira.local" + mot de passe aléatoire)
 //     Les mots de passe sont lus dans "passwords.local.json" (jamais committé,
 //     voir .gitignore) ; à défaut, un mot de passe aléatoire est généré et
 //  2. ajouté à "passwords.local.txt" pour le transmettre au membre

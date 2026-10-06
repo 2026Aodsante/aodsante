@@ -3,7 +3,7 @@
 // Utilisé tant que Firebase n'est pas configuré.
 // Même interface que backend-firebase.js pour un switch transparent.
 // ════════════════════════════════════════════════
-import { MEMBERS_BY_ID, MISSIONS } from './data.js?v=20261004b';
+import { MEMBERS_BY_ID, MISSIONS } from './data.js?v=20261006a';
 
 const LS_AUTH = 'rovira_demo_auth';
 const LS_ACTIONS = 'rovira_demo_actions';

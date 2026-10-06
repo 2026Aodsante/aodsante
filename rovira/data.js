@@ -4,15 +4,15 @@
 // ════════════════════════════════════════════════
 
 // Chaque membre se connecte avec un identifiant simple + mot de passe.
-// L'identifiant correspond à un compte Firebase Auth "prenom@cptsrovira.local".
+// L'identifiant correspond à un compte Firebase Auth "prenom.nom@cptsrovira.local".
 export const MEMBERS = [
-  { id: "stephane", name: "Stéphane Vigne",    role: "Président",                                            groupe: "Gouvernance" },
-  { id: "patrick",  name: "Patrick Laugareil", role: "Membre de l'équipe",                                   groupe: "Gouvernance" },
-  { id: "audrey",   name: "Audrey Attia",      role: "Membre de l'équipe",                                   groupe: "Coordination" },
-  { id: "matthias", name: "Matthias Micaelli", role: "Membre de l'équipe",                                   groupe: "Coordination" },
-  { id: "benjamin", name: "Benjamin Micaelli", role: "Membre de l'équipe",                                   groupe: "Coordination" },
-  { id: "malika",   name: "Malika Mouchon",    role: "ESOX Gestion — gestion courante",                      groupe: "Prestataires" },
-  { id: "mathilde", name: "Mathilde Moysan",   role: "AOD Santé — accompagnement managérial et pilotage ACI", groupe: "Prestataires" },
+  { id: "stephane.vigne", name: "Stéphane Vigne",    role: "Président",                                            groupe: "Gouvernance" },
+  { id: "patrick.laugareil",  name: "Patrick Laugareil", role: "Membre de l'équipe",                                   groupe: "Gouvernance" },
+  { id: "audrey.attia",   name: "Audrey Attia",      role: "Membre de l'équipe",                                   groupe: "Coordination" },
+  { id: "matthias.micaelli", name: "Matthias Micaelli", role: "Membre de l'équipe",                                   groupe: "Coordination" },
+  { id: "benjamin.micaelli", name: "Benjamin Micaelli", role: "Membre de l'équipe",                                   groupe: "Coordination" },
+  { id: "malika.mouchon",   name: "Malika Mouchon",    role: "ESOX Gestion — gestion courante",                      groupe: "Prestataires" },
+  { id: "mathilde.moysan", name: "Mathilde Moysan",   role: "AOD Santé — accompagnement managérial et pilotage ACI", groupe: "Prestataires" },
 ];
 
 // id -> objet membre (pratique pour l'affichage)
