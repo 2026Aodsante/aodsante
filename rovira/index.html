@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/rovira/style.css?v=20261006a">
+  <link rel="stylesheet" href="/rovira/style.css?v=20261006b">
 </head>
 <body>
 
@@ -193,7 +193,7 @@
     <div class="section-header">
       <div class="section-header-eyebrow">Espace partagé</div>
       <h1 class="section-header-title">Documents</h1>
-      <p class="section-header-desc">Documents administratifs de la CPTS et pièces justificatives de chaque mission. Visibles par tous, ajout et suppression possibles par n'importe quel membre.</p>
+      <p class="section-header-desc">Liens vers les documents administratifs de la CPTS et les pièces justificatives de chaque mission, stockés sur le Drive. Visibles par tous, ajout et suppression possibles par n'importe quel membre.</p>
     </div>
 
     <div class="documents-block">
@@ -285,9 +285,13 @@
     <h3 id="doc-modal-title">Ajouter un document</h3>
     <form id="doc-form">
       <div class="form-group">
-        <label class="form-label" for="doc-file">Fichier</label>
-        <input class="form-input" type="file" id="doc-file" required>
-        <div class="form-note">PDF, Word, Excel, image... (jusqu'à 10 Mo)</div>
+        <label class="form-label" for="doc-name">Nom du document</label>
+        <input class="form-input" type="text" id="doc-name" required placeholder="Ex. : Feuille d'émargement soirée diabète">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="doc-url">Lien de partage</label>
+        <input class="form-input" type="url" id="doc-url" required placeholder="https://drive.google.com/...">
+        <div class="form-note">Déposez le fichier sur le Drive de la CPTS, puis collez ici son lien de partage (accès « toute personne disposant du lien »).</div>
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-secondary" id="doc-cancel">Annuler</button>
@@ -299,6 +303,6 @@
 
 <div class="toast" id="toast"></div>
 
-<script type="module" src="/rovira/app.js?v=20261006a"></script>
+<script type="module" src="/rovira/app.js?v=20261006b"></script>
 </body>
 </html>

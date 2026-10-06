@@ -3,12 +3,12 @@
 ═════════════════════════════════════════════════ */
 'use strict';
 
-import { MEMBERS, MEMBERS_BY_ID, MISSIONS } from './data.js?v=20261006a';
-import { isFirebaseConfigured } from './firebase-config.js?v=20261006a';
+import { MEMBERS, MEMBERS_BY_ID, MISSIONS } from './data.js?v=20261006b';
+import { isFirebaseConfigured } from './firebase-config.js?v=20261006b';
 
 const backend = isFirebaseConfigured
-  ? await import('./backend-firebase.js?v=20261006a')
-  : await import('./backend-demo.js?v=20261006a');
+  ? await import('./backend-firebase.js?v=20261006b')
+  : await import('./backend-demo.js?v=20261006b');
 
 let currentUser = null;
 let actionsMap = {};
@@ -517,13 +517,10 @@ document.getElementById('event-form').addEventListener('submit', async (e) => {
 /* ══════════════════════════════════════════════
    DOCUMENTS — administratifs & pièces justificatives
 ══════════════════════════════════════════════ */
-const MAX_DOC_SIZE = 10 * 1024 * 1024; // 10 Mo
 
-function formatFileSize(bytes) {
-  if (!bytes) return '';
-  if (bytes < 1024) return `${bytes} o`;
-  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} Ko`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} Mo`;
+// Les documents sont des liens (Drive...) : on échappe le texte et on n'accepte que http(s).
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
 function formatDocDate(ts) {
@@ -542,8 +539,8 @@ function docItemHtml(doc) {
   return `
     <div class="doc-item">
       <span class="doc-item-icon">${fileIcon()}</span>
-      <a class="doc-item-name" href="${doc.url}" target="_blank" rel="noopener">${doc.name}</a>
-      <span class="doc-item-meta">${formatFileSize(doc.size)} · ${doc.uploadedBy || ''} · ${formatDocDate(doc.uploadedAt)}</span>
+      <a class="doc-item-name" href="${/^https?:\/\//i.test(doc.url || '') ? escapeHtml(doc.url) : '#'}" target="_blank" rel="noopener">${escapeHtml(doc.name)}</a>
+      <span class="doc-item-meta">${escapeHtml(doc.uploadedBy)} · ${formatDocDate(doc.uploadedAt)}</span>
       <button type="button" class="btn-icon doc-item-del" data-doc-del="${doc.id}" title="Supprimer" aria-label="Supprimer">
         <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V2.5h4V4M4 4l.5 9.5a1 1 0 001 1h5a1 1 0 001-1L12 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
@@ -553,8 +550,7 @@ function docItemHtml(doc) {
 function wireDocDeleteButtons(container) {
   container.querySelectorAll('[data-doc-del]').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const docItem = documentsList.find(d => d.id === btn.dataset.docDel);
-      await backend.deleteDocument(btn.dataset.docDel, docItem?.storagePath);
+      await backend.deleteDocument(btn.dataset.docDel);
       toast('Document supprimé.');
     });
   });
@@ -625,22 +621,21 @@ docModal.addEventListener('click', (e) => { if (e.target === docModal) docModal.
 
 document.getElementById('doc-form').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const fileInput = document.getElementById('doc-file');
-  const file = fileInput.files[0];
-  if (!file) return;
-  if (file.size > MAX_DOC_SIZE) {
-    toast('Fichier trop volumineux (10 Mo maximum).');
+  const name = document.getElementById('doc-name').value.trim();
+  const url = document.getElementById('doc-url').value.trim();
+  if (!name || !/^https?:\/\//i.test(url)) {
+    toast('Indiquez un nom et un lien commençant par https://');
     return;
   }
   const submitBtn = document.getElementById('doc-submit-btn');
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Envoi en cours...';
+  submitBtn.textContent = 'Enregistrement...';
   try {
-    await backend.uploadDocument(file, docModalContext);
+    await backend.addDocumentLink({ name, url }, docModalContext);
     docModal.classList.remove('open');
     toast('Document ajouté.');
   } catch (err) {
-    toast("Erreur lors de l'envoi du document.");
+    toast("Erreur lors de l'enregistrement du lien.");
   }
   submitBtn.disabled = false;
   submitBtn.textContent = 'Ajouter';
