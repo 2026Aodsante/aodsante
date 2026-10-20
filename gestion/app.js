@@ -3,12 +3,12 @@
 ═════════════════════════════════════════════════ */
 'use strict';
 
-import { MEMBERS, MEMBERS_BY_ID, MISSIONS } from './data.js?v=20261004';
-import { isFirebaseConfigured } from './firebase-config.js?v=20261004';
+import { MEMBERS, MEMBERS_BY_ID, MISSIONS, DRIVE_URL } from './data.js?v=20261020';
+import { isFirebaseConfigured } from './firebase-config.js?v=20261020';
 
 const backend = isFirebaseConfigured
-  ? await import('./backend-firebase.js?v=20261004')
-  : await import('./backend-demo.js?v=20261004');
+  ? await import('./backend-firebase.js?v=20261020')
+  : await import('./backend-demo.js?v=20261020');
 
 let currentUser = null;
 let actionsMap = {};
@@ -200,7 +200,7 @@ function renderMissions() {
           <div class="action-documents">
             <div class="action-documents-header">
               <span class="checklist-group-title">Pièces justificatives</span>
-              <button type="button" class="btn-link action-doc-add" data-mission="${m.id}" data-action="${a.id}">+ Ajouter un document</button>
+              <button type="button" class="btn-link action-doc-add" data-mission="${m.id}" data-action="${a.id}">+ Ajouter un lien</button>
             </div>
             <div class="action-documents-list" id="docs-${m.id}__${a.id}"></div>
           </div>
@@ -505,13 +505,15 @@ document.getElementById('event-form').addEventListener('submit', async (e) => {
 /* ══════════════════════════════════════════════
    DOCUMENTS — administratifs & pièces justificatives
 ══════════════════════════════════════════════ */
-const MAX_DOC_SIZE = 10 * 1024 * 1024; // 10 Mo
+function esc(str) {
+  return String(str ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
 
-function formatFileSize(bytes) {
-  if (!bytes) return '';
-  if (bytes < 1024) return `${bytes} o`;
-  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} Ko`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} Mo`;
+function isHttpUrl(value) {
+  try {
+    const u = new URL(value);
+    return u.protocol === 'http:' || u.protocol === 'https:';
+  } catch (e) { return false; }
 }
 
 function formatDocDate(ts) {
@@ -530,8 +532,8 @@ function docItemHtml(doc) {
   return `
     <div class="doc-item">
       <span class="doc-item-icon">${fileIcon()}</span>
-      <a class="doc-item-name" href="${doc.url}" target="_blank" rel="noopener">${doc.name}</a>
-      <span class="doc-item-meta">${formatFileSize(doc.size)} · ${doc.uploadedBy || ''} · ${formatDocDate(doc.uploadedAt)}</span>
+      <a class="doc-item-name" href="${esc(isHttpUrl(doc.url) ? doc.url : '#')}" target="_blank" rel="noopener">${esc(doc.name)}</a>
+      <span class="doc-item-meta">${esc([doc.uploadedBy, formatDocDate(doc.uploadedAt)].filter(Boolean).join(' · '))}</span>
       <button type="button" class="btn-icon doc-item-del" data-doc-del="${doc.id}" title="Supprimer" aria-label="Supprimer">
         <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V2.5h4V4M4 4l.5 9.5a1 1 0 001 1h5a1 1 0 001-1L12 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
@@ -541,9 +543,8 @@ function docItemHtml(doc) {
 function wireDocDeleteButtons(container) {
   container.querySelectorAll('[data-doc-del]').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const docItem = documentsList.find(d => d.id === btn.dataset.docDel);
-      await backend.deleteDocument(btn.dataset.docDel, docItem?.storagePath);
-      toast('Document supprimé.');
+      await backend.deleteDocument(btn.dataset.docDel);
+      toast('Lien supprimé.');
     });
   });
 }
@@ -613,26 +614,29 @@ docModal.addEventListener('click', (e) => { if (e.target === docModal) docModal.
 
 document.getElementById('doc-form').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const fileInput = document.getElementById('doc-file');
-  const file = fileInput.files[0];
-  if (!file) return;
-  if (file.size > MAX_DOC_SIZE) {
-    toast('Fichier trop volumineux (10 Mo maximum).');
+  const name = document.getElementById('doc-name').value.trim();
+  const url = document.getElementById('doc-url').value.trim();
+  if (!name || !isHttpUrl(url)) {
+    toast('Le lien doit commencer par http:// ou https://');
     return;
   }
   const submitBtn = document.getElementById('doc-submit-btn');
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Envoi en cours...';
   try {
-    await backend.uploadDocument(file, docModalContext);
+    await backend.addDocument({ ...docModalContext, name, url });
     docModal.classList.remove('open');
-    toast('Document ajouté.');
+    toast('Lien ajouté.');
   } catch (err) {
-    toast("Erreur lors de l'envoi du document.");
+    toast("Erreur lors de l'enregistrement du lien.");
   }
   submitBtn.disabled = false;
-  submitBtn.textContent = 'Ajouter';
 });
+
+const driveBtn = document.getElementById('drive-open-btn');
+if (DRIVE_URL && isHttpUrl(DRIVE_URL)) {
+  driveBtn.href = DRIVE_URL;
+  driveBtn.classList.remove('hidden');
+}
 
 /* ══════════════════════════════════════════════
    PROFIL — changement de mot de passe

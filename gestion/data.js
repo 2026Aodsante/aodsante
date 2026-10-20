@@ -320,3 +320,7 @@ export const MISSIONS = [
     ],
   },
 ];
+
+// Lien du drive partagé de la CPTS (Google Drive, OneDrive...), à renseigner une fois le drive créé.
+// Tant qu'il est vide, le bouton "Ouvrir le drive" reste masqué.
+export const DRIVE_URL = "";

@@ -3,8 +3,8 @@
 // Utilisé automatiquement dès que firebase-config.js contient une vraie config.
 // Même interface que backend-demo.js pour un switch transparent dans app.js.
 // ════════════════════════════════════════════════
-import { firebaseConfig } from './firebase-config.js?v=20261004';
-import { MEMBERS_BY_ID } from './data.js?v=20261004';
+import { firebaseConfig } from './firebase-config.js?v=20261020';
+import { MEMBERS_BY_ID } from './data.js?v=20261020';
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
 import {
@@ -13,14 +13,10 @@ import {
 import {
   getFirestore, collection, doc, setDoc, onSnapshot, addDoc, deleteDoc, serverTimestamp,
 } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js';
-import {
-  getStorage, ref, uploadBytes, getDownloadURL, deleteObject,
-} from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js';
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 const EMAIL_DOMAIN = '@cptsdbmb.local';
 let currentUser = null; // { id, name, role }
@@ -121,17 +117,10 @@ export function watchDocuments(cb) {
   });
 }
 
-export async function uploadDocument(file, meta) {
-  const path = `documents/${Date.now()}_${file.name}`;
-  const storageRef = ref(storage, path);
-  await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(storageRef);
+export async function addDocument(meta) {
   await addDoc(collection(db, 'documents'), {
-    name: file.name,
-    size: file.size,
-    contentType: file.type || '',
-    storagePath: path,
-    url,
+    name: meta.name,
+    url: meta.url,
     category: meta.category,
     missionId: meta.missionId || null,
     actionId: meta.actionId || null,
@@ -140,7 +129,6 @@ export async function uploadDocument(file, meta) {
   });
 }
 
-export async function deleteDocument(docId, storagePath) {
+export async function deleteDocument(docId) {
   await deleteDoc(doc(db, 'documents', docId));
-  try { await deleteObject(ref(storage, storagePath)); } catch (e) {}
 }

@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/gestion/style.css?v=20261004">
+  <link rel="stylesheet" href="/gestion/style.css?v=20261020">
 </head>
 <body>
 
@@ -197,7 +197,11 @@
     <div class="section-header">
       <div class="section-header-eyebrow">Espace partagé</div>
       <h1 class="section-header-title">Documents</h1>
-      <p class="section-header-desc">Documents administratifs de la CPTS et pièces justificatives de chaque mission. Visibles par tous, ajout et suppression possibles par n'importe quel membre.</p>
+      <p class="section-header-desc">Documents administratifs de la CPTS et pièces justificatives de chaque mission. Les fichiers sont conservés dans le drive de la CPTS : ici, chacun référence le lien du document au bon endroit.</p>
+      <a class="btn-secondary drive-open-btn hidden" id="drive-open-btn" href="#" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M3 6.5a2 2 0 012-2h3l1.5 2H15a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-8z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        Ouvrir le drive DBMB
+      </a>
     </div>
 
     <div class="documents-block">
@@ -205,7 +209,7 @@
         <h3>Documents administratifs</h3>
         <button class="btn-primary" id="add-admin-doc-btn">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          Ajouter un document
+          Ajouter un lien
         </button>
       </div>
       <div id="admin-documents-list"></div>
@@ -286,12 +290,16 @@
 <!-- ─── MODAL AJOUT DOCUMENT ──────────────────── -->
 <div class="modal-overlay" id="doc-modal">
   <div class="modal-box">
-    <h3 id="doc-modal-title">Ajouter un document</h3>
+    <h3 id="doc-modal-title">Ajouter un lien</h3>
     <form id="doc-form">
       <div class="form-group">
-        <label class="form-label" for="doc-file">Fichier</label>
-        <input class="form-input" type="file" id="doc-file" required>
-        <div class="form-note">PDF, Word, Excel, image... (jusqu'à 10 Mo)</div>
+        <label class="form-label" for="doc-name">Nom du document</label>
+        <input class="form-input" type="text" id="doc-name" placeholder="Ex. Convention CPAM signée" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="doc-url">Lien du document</label>
+        <input class="form-input" type="url" id="doc-url" placeholder="https://..." required>
+        <div class="form-note">Déposez d'abord le fichier dans le drive, puis collez ici son lien de partage.</div>
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-secondary" id="doc-cancel">Annuler</button>
@@ -303,6 +311,6 @@
 
 <div class="toast" id="toast"></div>
 
-<script type="module" src="/gestion/app.js?v=20261004"></script>
+<script type="module" src="/gestion/app.js?v=20261020"></script>
 </body>
 </html>
